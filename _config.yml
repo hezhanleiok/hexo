@@ -102,3 +102,7 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+admin:
+  username: hezhanlei  # 后台登录用户名，可自定义
+  password_hash: $2a$12$rpqpegctbXPvXYTJSXD6cOXwG4O92OB2hxK41XiFFzbYz9BNiN.hG  # 替换成你生成的哈希
+  secret: hezhanleiok-hexo-blog-2026  # 随便写一串随机字符串当密钥
