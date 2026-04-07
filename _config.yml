@@ -87,7 +87,9 @@ theme: butterfly
 
 # Deployment
 deploy:
-  type: ''
+  type:  git
+  repo: https://github.com/hezhanleiok/hexo.git
+  branch: gh-pages
 
 # Dashboard (保留你原有的)
 dashboard:
