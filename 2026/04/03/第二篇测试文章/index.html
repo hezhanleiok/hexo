@@ -1,0 +1,721 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>第二篇测试文章 | xhblog</title><meta name="author" content="Xiao He"><meta name="copyright" content="Xiao He"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="这是一篇测试文章，用来验证后台同步功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二篇测试文章">
+<meta property="og:url" content="http://localhost:4000/2026/04/03/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/index.html">
+<meta property="og:site_name" content="xhblog">
+<meta property="og:description" content="这是一篇测试文章，用来验证后台同步功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://localhost:4000/img/avatar.png">
+<meta property="article:published_time" content="2026-04-02T21:22:25.000Z">
+<meta property="article:modified_time" content="2026-04-03T04:52:29.930Z">
+<meta property="article:author" content="Xiao He">
+<meta property="article:tag" content="测试标签1">
+<meta property="article:tag" content="测试标签2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://localhost:4000/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "第二篇测试文章",
+  "url": "http://localhost:4000/2026/04/03/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/",
+  "image": "http://localhost:4000/img/avatar.png",
+  "datePublished": "2026-04-02T21:22:25.000Z",
+  "dateModified": "2026-04-03T04:52:29.930Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Xiao He",
+      "url": "http://localhost:4000"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://localhost:4000/2026/04/03/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '第二篇测试文章',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom-layout.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num"><script>document.addEventListener('DOMContentLoaded', function() {
+  const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+  const lengthNum = document.querySelector('.site-data .length-num');
+  if (lengthNum) {
+    lengthNum.textContent = articles.length || 2;
+  }
+});</script>2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num"><script>document.addEventListener('DOMContentLoaded', function() {
+  const tags = JSON.parse(localStorage.getItem('tags') || '[]');
+  const lengthNum = document.querySelectorAll('.site-data .length-num')[1];
+  if (lengthNum) {
+    lengthNum.textContent = tags.length || 4;
+  }
+});</script>4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num"><script>document.addEventListener('DOMContentLoaded', function() {
+  const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+  const lengthNum = document.querySelectorAll('.site-data .length-num')[2];
+  if (lengthNum) {
+    lengthNum.textContent = categories.length || 2;
+  }
+});</script>2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><script>document.addEventListener('DOMContentLoaded', function() {
+  const categoriesList = document.querySelector('.menus_item_child');
+  if (categoriesList) {
+    // 从localStorage读取分类
+    const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+    
+    if (categories.length > 0) {
+      // 清空现有分类
+      categoriesList.innerHTML = '';
+      
+      // 渲染分类
+      categories.forEach(category => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.className = 'site-page child';
+        a.href = '/categories/' + category.name.toLowerCase().replace(/\s+/g, '-');
+        a.innerHTML = '<span> ' + category.name + '</span>';
+        li.appendChild(a);
+        categoriesList.appendChild(li);
+      });
+    }
+  }
+});</script><li><a class="site-page child" href="/categories/技术"><span> 技术</span></a></li><li><a class="site-page child" href="/categories/生活"><span> 生活</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.png" alt="Logo"></a><a class="nav-page-title" href="/"><span class="site-name">第二篇测试文章</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="nav-container"><div class="nav-left"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div></div></div><div class="nav-right"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">第二篇测试文章</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-04-02T21:22:25.000Z" title="发表于 2026-04-03 05:22:25">2026-04-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B5%8B%E8%AF%95/">测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><script>document.addEventListener('DOMContentLoaded', function() {
+  // 从URL获取文章ID
+  const urlParts = window.location.pathname.split('/');
+  const articleId = urlParts[urlParts.length - 1];
+  
+  // 从localStorage读取文章
+  const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+  const article = articles.find(a => a.id.toString() === articleId);
+  
+  if (article) {
+    // 更新页面标题
+    document.title = article.title + ' - ' + document.title.split(' - ')[1];
+    
+    // 更新文章内容
+    const articleContainer = document.getElementById('article-container');
+    if (articleContainer) {
+      articleContainer.innerHTML = `
+        <h1 class="post-title">${article.title}</h1>
+        <div class="post-meta">
+          <span class="post-meta-date">
+            <i class="far fa-calendar-alt"></i>
+            <span class="article-meta-label">发布</span>
+            <time datetime="${new Date(article.publishedAt).toISOString()}">
+              ${new Date(article.publishedAt).toLocaleString()}
+            </time>
+          </span>
+          ${article.categories.length > 0 ? `
+            <span class="article-meta">
+              <span class="article-meta-separator">|</span>
+              <i class="fas fa-inbox"></i>
+              <span class="article-meta-label">分类</span>
+              ${article.categories.map(category => `
+                <a href="/categories/${category.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__categories"> ${category}</a>
+              `).join(' ')}
+            </span>
+          ` : ''}
+          ${article.tags.length > 0 ? `
+            <span class="article-meta tags">
+              <span class="article-meta-separator">|</span>
+              <i class="fas fa-tags"></i>
+              <span class="article-meta-label">标签</span>
+              ${article.tags.map(tag => `
+                <a href="/tags/${tag.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__tags"> ${tag}</a>
+              `).join(' ')}
+            </span>
+          ` : ''}
+        </div>
+        <div class="post-content">
+          ${article.content}
+        </div>
+      `;
+    }
+  }
+});</script></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://localhost:4000">Xiao He</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://localhost:4000/2026/04/03/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">http://localhost:4000/2026/04/03/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://localhost:4000" target="_blank">xhblog</a>！</span></div></div><div class="tag_share"><script>document.addEventListener('DOMContentLoaded', function() {
+  const urlParts = window.location.pathname.split('/');
+  const articleId = urlParts[urlParts.length - 1];
+  const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+  const article = articles.find(a => a.id.toString() === articleId);
+  
+  if (article && article.tags.length > 0) {
+    const tagList = document.querySelector('.post-meta__tag-list');
+    if (tagList) {
+      tagList.innerHTML = '';
+      article.tags.forEach(tag => {
+        const a = document.createElement('a');
+        a.className = 'post-meta__tags';
+        a.href = '/tags/' + tag.toLowerCase().replace(/\s+/g, '-');
+        a.textContent = tag;
+        tagList.appendChild(a);
+      });
+    }
+  }
+});</script><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE1/">测试标签1</a><a class="post-meta__tags" href="/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE2/">测试标签2</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/04/02/hello-world/" title="现代前端博客快速搭建实战"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">现代前端博客快速搭建实战</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a></nav><div class="comment-section"><h3>评论区</h3><div class="comment-form"><div class="form-group"><label for="commentName">昵称<span class="required">*</span></label><input class="form-control" id="commentName" type="text" placeholder="请输入昵称（必填）" required></div><div class="form-group"><label for="commentEmail">邮箱</label><input class="form-control" id="commentEmail" type="email" placeholder="请输入邮箱（选填）"></div><div class="form-group"><label for="commentContent">评论内容<span class="required">*</span></label><div class="editor-toolbar" id="commentToolbar"><button class="tool-btn" type="button" data-command="bold" title="加粗"><i class="fas fa-bold"></i></button><button class="tool-btn" type="button" data-command="italic" title="斜体"><i class="fas fa-italic"></i></button><button class="tool-btn" type="button" data-command="underline" title="下划线"><i class="fas fa-underline"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="insertUnorderedList" title="无序列表"><i class="fas fa-list-ul"></i></button><button class="tool-btn" type="button" data-command="insertOrderedList" title="有序列表"><i class="fas fa-list-ol"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" id="emojiBtn" title="表情"><i class="fas fa-smile"></i></button><button class="tool-btn" type="button" id="imageBtn" title="插入图片"><i class="fas fa-image"></i></button><div class="tool-separator"></div><select class="tool-select" id="fontSize"><option value="">字体大小</option><option value="1">小</option><option value="3">中</option><option value="5">大</option><option value="7">特大</option></select><select class="tool-select" id="fontColor"><option value="">字体颜色</option><option value="#000000">黑色</option><option value="#ff0000">红色</option><option value="#00ff00">绿色</option><option value="#0000ff">蓝色</option><option value="#ffff00">黄色</option></select></div><div class="emoji-picker" id="emojiPicker" style="display:none"><div class="emoji-grid"></div></div><div class="comment-content" id="commentContent" contenteditable="true" placeholder="请输入评论内容（必填）"></div></div><div class="form-actions"><button class="btn btn-primary" id="submitComment">提交评论</button><button class="btn btn-secondary" id="restoreComment" style="display:none">恢复草稿</button></div></div><div class="comments-list" id="commentsList"><div class="empty-state"><i class="fas fa-comments"></i><p>暂无评论</p></div></div><script>document.addEventListener('DOMContentLoaded', function() {
+  // 表情列表
+  const emojis = ['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '', '🥳', '😏', '', '😞', '', '😟', '', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '👍', '👎', '', '', '🤝', '❤️', '🔥', '⭐', '🎉', '🎊'];
+  
+  // 加载评论
+  function loadComments() {
+    const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+    const commentsList = document.getElementById('commentsList');
+    
+    if (commentsList) {
+      commentsList.innerHTML = '';
+      
+      if (comments.length === 0) {
+        commentsList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <p>暂无评论</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // 按时间倒序显示
+      comments.slice().reverse().forEach(comment => {
+        const commentItem = document.createElement('div');
+        commentItem.className = 'comment-item';
+        commentItem.innerHTML = `
+          <div class="comment-header">
+            <span class="comment-author">${escapeHtml(comment.author)}</span>
+            <span class="comment-time">${new Date(comment.timestamp).toLocaleString()}</span>
+          </div>
+          <div class="comment-content">${comment.content}</div>
+        `;
+        commentsList.appendChild(commentItem);
+      });
+    }
+  }
+  
+  // HTML转义
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  
+  // 检查是否有草稿
+  function checkDraft() {
+    const draft = localStorage.getItem('commentDraft');
+    const restoreBtn = document.getElementById('restoreComment');
+    if (draft) {
+      restoreBtn.style.display = 'inline-block';
+    } else {
+      restoreBtn.style.display = 'none';
+    }
+  }
+  
+  // 保存草稿
+  function saveDraft() {
+    const content = document.getElementById('commentContent').innerHTML;
+    const name = document.getElementById('commentName').value;
+    if (content || name) {
+      localStorage.setItem('commentDraft', JSON.stringify({
+        name: name,
+        content: content,
+        timestamp: new Date().toISOString()
+      }));
+    }
+  }
+  
+  // 恢复草稿
+  function restoreDraft() {
+    const draft = JSON.parse(localStorage.getItem('commentDraft') || '{}');
+    if (draft.name) {
+      document.getElementById('commentName').value = draft.name;
+    }
+    if (draft.content) {
+      document.getElementById('commentContent').innerHTML = draft.content;
+    }
+    localStorage.removeItem('commentDraft');
+    document.getElementById('restoreComment').style.display = 'none';
+  }
+  
+  // 工具栏功能
+  const toolbarButtons = document.querySelectorAll('#commentToolbar .tool-btn');
+  toolbarButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const command = this.dataset.command;
+      if (command) {
+        document.execCommand(command, false, null);
+        document.getElementById('commentContent').focus();
+      }
+    });
+  });
+  
+  // 字体大小
+  const fontSizeSelect = document.getElementById('fontSize');
+  if (fontSizeSelect) {
+    fontSizeSelect.addEventListener('change', function() {
+      if (this.value) {
+        document.execCommand('fontSize', false, this.value);
+        this.value = '';
+      }
+    });
+  }
+  
+  // 字体颜色
+  const fontColorSelect = document.getElementById('fontColor');
+  if (fontColorSelect) {
+    fontColorSelect.addEventListener('change', function() {
+      if (this.value) {
+        document.execCommand('foreColor', false, this.value);
+        this.value = '';
+      }
+    });
+  }
+  
+  // 表情选择器
+  const emojiBtn = document.getElementById('emojiBtn');
+  const emojiPicker = document.getElementById('emojiPicker');
+  if (emojiBtn && emojiPicker) {
+    // 生成表情网格
+    const emojiGrid = emojiPicker.querySelector('.emoji-grid');
+    emojis.forEach(emoji => {
+      const span = document.createElement('span');
+      span.className = 'emoji-item';
+      span.textContent = emoji;
+      span.addEventListener('click', function() {
+        document.execCommand('insertText', false, emoji);
+        emojiPicker.style.display = 'none';
+        document.getElementById('commentContent').focus();
+      });
+      emojiGrid.appendChild(span);
+    });
+    
+    emojiBtn.addEventListener('click', function() {
+      emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    // 点击外部关闭表情
+    document.addEventListener('click', function(e) {
+      if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+        emojiPicker.style.display = 'none';
+      }
+    });
+  }
+  
+  // 插入图片
+  const imageBtn = document.getElementById('imageBtn');
+  if (imageBtn) {
+    imageBtn.addEventListener('click', function() {
+      const url = prompt('请输入图片URL:');
+      if (url) {
+        document.execCommand('insertImage', false, url);
+        document.getElementById('commentContent').focus();
+      }
+    });
+  }
+  
+  // 提交评论
+  const submitCommentBtn = document.getElementById('submitComment');
+  if (submitCommentBtn) {
+    submitCommentBtn.addEventListener('click', function() {
+      const name = document.getElementById('commentName').value.trim();
+      const email = document.getElementById('commentEmail').value.trim();
+      const content = document.getElementById('commentContent').innerHTML.trim();
+      
+      // 昵称必填验证
+      if (!name) {
+        alert('请输入昵称！');
+        document.getElementById('commentName').focus();
+        return;
+      }
+      
+      // 评论内容必填验证
+      if (!content || content === '<br>') {
+        alert('请输入评论内容！');
+        document.getElementById('commentContent').focus();
+        return;
+      }
+      
+      // 创建评论
+      const comment = {
+        id: Date.now(),
+        author: name,
+        email: email,
+        content: content,
+        timestamp: new Date().toISOString(),
+        postId: window.location.pathname
+      };
+      
+      // 保存评论（直接显示，不需要审核）
+      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      comments.push(comment);
+      localStorage.setItem('comments', JSON.stringify(comments));
+      
+      // 清除草稿
+      localStorage.removeItem('commentDraft');
+      
+      // 重新加载评论
+      loadComments();
+      
+      // 清空表单
+      document.getElementById('commentName').value = '';
+      document.getElementById('commentEmail').value = '';
+      document.getElementById('commentContent').innerHTML = '';
+      
+      // 显示成功消息
+      alert('评论发布成功！');
+    });
+  }
+  
+  // 恢复草稿按钮
+  const restoreBtn = document.getElementById('restoreComment');
+  if (restoreBtn) {
+    restoreBtn.addEventListener('click', restoreDraft);
+  }
+  
+  // 自动保存草稿
+  const commentContent = document.getElementById('commentContent');
+  const commentName = document.getElementById('commentName');
+  if (commentContent && commentName) {
+    let saveTimer = null;
+    const autoSave = function() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveDraft, 1000);
+    };
+    commentContent.addEventListener('input', autoSave);
+    commentName.addEventListener('input', autoSave);
+  }
+  
+  // 初始加载
+  loadComments();
+  checkDraft();
+});
+</script><style>.comment-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.comment-section h3 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.required {
+  color: #e74c3c;
+  margin-left: 2px;
+}
+
+.comment-form {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tool-btn {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.tool-btn:hover {
+  background: #e9ecef;
+}
+
+.tool-separator {
+  width: 1px;
+  height: 20px;
+  background: #ddd;
+  margin: 0 4px;
+}
+
+.tool-select {
+  padding: 4px 6px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: white;
+  font-size: 12px;
+}
+
+.emoji-picker {
+  position: relative;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.emoji-item {
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  padding: 5px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.emoji-item:hover {
+  background: #e9ecef;
+}
+
+.comment-content {
+  border: 1px solid #ddd;
+  border-radius: 0 0 5px 5px;
+  min-height: 120px;
+  padding: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+  background: white;
+}
+
+.comment-content:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.comment-content:empty:before {
+  content: attr(placeholder);
+  color: #999;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2980b9;
+}
+
+.btn-secondary {
+  background: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #7f8c8d;
+}
+
+.comment-item {
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #e9ecef;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: #95a5a6;
+}
+
+.comment-item .comment-content {
+  border: none;
+  padding: 0;
+  min-height: auto;
+  background: transparent;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #95a5a6;
+}
+
+.empty-state i {
+  font-size: 32px;
+  margin-bottom: 10px;
+}</style></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Xiao He</div><div class="author-info-description">热爱技术，热爱生活。分享前端开发、设计与日常。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://x.com/xiaoheyiyi" target="_blank" title="X"><i class="fab fa-twitter" style="color: #1DA1F2;"></i></a><a class="social-icon" href="https://www.youtube.com/@xiaoheai" target="_blank" title="YouTube"><i class="fab fa-youtube" style="color: #FF0000;"></i></a><a class="social-icon" href="https://github.com/hezhanleiok/hezhanleiok.github.io" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://t.me/xiaoheok" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #26A5E4;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/03/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" title="第二篇测试文章">第二篇测试文章</a><time datetime="2026-04-02T21:22:25.000Z" title="发表于 2026-04-03 05:22:25">2026-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/02/hello-world/" title="现代前端博客快速搭建实战">现代前端博客快速搭建实战</a><time datetime="2026-04-02T08:00:00.000Z" title="发表于 2026-04-02 16:00:00">2026-04-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Xiao He</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script defer src="/js/home-carousel.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
