@@ -11,9 +11,10 @@ author: Xiao He
 language: zh-CN
 timezone: 'Asia/Shanghai'
 
-# URL 【本地正常专用】
+# URL 【线上正常专用】
 url: https://hezhanleiok.github.io/hexo/
 root: /hexo/
+relative_link: true
 permalink: :year/:month/:day/:slug/
 permalink_defaults:
 pretty_urls:
