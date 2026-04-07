@@ -27,7 +27,8 @@ menu:
   文章: /archives/ || fas fa-archive
   关于: /about/ || fas fa-user
   隐私: /privacy/ || fas fa-lock
-  登录: /dashboard || fas fa-sign-in-alt
+  登录: /login/ || fas fa-sign-in-alt
+  注册: /register/ || fas fa-user-plus
 
 # --------------------------------------
 # Code Blocks Settings
@@ -272,7 +273,7 @@ footer:
   # Copyright of theme and framework
   copyright:
     enable: true
-    version: false
+    version: true
   custom_text:
 
 # --------------------------------------
@@ -607,14 +608,13 @@ waline:
 # Utterances
 # https://utteranc.es/
 utterances:
-  enable: true
-  repo: hezhanleiok/hezhanleiok.github.io
+  repo:
   # Issue Mapping: pathname/url/title/og:title
   issue_term: pathname
   # Theme: github-light/github-dark/github-dark-orange/icy-dark/dark-blue/photon-dark
   light_theme: github-light
   dark_theme: photon-dark
-  js: https://utteranc.es/client.js
+  js:
   option:
 
 # Facebook Comments Plugin
@@ -1070,6 +1070,70 @@ css_prefix: true
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)
 inject:
   head:
+    - '<style>
+        /* 导航栏 flex 布局 */
+        #nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+        /* 菜单容器 */
+        .menus_items {
+          display: flex;
+          flex-wrap: wrap;
+          margin: 0;
+          padding: 0;
+          order: 1;  /* 左侧区域 */
+        }
+        /* 右侧区域（搜索按钮） */
+        #nav .search-form__btn {
+          order: 2;
+        }
+        /* 强制前四个菜单项在左，后两个（登录、注册）在右 */
+        .menus_items .site-page:nth-child(1),
+        .menus_items .site-page:nth-child(2),
+        .menus_items .site-page:nth-child(3),
+        .menus_items .site-page:nth-child(4) {
+          order: 1;
+          margin-right: 20px;
+        }
+        .menus_items .site-page:nth-child(5),
+        .menus_items .site-page:nth-child(6) {
+          order: 2;
+          margin-left: 20px;
+        }
+        /* 菜单字体 */
+        .menus_items .site-page {
+          font-size: 18px;
+          font-weight: 500;
+        }
+        /* 右侧搜索按钮样式 */
+        #nav .search-form__btn {
+          font-size: 16px;
+          margin-left: 15px;
+        }
+        /* 原有的侧边栏样式保留 */
+        .webinfo-item {
+          display: inline-block;
+          width: 33%;
+          text-align: center;
+        }
+        .card-tag-cloud a {
+          background: #f0f0f0;
+          padding: 4px 10px;
+          border-radius: 20px;
+          margin: 4px;
+          display: inline-block;
+          font-size: 14px;
+        }
+        .recent-post-item .post_cover {
+          display: none;
+        }
+        .recent-post-item {
+          padding: 20px;
+        }
+      </style>'
   bottom:   # 这里留空或删除底部的脚本
 # CDN Settings
 # Don't modify the following settings unless you know how they work

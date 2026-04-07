@@ -3,6 +3,7 @@ mixin indexPostUI()
   - const masonryLayoutClass = [6, 7].includes(indexLayout) ? 'masonry' : ''
   #recent-posts.recent-posts.nc(class=masonryLayoutClass)
     .recent-post-items
+      //- 静态文章列表（用于初始加载）
       each article, index in page.posts.data
         .recent-post-item
           - const link = article.link || article.path
@@ -112,8 +113,70 @@ mixin indexPostUI()
             if content
               .content!=content
 
-        if theme.ad && theme.ad.index
-          if (index + 1) % 3 === 0
-            .recent-post-item.ads-wrap!= theme.ad.index
+      //- 从localStorage加载文章
+      script.
+        document.addEventListener('DOMContentLoaded', function() {
+          const recentPostItems = document.querySelector('.recent-post-items');
+          if (recentPostItems) {
+            // 从localStorage读取文章
+            const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+            
+            if (articles.length > 0) {
+              // 清空现有文章
+              recentPostItems.innerHTML = '';
+              
+              // 按发布时间排序（最新的在前）
+              articles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+              
+              // 渲染文章
+              articles.forEach((article, index) => {
+                const leftOrRight = #{indexLayout} === 3 ? (index % 2 === 0 ? 'left' : 'right') : (#{indexLayout} === 2 ? 'right' : '');
+                const noCover = 'no-cover'; // 简化处理，没有封面
+                
+                const articleItem = document.createElement('div');
+                articleItem.className = 'recent-post-item';
+                articleItem.innerHTML = `
+                  <div class="recent-post-info ${noCover}">
+                    <a class="article-title" href="/${article.path || 'post/' + article.id}" title="${article.title}">
+                      ${article.title}
+                    </a>
+                    <div class="article-meta-wrap">
+                      <span class="post-meta-date">
+                        <i class="far fa-calendar-alt"></i>
+                        <span class="article-meta-label">发布</span>
+                        <time datetime="${new Date(article.publishedAt).toISOString()}">
+                          ${new Date(article.publishedAt).toLocaleDateString()}
+                        </time>
+                      </span>
+                      ${article.categories.length > 0 ? `
+                        <span class="article-meta">
+                          <span class="article-meta-separator">|</span>
+                          ${article.categories.map((category, catIndex) => `
+                            <i class="fas fa-inbox"></i>
+                            <a href="/categories/${category.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__categories"> ${category}</a>
+                            ${catIndex < article.categories.length - 1 ? '<i class="fas fa-angle-right article-meta-link"></i>' : ''}
+                          `).join('')}
+                        </span>
+                      ` : ''}
+                      ${article.tags.length > 0 ? `
+                        <span class="article-meta tags">
+                          <span class="article-meta-separator">|</span>
+                          ${article.tags.map((tag, tagIndex) => `
+                            <i class="fas fa-tag"></i>
+                            <a href="/tags/${tag.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__tags"> ${tag}</a>
+                            ${tagIndex < article.tags.length - 1 ? '<span class="article-meta-link">•</span>' : ''}
+                          `).join('')}
+                        </span>
+                      ` : ''}
+                    </div>
+                    ${article.excerpt ? `<div class="content">${article.excerpt}</div>` : ''}
+                  </div>
+                `;
+                
+                recentPostItems.appendChild(articleItem);
+              });
+            }
+          }
+        });
 
     include ../pagination.pug

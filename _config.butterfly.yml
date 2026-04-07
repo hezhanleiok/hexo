@@ -1,0 +1,31 @@
+﻿nav:
+  display_title: false
+
+avatar:
+  img: /img/avatar.png
+  effect: false
+
+aside:
+  display:
+    archive: true
+    category: true
+    tag: true
+  card_categories:
+    enable: true
+  card_archives:
+    enable: true
+  card_tags:
+    enable: true
+    limit: 20
+    color: false
+    orderby: name
+    order: 1
+  card_webinfo:
+    enable: true
+    post_count: true
+
+inject:
+  head:
+    - <link rel="stylesheet" href="/css/custom-layout.css">
+  bottom:
+    - <script defer src="/js/home-carousel.js"></script>

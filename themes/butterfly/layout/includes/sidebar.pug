@@ -7,12 +7,42 @@ if theme.menu
       .site-data.text-center
         a(href=`${url_for(config.archive_dir)}/`)
           .headline= _p('aside.articles')
-          .length-num= site.posts.length
+          .length-num
+            //- 从localStorage读取文章数量
+            script.
+              document.addEventListener('DOMContentLoaded', function() {
+                const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+                const lengthNum = document.querySelector('.site-data .length-num');
+                if (lengthNum) {
+                  lengthNum.textContent = articles.length || #{site.posts.length};
+                }
+              });
+            | #{site.posts.length}
         a(href=`${url_for(config.tag_dir)}/`)
           .headline= _p('aside.tags')
-          .length-num= site.tags.length
+          .length-num
+            //- 从localStorage读取标签数量
+            script.
+              document.addEventListener('DOMContentLoaded', function() {
+                const tags = JSON.parse(localStorage.getItem('tags') || '[]');
+                const lengthNum = document.querySelectorAll('.site-data .length-num')[1];
+                if (lengthNum) {
+                  lengthNum.textContent = tags.length || #{site.tags.length};
+                }
+              });
+            | #{site.tags.length}
         a(href=`${url_for(config.category_dir)}/`)
           .headline= _p('aside.categories')
-          .length-num= site.categories.length
+          .length-num
+            //- 从localStorage读取分类数量
+            script.
+              document.addEventListener('DOMContentLoaded', function() {
+                const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+                const lengthNum = document.querySelectorAll('.site-data .length-num')[2];
+                if (lengthNum) {
+                  lengthNum.textContent = categories.length || #{site.categories.length};
+                }
+              });
+            | #{site.categories.length}
 
       != partial('includes/header/menu_item', {}, { cache: true })

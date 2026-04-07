@@ -306,7 +306,6 @@
     opacity: 1
 
   #blog-info
-    flex: 1
     color: var(--light-grey)
     @extend .limit-one-line
 
@@ -337,66 +336,102 @@
     text-shadow: 2px 2px 4px rgba($dark-black, .15)
     font-weight: bold
 
-  .menus_items
-    display: inline
+  #menus
+    display: flex
+    align-items: center
+    flex: 1 1 auto 1 auto
 
-    .menus_item
-      position: relative
-      display: inline-block
-      padding: 0 0 0 14px
+    .nav-container
+      display: flex
+      align-items: center
+      width: 100%
 
-      &:hover
-        .menus_item_child
-          display: block
+      .nav-left
+        display: flex
+        align-items: center
+        flex: 1
 
-        & > span > i:last-child
-          transform: rotate(180deg)
+        .menus_items
+          display: flex
+          align-items: center
+          justify-content: flex-start
+          margin: 0
+          padding: 0
 
-      & > span > i:last-child
-        padding: 4px
-        transition: transform .3s
+          .menus_item:first-child
+            padding-left: 0
 
-      .menus_item_child
-        position: absolute
-        right: 0
-        display: none
-        margin-top: 8px
-        padding: 0
-        width: max-content
-        background-color: var(--sidebar-bg)
-        box-shadow: 0 5px 20px -4px rgba($dark-black, .5)
-        animation: sub_menus .3s .1s ease both
-        addBorderRadius(5)
-
-        &:before
-          position: absolute
-          top: -8px
-          left: 0
-          width: 100%
-          height: 20px
-          content: ''
-
-        li
-          list-style: none
-
-          &:hover
-            background: var(--text-bg-hover)
-
-          if hexo-config('rounded_corners_ui')
-            &:first-child
-              border-top-left-radius: 5px
-              border-top-right-radius: 5px
-
-            &:last-child
-              border-bottom-right-radius: 5px
-              border-bottom-left-radius: 5px
-
-          a
+          .menus_item
+            position: relative
             display: inline-block
-            padding: 8px 16px
-            width: 100%
-            color: var(--font-color) !important
-            text-shadow: none !important
+            padding: 0 0 0 14px
+
+            &:hover
+              .menus_item_child
+                display: block
+
+              & > span > i:last-child
+                transform: rotate(180deg)
+
+            & > span > i:last-child
+              padding: 4px
+              transition: transform .3s
+
+            .menus_item_child
+              position: absolute
+              right: 0
+              display: none
+              margin-top: 8px
+              padding: 0
+              width: max-content
+              background-color: var(--sidebar-bg)
+              box-shadow: 0 5px 20px -4px rgba($dark-black, .5)
+              animation: sub_menus .3s .1s ease both
+              addBorderRadius(5)
+
+              &:before
+                position: absolute
+                top: -8px
+                left: 0
+                width: 100%
+                height: 20px
+                content: ''
+
+              li
+                list-style: none
+
+                &:hover
+                  background: var(--text-bg-hover)
+
+                if hexo-config('rounded_corners_ui')
+                  &:first-child
+                    border-top-left-radius: 5px
+                    border-top-right-radius: 5px
+
+                  &:last-child
+                    border-bottom-right-radius: 5px
+                    border-bottom-left-radius: 5px
+
+                a
+                  display: inline-block
+                  padding: 8px 16px
+                  width: 100%
+                  color: var(--font-color) !important
+                  text-shadow: none !important
+
+      .nav-right
+        display: flex
+        align-items: center
+        margin-left: auto
+
+        #search-button
+          display: inline
+          padding: 0 0 0 14px
+
+        .menus_item
+          position: relative
+          display: inline-block
+          padding: 0 0 0 14px
 
   &.hide-menu
     #toggle-menu

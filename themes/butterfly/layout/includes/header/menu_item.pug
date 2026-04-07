@@ -2,12 +2,54 @@ if theme.menu
   .menus_items
     each value, label in theme.menu
       if typeof value !== 'object'
-        .menus_item
-          - const [link, icon] = value.split('||').map(part => trim(part))
-          a.site-page(href=url_for(link))
-            if icon
-              i.fa-fw(class=icon)
-            span= ' ' + label
+        if label === '文章'
+          .menus_item
+            - const [link, icon] = value.split('||').map(part => trim(part))
+            span.site-page.group
+              if icon
+                i.fa-fw(class=icon)
+              span= ' ' + label
+              i.fas.fa-chevron-down
+            ul.menus_item_child
+              //- 从localStorage读取分类数据
+              script.
+                document.addEventListener('DOMContentLoaded', function() {
+                  const categoriesList = document.querySelector('.menus_item_child');
+                  if (categoriesList) {
+                    // 从localStorage读取分类
+                    const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+                    
+                    if (categories.length > 0) {
+                      // 清空现有分类
+                      categoriesList.innerHTML = '';
+                      
+                      // 渲染分类
+                      categories.forEach(category => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.className = 'site-page child';
+                        a.href = '/categories/' + category.name.toLowerCase().replace(/\s+/g, '-');
+                        a.innerHTML = '<span> ' + category.name + '</span>';
+                        li.appendChild(a);
+                        categoriesList.appendChild(li);
+                      });
+                    }
+                  }
+                });
+              //- 初始默认分类（用于静态渲染）
+              li
+                a.site-page.child(href='/categories/技术')
+                  span= ' 技术'
+              li
+                a.site-page.child(href='/categories/生活')
+                  span= ' 生活'
+        else
+          .menus_item
+            - const [link, icon] = value.split('||').map(part => trim(part))
+            a.site-page(href=url_for(link))
+              if icon
+                i.fa-fw(class=icon)
+              span= ' ' + label
       else
         .menus_item
           - const [groupLabel, groupIcon, groupClass] = label.split('||').map(part => trim(part))

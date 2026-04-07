@@ -9,9 +9,89 @@ block content
       if theme.noticeOutdate.enable && page.noticeOutdate !== false
         include includes/post/outdate-notice.pug
       else
+        //- 静态内容（用于初始加载）
         !=page.content
+        
+        //- 从localStorage加载文章内容
+        script.
+          document.addEventListener('DOMContentLoaded', function() {
+            // 从URL获取文章ID
+            const urlParts = window.location.pathname.split('/');
+            const articleId = urlParts[urlParts.length - 1];
+            
+            // 从localStorage读取文章
+            const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+            const article = articles.find(a => a.id.toString() === articleId);
+            
+            if (article) {
+              // 更新页面标题
+              document.title = article.title + ' - ' + document.title.split(' - ')[1];
+              
+              // 更新文章内容
+              const articleContainer = document.getElementById('article-container');
+              if (articleContainer) {
+                articleContainer.innerHTML = `
+                  <h1 class="post-title">${article.title}</h1>
+                  <div class="post-meta">
+                    <span class="post-meta-date">
+                      <i class="far fa-calendar-alt"></i>
+                      <span class="article-meta-label">发布</span>
+                      <time datetime="${new Date(article.publishedAt).toISOString()}">
+                        ${new Date(article.publishedAt).toLocaleString()}
+                      </time>
+                    </span>
+                    ${article.categories.length > 0 ? `
+                      <span class="article-meta">
+                        <span class="article-meta-separator">|</span>
+                        <i class="fas fa-inbox"></i>
+                        <span class="article-meta-label">分类</span>
+                        ${article.categories.map(category => `
+                          <a href="/categories/${category.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__categories"> ${category}</a>
+                        `).join(' ')}
+                      </span>
+                    ` : ''}
+                    ${article.tags.length > 0 ? `
+                      <span class="article-meta tags">
+                        <span class="article-meta-separator">|</span>
+                        <i class="fas fa-tags"></i>
+                        <span class="article-meta-label">标签</span>
+                        ${article.tags.map(tag => `
+                          <a href="/tags/${tag.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__tags"> ${tag}</a>
+                        `).join(' ')}
+                      </span>
+                    ` : ''}
+                  </div>
+                  <div class="post-content">
+                    ${article.content}
+                  </div>
+                `;
+              }
+            }
+          });
     include includes/post/post-copyright.pug
     .tag_share
+      //- 动态加载标签
+      script.
+        document.addEventListener('DOMContentLoaded', function() {
+          const urlParts = window.location.pathname.split('/');
+          const articleId = urlParts[urlParts.length - 1];
+          const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+          const article = articles.find(a => a.id.toString() === articleId);
+          
+          if (article && article.tags.length > 0) {
+            const tagList = document.querySelector('.post-meta__tag-list');
+            if (tagList) {
+              tagList.innerHTML = '';
+              article.tags.forEach(tag => {
+                const a = document.createElement('a');
+                a.className = 'post-meta__tags';
+                a.href = '/tags/' + tag.toLowerCase().replace(/\s+/g, '-');
+                a.textContent = tag;
+                tagList.appendChild(a);
+              });
+            }
+          }
+        });
       if (page.tags.length > 0 && theme.post_meta.post.tags)
         .post-meta__tag-list
           each item, index in page.tags.data
@@ -33,3 +113,510 @@ block content
     if page.comments !== false && theme.comments.use
       - var commentsJsLoad = true
       !=partial('includes/third-party/comments/index', {}, {cache: true})
+    else
+      //- 添加自定义评论系统（增强版）
+      .comment-section
+        h3 评论区
+        .comment-form
+          .form-group
+            label(for="commentName") 昵称
+              span.required *
+            input#commentName.form-control(type="text" placeholder="请输入昵称（必填）" required)
+          .form-group
+            label(for="commentEmail") 邮箱
+            input#commentEmail.form-control(type="email" placeholder="请输入邮箱（选填）")
+          .form-group
+            label(for="commentContent") 评论内容
+              span.required *
+            .editor-toolbar#commentToolbar
+              button.tool-btn(type="button" data-command="bold" title="加粗")
+                i.fas.fa-bold
+              button.tool-btn(type="button" data-command="italic" title="斜体")
+                i.fas.fa-italic
+              button.tool-btn(type="button" data-command="underline" title="下划线")
+                i.fas.fa-underline
+              .tool-separator
+              button.tool-btn(type="button" data-command="insertUnorderedList" title="无序列表")
+                i.fas.fa-list-ul
+              button.tool-btn(type="button" data-command="insertOrderedList" title="有序列表")
+                i.fas.fa-list-ol
+              .tool-separator
+              button.tool-btn(type="button" id="emojiBtn" title="表情")
+                i.fas.fa-smile
+              button.tool-btn(type="button" id="imageBtn" title="插入图片")
+                i.fas.fa-image
+              .tool-separator
+              select.tool-select#fontSize
+                option(value="") 字体大小
+                option(value="1") 小
+                option(value="3") 中
+                option(value="5") 大
+                option(value="7") 特大
+              select.tool-select#fontColor
+                option(value="") 字体颜色
+                option(value="#000000") 黑色
+                option(value="#ff0000") 红色
+                option(value="#00ff00") 绿色
+                option(value="#0000ff") 蓝色
+                option(value="#ffff00") 黄色
+            .emoji-picker#emojiPicker(style="display:none")
+              .emoji-grid
+            .comment-content#commentContent(contenteditable="true" placeholder="请输入评论内容（必填）")
+          .form-actions
+            button#submitComment.btn.btn-primary 提交评论
+            button#restoreComment.btn.btn-secondary(style="display:none") 恢复草稿
+        .comments-list#commentsList
+          .empty-state
+            i.fas.fa-comments
+            p 暂无评论
+        
+        script.
+          document.addEventListener('DOMContentLoaded', function() {
+            // 表情列表
+            const emojis = ['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '', '🥳', '😏', '', '😞', '', '😟', '', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '👍', '👎', '', '', '🤝', '❤️', '🔥', '⭐', '🎉', '🎊'];
+            
+            // 加载评论
+            function loadComments() {
+              const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+              const commentsList = document.getElementById('commentsList');
+              
+              if (commentsList) {
+                commentsList.innerHTML = '';
+                
+                if (comments.length === 0) {
+                  commentsList.innerHTML = `
+                    <div class="empty-state">
+                      <i class="fas fa-comments"></i>
+                      <p>暂无评论</p>
+                    </div>
+                  `;
+                  return;
+                }
+                
+                // 按时间倒序显示
+                comments.slice().reverse().forEach(comment => {
+                  const commentItem = document.createElement('div');
+                  commentItem.className = 'comment-item';
+                  commentItem.innerHTML = `
+                    <div class="comment-header">
+                      <span class="comment-author">${escapeHtml(comment.author)}</span>
+                      <span class="comment-time">${new Date(comment.timestamp).toLocaleString()}</span>
+                    </div>
+                    <div class="comment-content">${comment.content}</div>
+                  `;
+                  commentsList.appendChild(commentItem);
+                });
+              }
+            }
+            
+            // HTML转义
+            function escapeHtml(text) {
+              const div = document.createElement('div');
+              div.textContent = text;
+              return div.innerHTML;
+            }
+            
+            // 检查是否有草稿
+            function checkDraft() {
+              const draft = localStorage.getItem('commentDraft');
+              const restoreBtn = document.getElementById('restoreComment');
+              if (draft) {
+                restoreBtn.style.display = 'inline-block';
+              } else {
+                restoreBtn.style.display = 'none';
+              }
+            }
+            
+            // 保存草稿
+            function saveDraft() {
+              const content = document.getElementById('commentContent').innerHTML;
+              const name = document.getElementById('commentName').value;
+              if (content || name) {
+                localStorage.setItem('commentDraft', JSON.stringify({
+                  name: name,
+                  content: content,
+                  timestamp: new Date().toISOString()
+                }));
+              }
+            }
+            
+            // 恢复草稿
+            function restoreDraft() {
+              const draft = JSON.parse(localStorage.getItem('commentDraft') || '{}');
+              if (draft.name) {
+                document.getElementById('commentName').value = draft.name;
+              }
+              if (draft.content) {
+                document.getElementById('commentContent').innerHTML = draft.content;
+              }
+              localStorage.removeItem('commentDraft');
+              document.getElementById('restoreComment').style.display = 'none';
+            }
+            
+            // 工具栏功能
+            const toolbarButtons = document.querySelectorAll('#commentToolbar .tool-btn');
+            toolbarButtons.forEach(btn => {
+              btn.addEventListener('click', function() {
+                const command = this.dataset.command;
+                if (command) {
+                  document.execCommand(command, false, null);
+                  document.getElementById('commentContent').focus();
+                }
+              });
+            });
+            
+            // 字体大小
+            const fontSizeSelect = document.getElementById('fontSize');
+            if (fontSizeSelect) {
+              fontSizeSelect.addEventListener('change', function() {
+                if (this.value) {
+                  document.execCommand('fontSize', false, this.value);
+                  this.value = '';
+                }
+              });
+            }
+            
+            // 字体颜色
+            const fontColorSelect = document.getElementById('fontColor');
+            if (fontColorSelect) {
+              fontColorSelect.addEventListener('change', function() {
+                if (this.value) {
+                  document.execCommand('foreColor', false, this.value);
+                  this.value = '';
+                }
+              });
+            }
+            
+            // 表情选择器
+            const emojiBtn = document.getElementById('emojiBtn');
+            const emojiPicker = document.getElementById('emojiPicker');
+            if (emojiBtn && emojiPicker) {
+              // 生成表情网格
+              const emojiGrid = emojiPicker.querySelector('.emoji-grid');
+              emojis.forEach(emoji => {
+                const span = document.createElement('span');
+                span.className = 'emoji-item';
+                span.textContent = emoji;
+                span.addEventListener('click', function() {
+                  document.execCommand('insertText', false, emoji);
+                  emojiPicker.style.display = 'none';
+                  document.getElementById('commentContent').focus();
+                });
+                emojiGrid.appendChild(span);
+              });
+              
+              emojiBtn.addEventListener('click', function() {
+                emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'block' : 'none';
+              });
+              
+              // 点击外部关闭表情
+              document.addEventListener('click', function(e) {
+                if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+                  emojiPicker.style.display = 'none';
+                }
+              });
+            }
+            
+            // 插入图片
+            const imageBtn = document.getElementById('imageBtn');
+            if (imageBtn) {
+              imageBtn.addEventListener('click', function() {
+                const url = prompt('请输入图片URL:');
+                if (url) {
+                  document.execCommand('insertImage', false, url);
+                  document.getElementById('commentContent').focus();
+                }
+              });
+            }
+            
+            // 提交评论
+            const submitCommentBtn = document.getElementById('submitComment');
+            if (submitCommentBtn) {
+              submitCommentBtn.addEventListener('click', function() {
+                const name = document.getElementById('commentName').value.trim();
+                const email = document.getElementById('commentEmail').value.trim();
+                const content = document.getElementById('commentContent').innerHTML.trim();
+                
+                // 昵称必填验证
+                if (!name) {
+                  alert('请输入昵称！');
+                  document.getElementById('commentName').focus();
+                  return;
+                }
+                
+                // 评论内容必填验证
+                if (!content || content === '<br>') {
+                  alert('请输入评论内容！');
+                  document.getElementById('commentContent').focus();
+                  return;
+                }
+                
+                // 创建评论
+                const comment = {
+                  id: Date.now(),
+                  author: name,
+                  email: email,
+                  content: content,
+                  timestamp: new Date().toISOString(),
+                  postId: window.location.pathname
+                };
+                
+                // 保存评论（直接显示，不需要审核）
+                const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+                comments.push(comment);
+                localStorage.setItem('comments', JSON.stringify(comments));
+                
+                // 清除草稿
+                localStorage.removeItem('commentDraft');
+                
+                // 重新加载评论
+                loadComments();
+                
+                // 清空表单
+                document.getElementById('commentName').value = '';
+                document.getElementById('commentEmail').value = '';
+                document.getElementById('commentContent').innerHTML = '';
+                
+                // 显示成功消息
+                alert('评论发布成功！');
+              });
+            }
+            
+            // 恢复草稿按钮
+            const restoreBtn = document.getElementById('restoreComment');
+            if (restoreBtn) {
+              restoreBtn.addEventListener('click', restoreDraft);
+            }
+            
+            // 自动保存草稿
+            const commentContent = document.getElementById('commentContent');
+            const commentName = document.getElementById('commentName');
+            if (commentContent && commentName) {
+              let saveTimer = null;
+              const autoSave = function() {
+                clearTimeout(saveTimer);
+                saveTimer = setTimeout(saveDraft, 1000);
+              };
+              commentContent.addEventListener('input', autoSave);
+              commentName.addEventListener('input', autoSave);
+            }
+            
+            // 初始加载
+            loadComments();
+            checkDraft();
+          });
+        
+        style.
+          .comment-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+          }
+          
+          .comment-section h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+          }
+          
+          .required {
+            color: #e74c3c;
+            margin-left: 2px;
+          }
+          
+          .comment-form {
+            margin-bottom: 30px;
+          }
+          
+          .form-group {
+            margin-bottom: 15px;
+          }
+          
+          .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+          }
+          
+          .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+          }
+          
+          .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+          }
+          
+          .editor-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            flex-wrap: wrap;
+            gap: 4px;
+          }
+          
+          .tool-btn {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+          }
+          
+          .tool-btn:hover {
+            background: #e9ecef;
+          }
+          
+          .tool-separator {
+            width: 1px;
+            height: 20px;
+            background: #ddd;
+            margin: 0 4px;
+          }
+          
+          .tool-select {
+            padding: 4px 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background: white;
+            font-size: 12px;
+          }
+          
+          .emoji-picker {
+            position: relative;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          }
+          
+          .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+          }
+          
+          .emoji-item {
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background 0.2s;
+          }
+          
+          .emoji-item:hover {
+            background: #e9ecef;
+          }
+          
+          .comment-content {
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+            min-height: 120px;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+            background: white;
+          }
+          
+          .comment-content:focus {
+            outline: none;
+            border-color: #3498db;
+          }
+          
+          .comment-content:empty:before {
+            content: attr(placeholder);
+            color: #999;
+          }
+          
+          .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+          }
+          
+          .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+          }
+          
+          .btn-primary {
+            background: #3498db;
+            color: white;
+          }
+          
+          .btn-primary:hover {
+            background: #2980b9;
+          }
+          
+          .btn-secondary {
+            background: #95a5a6;
+            color: white;
+          }
+          
+          .btn-secondary:hover {
+            background: #7f8c8d;
+          }
+          
+          .comment-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e9ecef;
+          }
+          
+          .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e9ecef;
+          }
+          
+          .comment-author {
+            font-weight: 600;
+            color: #2c3e50;
+          }
+          
+          .comment-time {
+            font-size: 12px;
+            color: #95a5a6;
+          }
+          
+          .comment-item .comment-content {
+            border: none;
+            padding: 0;
+            min-height: auto;
+            background: transparent;
+          }
+          
+          .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #95a5a6;
+          }
+          
+          .empty-state i {
+            font-size: 32px;
+            margin-bottom: 10px;
+          }

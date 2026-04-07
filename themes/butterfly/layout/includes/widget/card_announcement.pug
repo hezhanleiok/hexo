@@ -3,4 +3,14 @@ if theme.aside.card_announcement.enable
     .item-headline
       i.fas.fa-bullhorn.fa-shake
       span= _p('aside.card_announcement')
-    .announcement_content!= theme.aside.card_announcement.content
+    ul.announcement-list
+      if site.data.announcements && site.data.announcements.length > 0
+        each announcement, index in site.data.announcements.slice(0, 5)
+          li
+            a(href="#")
+              i.fas.fa-bullhorn
+              span.announcement-title= announcement.title
+              time.announcement-date(datetime=announcement.publishedAt)= date(announcement.publishedAt, 'YYYY-MM-DD')
+      else
+        li.no-announcements
+          span 暂无公告
