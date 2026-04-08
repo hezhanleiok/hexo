@@ -28,7 +28,7 @@ if theme.menu
                         const li = document.createElement('li');
                         const a = document.createElement('a');
                         a.className = 'site-page child';
-                        a.href = '/categories/' + category.name.toLowerCase().replace(/\s+/g, '-');
+                        a.href = '/hexo/categories/' + category.name.toLowerCase().replace(/\s+/g, '-');
                         a.innerHTML = '<span> ' + category.name + '</span>';
                         li.appendChild(a);
                         categoriesList.appendChild(li);
@@ -38,10 +38,10 @@ if theme.menu
                 });
               //- 初始默认分类（用于静态渲染）
               li
-                a.site-page.child(href='/categories/技术')
+                a.site-page.child(href='/hexo/categories/技术')
                   span= ' 技术'
               li
-                a.site-page.child(href='/categories/生活')
+                a.site-page.child(href='/hexo/categories/生活')
                   span= ' 生活'
         else
           .menus_item
