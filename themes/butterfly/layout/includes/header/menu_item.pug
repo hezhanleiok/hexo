@@ -11,38 +11,11 @@ if theme.menu
               span= ' ' + label
               i.fas.fa-chevron-down
             ul.menus_item_child
-              //- 从localStorage读取分类数据
-              script.
-                document.addEventListener('DOMContentLoaded', function() {
-                  const categoriesList = document.querySelector('.menus_item_child');
-                  if (categoriesList) {
-                    // 从localStorage读取分类
-                    const categories = JSON.parse(localStorage.getItem('categories') || '[]');
-                    
-                    if (categories.length > 0) {
-                      // 清空现有分类
-                      categoriesList.innerHTML = '';
-                      
-                      // 渲染分类
-                      categories.forEach(category => {
-                        const li = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.className = 'site-page child';
-                        a.href = '/hexo/categories/' + category.name.toLowerCase().replace(/\s+/g, '-');
-                        a.innerHTML = '<span> ' + category.name + '</span>';
-                        li.appendChild(a);
-                        categoriesList.appendChild(li);
-                      });
-                    }
-                  }
-                });
-              //- 初始默认分类（用于静态渲染）
-              li
-                a.site-page.child(href='/hexo/categories/技术')
-                  span= ' 技术'
-              li
-                a.site-page.child(href='/hexo/categories/生活')
-                  span= ' 生活'
+              - var categoriesList = site.categories.toArray()
+              each category in categoriesList
+                li
+                  a.site-page.child(href=url_for(category.path))
+                    span= ' ' + category.name
         else
           .menus_item
             - const [link, icon] = value.split('||').map(part => trim(part))
@@ -54,16 +27,16 @@ if theme.menu
         .menus_item
           - const [groupLabel, groupIcon, groupClass] = label.split('||').map(part => trim(part))
           - const hideClass = groupClass === 'hide' ? 'hide' : ''
-          span.site-page.group(class=hideClass)
+          span.site-page.group(class=`${hideClass}`)
             if groupIcon
               i.fa-fw(class=groupIcon)
             span= ' ' + groupLabel
             i.fas.fa-chevron-down
           ul.menus_item_child
             each val, lab in value
-              - const [childLink, childIcon] = val.split('||').map(part => trim(part))
+              - const [valLink, valIcon] = val.split('||').map(part => trim(part))
               li
-                a.site-page.child(href=url_for(childLink))
-                  if childIcon
-                    i.fa-fw(class=childIcon)
+                a.site-page.child(href=url_for(valLink))
+                  if valIcon
+                    i.fa-fw(class=valIcon)
                   span= ' ' + lab
