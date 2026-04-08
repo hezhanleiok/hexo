@@ -615,7 +615,9 @@ html(lang=config.language)
   - const hexoPostsData = site.posts.data.map(post => ({ id: post._id, title: post.title, content: post._content, cover: post.cover, slug: post.slug, tags: post.tags ? post.tags.map(t => t.name) : [], categories: post.categories ? post.categories.map(c => c.name) : [], publishedAt: post.date, path: post.path }));
   
   script.
-    // API 基础地址 (已绑定你的自定义域名)
+    // ========================================================
+    // ⚠️ 紧急注意：如果你排查发现自定义域名无效，请把下面这行换成你 Worker 的默认 workers.dev 域名
+    // ========================================================
     const API_BASE = "https://hexiaoyiok.dpdns.org/api";
 
     // 全局变量
@@ -626,11 +628,9 @@ html(lang=config.language)
     
     // 登录验证
     function validateLogin(username, password) {
-      // 硬编码的管理员账号
       return username === 'admin' && password === '123456';
     }
     
-    // 检查登录状态
     function checkLoginStatus() {
       const user = localStorage.getItem('currentUser');
       if (user) {
@@ -641,20 +641,17 @@ html(lang=config.language)
       }
     }
     
-    // 显示登录表单
     function showLogin() {
       document.getElementById('login-form').style.display = 'flex';
       document.getElementById('dashboard-content').style.display = 'none';
     }
     
-    // 显示后台管理
     function showDashboard() {
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('dashboard-content').style.display = 'flex';
       document.getElementById('usernameDisplay').textContent = currentUser.username;
     }
     
-    // 登录功能
     function handleLogin() {
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
@@ -675,18 +672,15 @@ html(lang=config.language)
       }
     }
     
-    // 退出登录
     function handleLogout() {
       localStorage.removeItem('currentUser');
       currentUser = null;
       showLogin();
     }
     
-    // 加载数据 (文章、分类、标签)
+    // ★ 修复：动态合并 Hexo 真实数据，确保分类和首页 100% 同步
     function loadData() {
-      // 从 Hexo 注入的真实标签数据
       const hexoTags = !{JSON.stringify(hexoTagsData)};
-      // 从 Hexo 注入的真实文章数据
       const hexoPosts = !{JSON.stringify(hexoPostsData)};
       
       tags = hexoTags;
@@ -694,17 +688,20 @@ html(lang=config.language)
       
       const localArticles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
       const articlesMap = new Map();
+      const uniqueCats = new Set();
       
+      // 读取真实文章和分类
       hexoPosts.forEach(post => {
         articlesMap.set(String(post.id), post);
+        if (post.categories) {
+            post.categories.forEach(c => uniqueCats.add(c));
+        }
       });
       
       localArticles.forEach(article => {
         const idStr = String(article.id);
         if (!articlesMap.has(idStr)) {
-          if (!article.path) {
-            article.path = 'post/' + idStr;
-          }
+          if (!article.path) article.path = 'post/' + idStr;
           articlesMap.set(idStr, article);
         }
       });
@@ -712,36 +709,29 @@ html(lang=config.language)
       articles = Array.from(articlesMap.values());
       localStorage.setItem('publishedArticles', JSON.stringify(articles));
       
-      categories = JSON.parse(localStorage.getItem('categories') || '[]');
+      // 合并本地缓存的分类（防止用户新建的还没生成页面时丢失）
+      const localCats = JSON.parse(localStorage.getItem('categories') || '[]');
+      localCats.forEach(c => uniqueCats.add(c.name));
+
+      // 重新生成分类列表
+      categories = Array.from(uniqueCats).map((name, i) => ({ id: i + 1, name: name }));
       if (categories.length === 0) {
-        categories = [
-          { id: 1, name: '技术' },
-          { id: 2, name: '生活' }
-        ];
-        localStorage.setItem('categories', JSON.stringify(categories));
+          categories = [{ id: 1, name: '技术' }, { id: 2, name: '生活' }];
       }
+      localStorage.setItem('categories', JSON.stringify(categories));
     }
     
     function saveCategories() {
       localStorage.setItem('categories', JSON.stringify(categories));
     }
     
-    function saveTags() {
-      localStorage.setItem('tags', JSON.stringify(tags));
-    }
-    
-    // 渲染分类列表
+    // 渲染分类
     function renderCategories() {
       const categoriesList = document.querySelector('.categories-list');
       if (categoriesList) {
         categoriesList.innerHTML = '';
         if (categories.length === 0) {
-          categoriesList.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-folder"></i>
-              <p>暂无分类</p>
-            </div>
-          `;
+          categoriesList.innerHTML = `<div class="empty-state"><i class="fas fa-folder"></i><p>暂无分类</p></div>`;
           return;
         }
         
@@ -751,31 +741,13 @@ html(lang=config.language)
           categoryItem.innerHTML = `
             <span class="category-name">${category.name}</span>
             <div class="category-actions">
-              <button class="btn btn-small btn-edit" data-id="${category.id}">编辑</button>
               <button class="btn btn-small btn-danger" data-id="${category.id}">删除</button>
             </div>
           `;
           categoriesList.appendChild(categoryItem);
         });
         
-        document.querySelectorAll('.btn-edit').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const id = parseInt(this.dataset.id);
-            const category = categories.find(c => c.id === id);
-            if (category) {
-              const newName = prompt('请输入新的分类名称:', category.name);
-              if (newName) {
-                category.name = newName;
-                saveCategories();
-                renderCategories();
-                updateArticleCategories();
-                alert('分类编辑成功！');
-              }
-            }
-          });
-        });
-        
-        document.querySelectorAll('.btn-danger').forEach(btn => {
+        document.querySelectorAll('.category-actions .btn-danger').forEach(btn => {
           btn.addEventListener('click', function() {
             const id = parseInt(this.dataset.id);
             if (confirm('确定要删除这个分类吗？')) {
@@ -783,14 +755,13 @@ html(lang=config.language)
               saveCategories();
               renderCategories();
               updateArticleCategories();
-              alert('分类删除成功！');
             }
           });
         });
       }
     }
     
-    // 更新文章编辑器中的分类选择
+    // 更新下拉菜单
     function updateArticleCategories() {
       const categoriesSelect = document.getElementById('articleCategories');
       if (categoriesSelect) {
@@ -804,18 +775,13 @@ html(lang=config.language)
       }
     }
     
-    // 渲染文章列表
+    // ★ 修复：完美还原文章列表，加回【编辑】按钮
     function renderArticles() {
       const articlesList = document.querySelector('.articles-list');
       if (articlesList) {
         articlesList.innerHTML = '';
         if (articles.length === 0) {
-          articlesList.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-check-circle"></i>
-              <p>暂无已发布文章</p>
-            </div>
-          `;
+          articlesList.innerHTML = `<div class="empty-state"><i class="fas fa-check-circle"></i><p>暂无已发布文章</p></div>`;
           return;
         }
         
@@ -832,6 +798,7 @@ html(lang=config.language)
               </p>
             </div>
             <div class="article-actions">
+              <button class="btn btn-small btn-edit" data-id="${article.id}">编辑</button>
               <button class="btn btn-small btn-danger" data-id="${article.id}">删除记录</button>
             </div>
           `;
@@ -840,18 +807,43 @@ html(lang=config.language)
         
         const articlesListClickHandler = function(e) {
           let target = e.target;
-          if (!target.classList.contains('btn-danger')) {
-            target = target.closest('.btn-danger');
+          if (!target.classList.contains('btn-danger') && !target.classList.contains('btn-edit')) {
+            target = target.closest('.btn-danger, .btn-edit');
           }
           if (!target) return;
           
+          // 点击编辑按钮
+          if (target.classList.contains('btn-edit')) {
+            const idStr = target.dataset.id;
+            const article = articles.find(a => String(a.id) === idStr);
+            if (article) {
+              document.getElementById('articleTitle').value = article.title || '';
+              document.getElementById('articleContent').innerHTML = article.content || '<p>文章内容加载中...</p>';
+              
+              updateArticleCategories();
+              const catSelect = document.getElementById('articleCategories');
+              if (catSelect && article.categories && article.categories.length > 0) {
+                catSelect.value = article.categories[0];
+              }
+              
+              document.getElementById('articleTags').value = article.tags ? article.tags.join(', ') : '';
+              
+              // 切换到编辑器界面
+              document.querySelectorAll('.menu-item').forEach(nav => nav.classList.remove('active'));
+              document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
+              document.querySelector('.menu-item[href="#editor"]').classList.add('active');
+              document.getElementById('editor').classList.add('active');
+              window.scrollTo(0, 0);
+            }
+          }
+
+          // 点击删除按钮
           if (target.classList.contains('btn-danger')) {
             const idStr = target.dataset.id;
-            if (confirm('确定要在本地移除这篇文章的记录吗？(注意: 真正的文件仍保留在 GitHub 仓库中)')) {
+            if (confirm('确定要在本地移除这篇文章的记录吗？')) {
               articles = articles.filter(a => String(a.id) !== idStr);
               localStorage.setItem('publishedArticles', JSON.stringify(articles));
               renderArticles();
-              alert('本地记录删除成功！');
             }
           }
         };
@@ -863,184 +855,119 @@ html(lang=config.language)
       }
     }
     
-    // 渲染草稿列表
+    // 渲染草稿与标签
     function renderDrafts() {
       const draftsList = document.querySelector('.drafts-list');
       if (draftsList) {
         const drafts = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key.startsWith('draft_')) {
-            drafts.push(JSON.parse(localStorage.getItem(key)));
-          }
+          if (key.startsWith('draft_')) drafts.push(JSON.parse(localStorage.getItem(key)));
         }
-        
         draftsList.innerHTML = '';
         if (drafts.length === 0) {
-          draftsList.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-file-alt"></i>
-              <p>暂无草稿</p>
-            </div>
-          `;
+          draftsList.innerHTML = `<div class="empty-state"><i class="fas fa-file-alt"></i><p>暂无草稿</p></div>`;
           return;
         }
-        
         drafts.forEach(draft => {
           const draftItem = document.createElement('div');
           draftItem.className = 'draft-item';
           draftItem.innerHTML = `
-            <div class="draft-info">
-              <h3>${draft.title || '无标题'}</h3>
-              <p class="draft-meta">保存时间: ${new Date(draft.timestamp).toLocaleString()}</p>
-            </div>
-            <div class="draft-actions">
-              <button class="btn btn-small btn-danger" data-timestamp="${draft.timestamp}" onclick="localStorage.removeItem('draft_${draft.timestamp}'); renderDrafts();">删除</button>
-            </div>
+            <div class="draft-info"><h3>${draft.title || '无标题'}</h3><p class="draft-meta">保存时间: ${new Date(draft.timestamp).toLocaleString()}</p></div>
+            <div class="draft-actions"><button class="btn btn-small btn-danger" onclick="localStorage.removeItem('draft_${draft.timestamp}'); renderDrafts();">删除</button></div>
           `;
           draftsList.appendChild(draftItem);
         });
       }
     }
     
-    // 渲染标签列表
     function renderTags() {
       const tagsList = document.querySelector('.tags-list');
       if (tagsList) {
-        tagsList.innerHTML = '';
-        if (tags.length === 0) {
-          tagsList.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-tags"></i>
-              <p>暂无标签</p>
-            </div>
-          `;
-          return;
-        }
+        tagsList.innerHTML = tags.length === 0 ? `<div class="empty-state"><i class="fas fa-tags"></i><p>暂无标签</p></div>` : '';
         tags.forEach(tag => {
           const tagItem = document.createElement('div');
           tagItem.className = 'tag-item';
-          tagItem.innerHTML = `
-            <span class="tag-name">${tag.name}</span>
-            <span class="tag-count">(${tag.length || 0} 篇文章)</span>
-          `;
+          tagItem.innerHTML = `<span class="tag-name">${tag.name}</span><span class="tag-count">(${tag.length || 0} 篇文章)</span>`;
           tagsList.appendChild(tagItem);
         });
       }
     }
 
     // ========================================================
-    // ★ 核心对接功能区：从 Worker 动态获取数据
+    // Cloudflare 网络请求逻辑
     // ========================================================
-
-    // 动态获取并渲染公告
     async function loadAnnouncements() {
-      const announcementsList = document.querySelector('.announcements-list');
-      if (!announcementsList) return;
-      
-      announcementsList.innerHTML = '<p style="text-align:center; padding:20px;">正在从云端加载公告...</p>';
-      
+      const listEl = document.querySelector('.announcements-list');
+      if (!listEl) return;
+      listEl.innerHTML = '<p style="text-align:center; padding:20px;">正在从云端加载公告...</p>';
       try {
         const response = await fetch(`${API_BASE}/announcements`);
+        if(!response.ok) throw new Error("网络响应不正常");
         const data = await response.json();
-        
-        announcementsList.innerHTML = '';
+        listEl.innerHTML = '';
         if (data.length === 0) {
-          announcementsList.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-bullhorn"></i>
-              <p>暂无公告</p>
-            </div>
-          `;
+          listEl.innerHTML = `<div class="empty-state"><i class="fas fa-bullhorn"></i><p>暂无公告</p></div>`;
           return;
         }
-        
-        data.forEach(announcement => {
-          const announcementItem = document.createElement('div');
-          announcementItem.className = 'announcement-item';
-          announcementItem.innerHTML = `
-            <div class="announcement-info">
-              <p class="announcement-meta">发布时间: ${new Date(announcement.date || new Date()).toLocaleString()}</p>
-              <div class="announcement-content">${announcement.content}</div>
-            </div>
-          `;
-          announcementsList.appendChild(announcementItem);
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'announcement-item';
+          div.innerHTML = `<div class="announcement-info"><p class="announcement-meta">发布时间: ${new Date(item.date).toLocaleString()}</p><div class="announcement-content">${item.content}</div></div>`;
+          listEl.appendChild(div);
         });
       } catch (err) {
-        console.error("加载公告失败", err);
-        announcementsList.innerHTML = '<p style="text-align:center; color:red;">网络请求失败，请检查 Worker 接口</p>';
+        listEl.innerHTML = '<p style="text-align:center; color:red;">网络请求失败，请检查 Cloudflare 域名或 Worker 设置</p>';
       }
     }
 
-    // 动态获取并渲染评论
     async function loadComments() {
-      const commentsList = document.querySelector('.comments-list');
-      if (!commentsList) return;
-
-      commentsList.innerHTML = '<p style="text-align:center; padding:20px;">正在从云端加载评论...</p>';
-      
+      const listEl = document.querySelector('.comments-list');
+      if (!listEl) return;
+      listEl.innerHTML = '<p style="text-align:center; padding:20px;">正在从云端加载评论...</p>';
       try {
         const response = await fetch(`${API_BASE}/comments`);
+        if(!response.ok) throw new Error("网络响应不正常");
         const data = await response.json();
-        
-        commentsList.innerHTML = '';
+        listEl.innerHTML = '';
         if (data.length === 0) {
-          commentsList.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-comments"></i>
-              <p>暂无评论</p>
-            </div>
-          `;
+          listEl.innerHTML = `<div class="empty-state"><i class="fas fa-comments"></i><p>暂无评论</p></div>`;
           return;
         }
-        
-        data.forEach(comment => {
-          const commentItem = document.createElement('div');
-          commentItem.className = 'comment-item';
-          commentItem.innerHTML = `
-            <div class="comment-header">
-              <span class="comment-author"><strong>${comment.author || '访客'}</strong></span>
-              <span class="comment-time">${new Date(comment.date || new Date()).toLocaleString()}</span>
-            </div>
-            <div class="comment-content">${comment.content}</div>
-          `;
-          commentsList.appendChild(commentItem);
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'comment-item';
+          div.innerHTML = `<div class="comment-header"><span class="comment-author"><strong>${item.author || '访客'}</strong></span><span class="comment-time">${new Date(item.date).toLocaleString()}</span></div><div class="comment-content">${item.content}</div>`;
+          listEl.appendChild(div);
         });
       } catch (err) {
-        console.error("加载评论失败", err);
-        commentsList.innerHTML = '<p style="text-align:center; color:red;">网络请求失败，请检查 Worker 接口</p>';
+        listEl.innerHTML = '<p style="text-align:center; color:red;">网络请求失败，请检查 Cloudflare 域名或 Worker 设置</p>';
       }
     }
 
     // ========================================================
-    // ★ 页面事件初始化绑定区
+    // 初始化及事件绑定
     // ========================================================
     document.addEventListener('DOMContentLoaded', function() {
-      // 检查登录状态 & 加载基础数据
       checkLoginStatus();
       loadData();
       
-      // 登录/登出按钮事件
       const loginBtn = document.getElementById('loginBtn');
-      if (loginBtn) { loginBtn.addEventListener('click', handleLogin); }
+      if (loginBtn) loginBtn.addEventListener('click', handleLogin);
       const logoutBtn = document.getElementById('logoutBtn');
-      if (logoutBtn) { logoutBtn.addEventListener('click', function(e) { e.preventDefault(); handleLogout(); }); }
+      if (logoutBtn) logoutBtn.addEventListener('click', function(e) { e.preventDefault(); handleLogout(); });
       const passwordInput = document.getElementById('password');
-      if (passwordInput) { passwordInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleLogin(); }); }
+      if (passwordInput) passwordInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleLogin(); });
       
-      // 编辑器工具栏功能 (保留原生所有排版功能)
-      const toolbarButtons = document.querySelectorAll('.tool-btn');
-      toolbarButtons.forEach(btn => {
+      // 富文本编辑器工具栏
+      document.querySelectorAll('.tool-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           const command = this.dataset.command;
           if(command === 'insertImage' || command === 'insertVideo') {
             const url = prompt(command === 'insertImage' ? '请输入图片URL:' : '请输入视频URL:');
             if (url) {
               if(command === 'insertImage') document.execCommand('insertImage', false, url);
-              else {
-                const videoHtml = `<video controls width="100%"><source src="${url}" type="video/mp4"></video>`;
-                document.execCommand('insertHTML', false, videoHtml);
-              }
+              else document.execCommand('insertHTML', false, `<video controls width="100%"><source src="${url}" type="video/mp4"></video>`);
             }
           } else {
             document.execCommand(command, false, null);
@@ -1049,22 +976,18 @@ html(lang=config.language)
         });
       });
 
-      const fontSizeSelect = document.getElementById('fontSize');
-      if (fontSizeSelect) fontSizeSelect.addEventListener('change', function() { document.execCommand('fontSize', false, this.value); });
-      const fontColorSelect = document.getElementById('fontColor');
-      if (fontColorSelect) fontColorSelect.addEventListener('change', function() { document.execCommand('foreColor', false, this.value); });
-      const fontFamilySelect = document.getElementById('fontFamily');
-      if (fontFamilySelect) fontFamilySelect.addEventListener('change', function() { document.execCommand('fontName', false, this.value); });
+      const fsSelect = document.getElementById('fontSize'); if(fsSelect) fsSelect.addEventListener('change', function() { document.execCommand('fontSize', false, this.value); });
+      const fcSelect = document.getElementById('fontColor'); if(fcSelect) fcSelect.addEventListener('change', function() { document.execCommand('foreColor', false, this.value); });
+      const ffSelect = document.getElementById('fontFamily'); if(ffSelect) ffSelect.addEventListener('change', function() { document.execCommand('fontName', false, this.value); });
 
-      // 菜单切换交互
+      // 菜单切换
       const menuItems = document.querySelectorAll('.menu-item');
       const sections = document.querySelectorAll('.dashboard-section');
-      
       menuItems.forEach(item => {
         item.addEventListener('click', function(e) {
           e.preventDefault();
           const target = this.getAttribute('href').substring(1);
-          if (target === '') return; // 跳过退出登录按钮
+          if (target === '') return; 
           
           menuItems.forEach(i => i.classList.remove('active'));
           sections.forEach(s => s.classList.remove('active'));
@@ -1072,34 +995,28 @@ html(lang=config.language)
           this.classList.add('active');
           document.getElementById(target).classList.add('active');
           
-          // 渲染对应内容
           if (target === 'categories') renderCategories();
           else if (target === 'tags') renderTags();
           else if (target === 'published') renderArticles();
           else if (target === 'drafts') renderDrafts();
           else if (target === 'editor') updateArticleCategories();
-          else if (target === 'announcements') loadAnnouncements(); // 点击公告时从 Worker 获取
-          else if (target === 'comments') loadComments();         // 点击评论时从 Worker 获取
+          else if (target === 'announcements') loadAnnouncements();
+          else if (target === 'comments') loadComments();
         });
       });
 
-      // 保存草稿
+      // 草稿
       const saveDraftBtn = document.getElementById('saveDraft');
       if (saveDraftBtn) {
         saveDraftBtn.addEventListener('click', function() {
-          const categoriesSelect = document.getElementById('articleCategories');
-          const articleData = {
-            title: document.getElementById('articleTitle').value,
-            content: document.getElementById('articleContent').innerHTML,
-            timestamp: new Date().toISOString()
-          };
+          const articleData = { title: document.getElementById('articleTitle').value, content: document.getElementById('articleContent').innerHTML, timestamp: new Date().toISOString() };
           localStorage.setItem('draft_' + Date.now(), JSON.stringify(articleData));
           alert('草稿保存成功！');
           renderDrafts();
         });
       }
 
-      // 文章封面预览
+      // 封面预览
       const articleCoverInput = document.getElementById('articleCover');
       const coverPreview = document.getElementById('coverPreview');
       if (articleCoverInput && coverPreview) {
@@ -1109,64 +1026,46 @@ html(lang=config.language)
         });
       }
 
-      // ★★★ 核心：发布文章 (发送到 Cloudflare Worker 并触发 GitHub Actions)
+      // ★ 发送发布请求到 API
       const publishArticleBtn = document.getElementById('publishArticle');
       if (publishArticleBtn) {
         publishArticleBtn.addEventListener('click', async function() {
           const title = document.getElementById('articleTitle').value.trim();
           const content = document.getElementById('articleContent').innerHTML;
-          const categoriesSelect = document.getElementById('articleCategories');
-          const category = categoriesSelect ? categoriesSelect.value : '';
+          const catSelect = document.getElementById('articleCategories');
+          const category = catSelect ? catSelect.value : '';
           const tag = document.getElementById('articleTags').value.trim();
 
-          if (!title) {
-            alert('请输入文章标题！');
-            return;
-          }
-          if (!content || content === '<p>开始编写您的文章内容...</p>') {
-            alert('文章内容不能为空！');
-            return;
-          }
+          if (!title) { alert('请输入文章标题！'); return; }
+          if (!content || content === '<p>开始编写您的文章内容...</p>') { alert('文章内容不能为空！'); return; }
 
-          publishArticleBtn.innerText = "发布中，请稍候...";
+          publishArticleBtn.innerText = "请求发送中...";
           publishArticleBtn.disabled = true;
 
           try {
-            // 通过 Fetch API 将数据提交给 Worker
             const response = await fetch(`${API_BASE}/posts`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title, content, category, tag })
             });
-            
             const result = await response.json();
             
             if (result.success) {
-                alert(result.msg); // 会弹出 GitHub 触发成功的提示
-                
-                // 将新发布的文章信息推入本地数组，实现即时预览
-                const newArticle = {
-                    id: Date.now(),
-                    title: title,
-                    publishedAt: new Date().toISOString(),
-                    categories: category ? [category] : [],
-                    tags: tag ? tag.split(',').map(t => t.trim()) : []
-                };
+                alert(result.msg);
+                const newArticle = { id: Date.now(), title: title, content: content, publishedAt: new Date().toISOString(), categories: category ? [category] : [], tags: tag ? tag.split(',').map(t=>t.trim()) : [] };
                 articles.unshift(newArticle);
                 localStorage.setItem('publishedArticles', JSON.stringify(articles));
-                renderArticles();
-
-                // 清空表单
+                
                 document.getElementById('articleTitle').value = '';
                 document.getElementById('articleContent').innerHTML = '<p>开始编写您的文章内容...</p>';
-                if(categoriesSelect) categoriesSelect.selectedIndex = 0;
+                if(catSelect) catSelect.selectedIndex = 0;
                 document.getElementById('articleTags').value = '';
             } else {
                 alert("发布失败：" + (result.error || "未知错误"));
             }
           } catch (err) {
             console.error(err);
-            alert("网络请求失败，请检查 Cloudflare Worker 接口是否正常。");
+            alert("网络请求失败 (CORS 或 接口宕机)。请检查第一步讲的 Cloudflare 域名配置！");
           } finally {
             publishArticleBtn.innerText = "发布文章";
             publishArticleBtn.disabled = false;
@@ -1174,7 +1073,6 @@ html(lang=config.language)
         });
       }
       
-      // 添加分类
       const addCategoryBtn = document.getElementById('addCategory');
       if (addCategoryBtn) {
         addCategoryBtn.addEventListener('click', function() {
@@ -1189,15 +1087,9 @@ html(lang=config.language)
         });
       }
       
-      // 隐藏原生标签按钮 (因为是由 Hexo 自动读取)
-      const addTagBtn = document.getElementById('addTag');
-      if (addTagBtn) addTagBtn.style.display = 'none';
-      
-      // ★★★ 核心：发布公告 (发送到 Cloudflare Worker 的 KV 数据库)
       const addAnnouncementBtn = document.getElementById('addAnnouncement');
       if (addAnnouncementBtn) {
         addAnnouncementBtn.addEventListener('click', async function() {
-          // 由于原 UI 没有输入框，直接用 prompt 获取内容
           const content = prompt('请输入要发布的公告内容:');
           if (content) {
             try {
@@ -1206,34 +1098,24 @@ html(lang=config.language)
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ content })
                 });
-                
                 const result = await response.json();
-                if (result.success) {
-                    alert('公告发布成功！全网即时生效！');
-                    loadAnnouncements(); // 重新拉取渲染
-                } else {
-                    alert('发布失败: ' + result.error);
-                }
+                if (result.success) { alert('发布成功！'); loadAnnouncements(); } 
+                else alert('发布失败: ' + result.error);
             } catch (err) {
-                console.error(err);
-                alert("网络请求失败，请检查 Worker 接口是否正常。");
+                alert("网络请求失败，请检查 Worker 配置。");
             }
           }
         });
       }
       
-      // 初始化渲染页面基础数据
       renderCategories();
       renderTags();
       renderArticles();
       renderDrafts();
       updateArticleCategories();
       
-      // 默认加载一次公告 (防空白)
       const activeSection = document.querySelector('.dashboard-section.active');
-      if (activeSection && activeSection.id === 'announcements') {
-        loadAnnouncements();
-      }
+      if (activeSection && activeSection.id === 'announcements') loadAnnouncements();
     });
 
   style.
