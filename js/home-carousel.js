@@ -159,10 +159,13 @@
     startAutoPlay();
   }
 
-  function buildHomeModules() {
-    var homeRoot = document.querySelector('#recent-posts');
+    function buildHomeModules() {
+    // 🔥 修改：使用新的容器 #home-showcase-container
+    var showcaseRoot = document.getElementById('home-showcase-container');
     var postWrap = document.querySelector('#recent-posts .recent-post-items');
-    if (!homeRoot || !postWrap || homeRoot.querySelector('.home-showcase')) return;
+    
+    // 如果容器不存在或已初始化，跳过
+    if (!showcaseRoot || !postWrap || showcaseRoot.querySelector('.home-showcase')) return;
 
     var allPosts = parsePosts(postWrap);
     if (!allPosts.length) return;
@@ -170,13 +173,14 @@
     var carouselPosts = allPosts.slice(0, 3);
     var featuredPost = allPosts[3] || allPosts[0];
 
-    var showcase = document.createElement('section');
+    // 🔥 修改：构建 3 列布局结构
+    var showcase = document.createElement('div');
     showcase.className = 'home-showcase';
     showcase.innerHTML =
       '<div class="home-showcase-left">' + buildCarousel(carouselPosts) + '</div>' +
       '<div class="home-showcase-right">' + buildNoticeHtml(allPosts) + buildFeaturedMini(featuredPost) + '</div>';
 
-    homeRoot.insertBefore(showcase, postWrap);
+    showcaseRoot.appendChild(showcase);
 
     var carouselRoot = showcase.querySelector('.home-hero-carousel');
     if (carouselRoot) initCarouselAutoPlay(carouselRoot);
