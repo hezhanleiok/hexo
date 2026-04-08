@@ -1,0 +1,38 @@
+name: Hexo Auto Deploy
+
+on:
+  push:
+    branches:
+      - main  # 如果你的默认源码分支叫 master，请改成 master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 获取你的源码
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. 安装 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. 安装 Hexo 和依赖包
+      - name: Install dependencies
+        run: npm install
+
+      # 4. 生成静态文件 (这里代替了你的本地操作)
+      - name: Generate static files
+        run: |
+          npx hexo clean
+          npx hexo generate
+
+      # 5. 将生成的 public 目录推送到 gh-pages 分支
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
