@@ -1,5 +1,9 @@
 extends includes/layout.pug
 
 block content
+  // 🔥 添加：3列布局容器（轮播+公告+特别文章）
+  #home-showcase-container
+
+  // 🔥 原有：文章列表（保持不变）
   include ./includes/mixins/indexPostUI.pug
   +indexPostUI
