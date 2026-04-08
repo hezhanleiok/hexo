@@ -12,8 +12,8 @@ language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL 【线上正常专用】
-url: https://hezhanleiok.github.io/hexo/
-root: /hexo/
+url: https://vlog.rr.kg
+root: /
 relative_link: false
 permalink: :year/:month/:day/:slug/
 permalink_defaults:
