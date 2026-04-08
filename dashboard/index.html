@@ -387,174 +387,625 @@ label {
   .login-box {
     padding: 30px 20px;
   }
-}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div id="dashboard"><div class="dashboard-container"><div id="login-form"><div class="login-box"><div class="login-header"><h2>后台管理登录</h2><p>请输入账号和密码</p></div><div class="login-body"><div class="form-group"><label for="username">用户名</label><input class="form-control" id="username" type="text" placeholder="请输入用户名"></div><div class="form-group"><label for="password">密码</label><input class="form-control" id="password" type="password" placeholder="请输入密码"></div><div class="form-group"><button class="btn btn-primary" id="loginBtn">登录</button></div><div class="login-error" id="loginError"></div></div></div></div><div id="dashboard-content"><div class="dashboard-sidebar"><div class="sidebar-header"><h3>后台管理</h3><p>博客管理系统</p><div class="user-info"><i class="fas fa-user"></i><span id="usernameDisplay"></span></div></div><div class="sidebar-menu"><a class="menu-item active" href="#editor"><i class="fas fa-edit"></i><span>文章编辑</span></a><a class="menu-item" href="#drafts"><i class="fas fa-file-alt"></i><span>草稿管理</span></a><a class="menu-item" href="#published"><i class="fas fa-check-circle"></i><span>已发布文章</span></a><a class="menu-item" href="#categories"><i class="fas fa-folder"></i><span>分类管理</span></a><a class="menu-item" href="#tags"><i class="fas fa-tags"></i><span>标签管理</span></a><a class="menu-item" href="#announcements"><i class="fas fa-bullhorn"></i><span>公告管理</span></a><a class="menu-item" href="#comments"><i class="fas fa-comments"></i><span>评论管理</span></a><a class="menu-item" href="#settings"><i class="fas fa-cog"></i><span>系统设置</span></a><a class="menu-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>退出登录</span></a></div></div><div class="dashboard-main"><div class="dashboard-section active" id="editor"><div class="section-header"><h2>文章编辑器</h2><div class="editor-actions"><button class="btn btn-secondary" id="saveDraft">保存草稿</button><button class="btn btn-primary" id="publishArticle">发布文章</button></div></div><div class="editor-form"><div class="form-group"><label for="articleTitle">文章标题</label><input class="form-control" id="articleTitle" type="text" placeholder="请输入文章标题"></div><div class="form-group"><label for="articleSlug">文章别名</label><input class="form-control" id="articleSlug" type="text" placeholder="文章URL别名"></div><div class="form-group"><label for="articleContent">文章内容</label><div class="editor-toolbar"><button class="tool-btn" type="button" data-command="bold"><i class="fas fa-bold"></i></button><button class="tool-btn" type="button" data-command="italic"><i class="fas fa-italic"></i></button><button class="tool-btn" type="button" data-command="underline"><i class="fas fa-underline"></i></button><button class="tool-btn" type="button" data-command="strikethrough"><i class="fas fa-strikethrough"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button><button class="tool-btn" type="button" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="createLink"><i class="fas fa-link"></i></button><button class="tool-btn" type="button" data-command="unlink"><i class="fas fa-unlink"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="insertImage"><i class="fas fa-image"></i></button><button class="tool-btn" type="button" data-command="insertVideo"><i class="fas fa-video"></i></button><div class="tool-separator"></div><select class="tool-select" id="fontSize"><option value="">字体大小</option><option value="1">小</option><option value="3">中</option><option value="5">大</option><option value="7">特大</option></select><select class="tool-select" id="fontColor"><option value="">字体颜色</option><option value="#000000">黑色</option><option value="#ff0000">红色</option><option value="#00ff00">绿色</option><option value="#0000ff">蓝色</option><option value="#ffff00">黄色</option></select><select class="tool-select" id="fontFamily"><option value="">字体</option><option value="Arial">Arial</option><option value="微软雅黑">微软雅黑</option><option value="宋体">宋体</option><option value="黑体">黑体</option></select></div><div class="editor-content"><div class="content-editable" id="articleContent" contenteditable="true"><p>开始编写您的文章内容...</p></div></div></div><div class="form-row"><div class="form-group half"><label for="articleCategories">文章分类</label><select class="form-control" id="articleCategories"><option value="">请选择分类</option></select></div><div class="form-group half"><label for="articleTags">文章标签</label><input class="form-control" id="articleTags" type="text" placeholder="输入标签，用逗号分隔"></div></div><div class="form-group"><label for="articleCover">文章封面网址</label><input class="form-control" id="articleCover" type="text" placeholder="请输入图片URL地址"><div class="cover-preview" id="coverPreview"></div></div><div class="form-group"><label for="articleExcerpt">文章摘要</label><textarea class="form-control" id="articleExcerpt" rows="3" placeholder="文章摘要（可选）"></textarea></div></div></div><div class="dashboard-section" id="drafts"><div class="section-header"><h2>草稿管理</h2></div><div class="drafts-list"><div class="empty-state"><i class="fas fa-file-alt"></i><p>暂无草稿</p></div></div></div><div class="dashboard-section" id="published"><div class="section-header"><h2>已发布文章</h2></div><div class="articles-list"><div class="empty-state"><i class="fas fa-check-circle"></i><p>暂无已发布文章</p></div></div></div><div class="dashboard-section" id="categories"><div class="section-header"><h2>分类管理</h2><button class="btn btn-primary" id="addCategory">添加分类</button></div><div class="categories-list"><div class="category-item"><span class="category-name">技术</span><div class="category-actions"><button class="btn btn-small btn-edit">编辑</button><button class="btn btn-small btn-danger">删除</button></div></div></div></div><div class="dashboard-section" id="tags"><div class="section-header"><h2>标签管理</h2><span class="tag-hint">(标签从文章中自动获取，删除标签会同步删除文章中的对应标签)</span></div><div class="tags-list"><div class="empty-state"><i class="fas fa-tags"></i><p>暂无标签</p></div></div></div><div class="dashboard-section" id="announcements"><div class="section-header"><h2>公告管理</h2><button class="btn btn-primary" id="addAnnouncement">发布公告</button></div><div class="announcements-list"><div class="empty-state"><i class="fas fa-bullhorn"></i><p>暂无公告</p></div></div></div><div class="dashboard-section" id="comments"><div class="section-header"><h2>评论管理</h2></div><div class="comments-list"><div class="empty-state"><i class="fas fa-comments"></i><p>暂无评论</p></div></div></div><div class="dashboard-section" id="settings"><div class="section-header"><h2>系统设置</h2></div><div class="settings-form"><div class="form-group"><label for="blogTitle">博客标题</label><input class="form-control" id="blogTitle" type="text" value="xhblog"></div><div class="form-group"><label for="blogDescription">博客描述</label><textarea class="form-control" id="blogDescription" rows="3">分享技术、设计与生活</textarea></div><div class="form-group"><label for="authorName">作者名称</label><input class="form-control" id="authorName" type="text" value="Xiao He"></div></div></div></div></div></div></div></body><!-- 从 Hexo 注入真实数据--><script>document.addEventListener('DOMContentLoaded', () => {
-    // ==========================================
-    // 侧边栏菜单切换逻辑 (保留你原有的 UI 逻辑)
-    // ==========================================
-    const menuItems = document.querySelectorAll('.menu-item');
-    const contentSections = document.querySelectorAll('.content-section');
+}</style><meta name="generator" content="Hexo 8.1.1"></head><body><div id="dashboard"><div class="dashboard-container"><div id="login-form"><div class="login-box"><div class="login-header"><h2>后台管理登录</h2><p>请输入账号和密码</p></div><div class="login-body"><div class="form-group"><label for="username">用户名</label><input class="form-control" id="username" type="text" placeholder="请输入用户名"></div><div class="form-group"><label for="password">密码</label><input class="form-control" id="password" type="password" placeholder="请输入密码"></div><div class="form-group"><button class="btn btn-primary" id="loginBtn">登录</button></div><div class="login-error" id="loginError"></div></div></div></div><div id="dashboard-content"><div class="dashboard-sidebar"><div class="sidebar-header"><h3>后台管理</h3><p>博客管理系统</p><div class="user-info"><i class="fas fa-user"></i><span id="usernameDisplay"></span></div></div><div class="sidebar-menu"><a class="menu-item active" href="#editor"><i class="fas fa-edit"></i><span>文章编辑</span></a><a class="menu-item" href="#drafts"><i class="fas fa-file-alt"></i><span>草稿管理</span></a><a class="menu-item" href="#published"><i class="fas fa-check-circle"></i><span>已发布文章</span></a><a class="menu-item" href="#categories"><i class="fas fa-folder"></i><span>分类管理</span></a><a class="menu-item" href="#tags"><i class="fas fa-tags"></i><span>标签管理</span></a><a class="menu-item" href="#announcements"><i class="fas fa-bullhorn"></i><span>公告管理</span></a><a class="menu-item" href="#comments"><i class="fas fa-comments"></i><span>评论管理</span></a><a class="menu-item" href="#settings"><i class="fas fa-cog"></i><span>系统设置</span></a><a class="menu-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>退出登录</span></a></div></div><div class="dashboard-main"><div class="dashboard-section active" id="editor"><div class="section-header"><h2>文章编辑器</h2><div class="editor-actions"><button class="btn btn-secondary" id="saveDraft">保存草稿</button><button class="btn btn-primary" id="publishArticle">发布文章</button></div></div><div class="editor-form"><div class="form-group"><label for="articleTitle">文章标题</label><input class="form-control" id="articleTitle" type="text" placeholder="请输入文章标题"></div><div class="form-group"><label for="articleSlug">文章别名</label><input class="form-control" id="articleSlug" type="text" placeholder="文章URL别名"></div><div class="form-group"><label for="articleContent">文章内容</label><div class="editor-toolbar"><button class="tool-btn" type="button" data-command="bold"><i class="fas fa-bold"></i></button><button class="tool-btn" type="button" data-command="italic"><i class="fas fa-italic"></i></button><button class="tool-btn" type="button" data-command="underline"><i class="fas fa-underline"></i></button><button class="tool-btn" type="button" data-command="strikethrough"><i class="fas fa-strikethrough"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button><button class="tool-btn" type="button" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="createLink"><i class="fas fa-link"></i></button><button class="tool-btn" type="button" data-command="unlink"><i class="fas fa-unlink"></i></button><div class="tool-separator"></div><button class="tool-btn" type="button" data-command="insertImage"><i class="fas fa-image"></i></button><button class="tool-btn" type="button" data-command="insertVideo"><i class="fas fa-video"></i></button><div class="tool-separator"></div><select class="tool-select" id="fontSize"><option value="">字体大小</option><option value="1">小</option><option value="3">中</option><option value="5">大</option><option value="7">特大</option></select><select class="tool-select" id="fontColor"><option value="">字体颜色</option><option value="#000000">黑色</option><option value="#ff0000">红色</option><option value="#00ff00">绿色</option><option value="#0000ff">蓝色</option><option value="#ffff00">黄色</option></select><select class="tool-select" id="fontFamily"><option value="">字体</option><option value="Arial">Arial</option><option value="微软雅黑">微软雅黑</option><option value="宋体">宋体</option><option value="黑体">黑体</option></select></div><div class="editor-content"><div class="content-editable" id="articleContent" contenteditable="true"><p>开始编写您的文章内容...</p></div></div></div><div class="form-row"><div class="form-group half"><label for="articleCategories">文章分类</label><select class="form-control" id="articleCategories"><option value="">请选择分类</option></select></div><div class="form-group half"><label for="articleTags">文章标签</label><input class="form-control" id="articleTags" type="text" placeholder="输入标签，用逗号分隔"></div></div><div class="form-group"><label for="articleCover">文章封面网址</label><input class="form-control" id="articleCover" type="text" placeholder="请输入图片URL地址"><div class="cover-preview" id="coverPreview"></div></div><div class="form-group"><label for="articleExcerpt">文章摘要</label><textarea class="form-control" id="articleExcerpt" rows="3" placeholder="文章摘要（可选）"></textarea></div></div></div><div class="dashboard-section" id="drafts"><div class="section-header"><h2>草稿管理</h2></div><div class="drafts-list"><div class="empty-state"><i class="fas fa-file-alt"></i><p>暂无草稿</p></div></div></div><div class="dashboard-section" id="published"><div class="section-header"><h2>已发布文章</h2></div><div class="articles-list"><div class="empty-state"><i class="fas fa-check-circle"></i><p>暂无已发布文章</p></div></div></div><div class="dashboard-section" id="categories"><div class="section-header"><h2>分类管理</h2><button class="btn btn-primary" id="addCategory">添加分类</button></div><div class="categories-list"><div class="category-item"><span class="category-name">技术</span><div class="category-actions"><button class="btn btn-small btn-edit">编辑</button><button class="btn btn-small btn-danger">删除</button></div></div></div></div><div class="dashboard-section" id="tags"><div class="section-header"><h2>标签管理</h2><span class="tag-hint">(标签从文章中自动获取，删除标签会同步删除文章中的对应标签)</span></div><div class="tags-list"><div class="empty-state"><i class="fas fa-tags"></i><p>暂无标签</p></div></div></div><div class="dashboard-section" id="announcements"><div class="section-header"><h2>公告管理</h2><button class="btn btn-primary" id="addAnnouncement">发布公告</button></div><div class="announcements-list"><div class="empty-state"><i class="fas fa-bullhorn"></i><p>暂无公告</p></div></div></div><div class="dashboard-section" id="comments"><div class="section-header"><h2>评论管理</h2></div><div class="comments-list"><div class="empty-state"><i class="fas fa-comments"></i><p>暂无评论</p></div></div></div><div class="dashboard-section" id="settings"><div class="section-header"><h2>系统设置</h2></div><div class="settings-form"><div class="form-group"><label for="blogTitle">博客标题</label><input class="form-control" id="blogTitle" type="text" value="xhblog"></div><div class="form-group"><label for="blogDescription">博客描述</label><textarea class="form-control" id="blogDescription" rows="3">分享技术、设计与生活</textarea></div><div class="form-group"><label for="authorName">作者名称</label><input class="form-control" id="authorName" type="text" value="Xiao He"></div></div></div></div></div></div></div></body><!-- 从 Hexo 注入真实数据--><script>// API 基础地址 (已绑定你的自定义域名)
+const API_BASE = "https://hexiaoyiok.dpdns.org/api";
 
-    menuItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            menuItems.forEach(nav => nav.classList.remove('active'));
-            contentSections.forEach(sec => sec.classList.remove('active'));
-            
-            item.classList.add('active');
-            const targetId = item.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) targetSection.classList.add('active');
+// 全局变量
+let currentUser = null;
+let categories = [];
+let tags = [];
+let articles = [];
 
-            if (targetId === 'announcements') loadAnnouncements();
-            if (targetId === 'comments') loadComments();
-        });
+// 登录验证
+function validateLogin(username, password) {
+  // 硬编码的管理员账号
+  return username === 'admin' && password === '123456';
+}
+
+// 检查登录状态
+function checkLoginStatus() {
+  const user = localStorage.getItem('currentUser');
+  if (user) {
+    currentUser = JSON.parse(user);
+    showDashboard();
+  } else {
+    showLogin();
+  }
+}
+
+// 显示登录表单
+function showLogin() {
+  document.getElementById('login-form').style.display = 'flex';
+  document.getElementById('dashboard-content').style.display = 'none';
+}
+
+// 显示后台管理
+function showDashboard() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('dashboard-content').style.display = 'flex';
+  document.getElementById('usernameDisplay').textContent = currentUser.username;
+}
+
+// 登录功能
+function handleLogin() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorElement = document.getElementById('loginError');
+  
+  if (!username || !password) {
+    errorElement.textContent = '请输入用户名和密码';
+    return;
+  }
+  
+  if (validateLogin(username, password)) {
+    currentUser = { username };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    showDashboard();
+    errorElement.textContent = '';
+  } else {
+    errorElement.textContent = '用户名或密码错误';
+  }
+}
+
+// 退出登录
+function handleLogout() {
+  localStorage.removeItem('currentUser');
+  currentUser = null;
+  showLogin();
+}
+
+// 加载数据 (文章、分类、标签)
+function loadData() {
+  // 从 Hexo 注入的真实标签数据
+  const hexoTags = [{"id":"cuidPWMdvHp6Dv9gho-j0X47j","name":"前端开发","slug":"前端开发","path":"tags/前端开发/","length":1},{"id":"cuidlg1aTASmnutnaVIMq-ocX","name":"静态博客","slug":"静态博客","path":"tags/静态博客/","length":1},{"id":"cuiduloShmqqyxzucuytWejDZ","name":"测试标签1","slug":"测试标签1","path":"tags/测试标签1/","length":1},{"id":"cuidSiV3HgBlD0bJ-iXip1yAs","name":"测试标签2","slug":"测试标签2","path":"tags/测试标签2/","length":1}];
+  // 从 Hexo 注入的真实文章数据
+  const hexoPosts = [{"id":"cuidbyzi4dB3Iw8npy5WMOmlg","title":"现代前端博客快速搭建实战","content":"Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).\n\n## Quick Start\n\n### Create a new post\n\n``` bash\n$ hexo new \"My New Post\"\n```\n\nMore info: [Writing](https://hexo.io/docs/writing.html)\n\n### Run server\n\n``` bash\n$ hexo server\n```\n\nMore info: [Server](https://hexo.io/docs/server.html)\n\n### Generate static files\n\n``` bash\n$ hexo generate\n```\n\nMore info: [Generating](https://hexo.io/docs/generating.html)\n\n### Deploy to remote sites\n\n``` bash\n$ hexo deploy\n```\n\nMore info: [Deployment](https://hexo.io/docs/one-command-deployment.html)\n","slug":"hello-world","tags":["前端开发","静态博客"],"categories":["技术教程"],"publishedAt":"2026-04-02T08:00:00.000Z","path":"2026/04/02/hello-world/"},{"id":"cuidsQvQzT_6iLvbj52o19ksq","title":"第二篇测试文章","content":"","slug":"第二篇测试文章","tags":["测试标签1","测试标签2"],"categories":["测试"],"publishedAt":"2026-04-02T21:22:25.000Z","path":"2026/04/02/第二篇测试文章/"}];
+  
+  tags = hexoTags;
+  localStorage.setItem('tags', JSON.stringify(tags));
+  
+  const localArticles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+  const articlesMap = new Map();
+  
+  hexoPosts.forEach(post => {
+    articlesMap.set(String(post.id), post);
+  });
+  
+  localArticles.forEach(article => {
+    const idStr = String(article.id);
+    if (!articlesMap.has(idStr)) {
+      if (!article.path) {
+        article.path = 'post/' + idStr;
+      }
+      articlesMap.set(idStr, article);
+    }
+  });
+  
+  articles = Array.from(articlesMap.values());
+  localStorage.setItem('publishedArticles', JSON.stringify(articles));
+  
+  categories = JSON.parse(localStorage.getItem('categories') || '[]');
+  if (categories.length === 0) {
+    categories = [
+      { id: 1, name: '技术' },
+      { id: 2, name: '生活' }
+    ];
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }
+}
+
+function saveCategories() {
+  localStorage.setItem('categories', JSON.stringify(categories));
+}
+
+function saveTags() {
+  localStorage.setItem('tags', JSON.stringify(tags));
+}
+
+// 渲染分类列表
+function renderCategories() {
+  const categoriesList = document.querySelector('.categories-list');
+  if (categoriesList) {
+    categoriesList.innerHTML = '';
+    if (categories.length === 0) {
+      categoriesList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-folder"></i>
+          <p>暂无分类</p>
+        </div>
+      `;
+      return;
+    }
+    
+    categories.forEach(category => {
+      const categoryItem = document.createElement('div');
+      categoryItem.className = 'category-item';
+      categoryItem.innerHTML = `
+        <span class="category-name">${category.name}</span>
+        <div class="category-actions">
+          <button class="btn btn-small btn-edit" data-id="${category.id}">编辑</button>
+          <button class="btn btn-small btn-danger" data-id="${category.id}">删除</button>
+        </div>
+      `;
+      categoriesList.appendChild(categoryItem);
     });
+    
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = parseInt(this.dataset.id);
+        const category = categories.find(c => c.id === id);
+        if (category) {
+          const newName = prompt('请输入新的分类名称:', category.name);
+          if (newName) {
+            category.name = newName;
+            saveCategories();
+            renderCategories();
+            updateArticleCategories();
+            alert('分类编辑成功！');
+          }
+        }
+      });
+    });
+    
+    document.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = parseInt(this.dataset.id);
+        if (confirm('确定要删除这个分类吗？')) {
+          categories = categories.filter(c => c.id !== id);
+          saveCategories();
+          renderCategories();
+          updateArticleCategories();
+          alert('分类删除成功！');
+        }
+      });
+    });
+  }
+}
 
-    // ==========================================
-    // 核心：对接你的 Cloudflare Worker 自定义域名
-    // ==========================================
-    const API_BASE = "https://hexiaoyiok.dpdns.org/api";
+// 更新文章编辑器中的分类选择
+function updateArticleCategories() {
+  const categoriesSelect = document.getElementById('articleCategories');
+  if (categoriesSelect) {
+    categoriesSelect.innerHTML = '<option value="">请选择分类</option>';
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category.name;
+      option.textContent = category.name;
+      categoriesSelect.appendChild(option);
+    });
+  }
+}
 
-    // 1. 发布文章功能
-    const publishBtn = document.getElementById('publish-post-btn');
-    if (publishBtn) {
-        publishBtn.addEventListener('click', async () => {
-            const title = document.getElementById('post-title').value.trim();
-            const content = document.getElementById('post-content').value.trim();
-            const category = document.getElementById('post-category').value.trim();
-            const tag = document.getElementById('post-tag').value.trim();
-
-            if (!title || !content) {
-                alert("文章标题和内容不能为空！");
-                return;
-            }
-
-            publishBtn.innerText = "发布中...";
-            publishBtn.disabled = true;
-
-            try {
-                const response = await fetch(`${API_BASE}/posts`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ title, content, category, tag })
-                });
-                
-                const result = await response.json();
-                if (result.success) {
-                    alert(result.msg);
-                    document.getElementById('post-title').value = '';
-                    document.getElementById('post-content').value = '';
-                    document.getElementById('post-category').value = '';
-                    document.getElementById('post-tag').value = '';
-                } else {
-                    alert("发布失败：" + (result.error || "未知错误"));
-                }
-            } catch (err) {
-                alert("网络请求失败，请检查 Worker 接口是否正常。");
-                console.error(err);
-            } finally {
-                publishBtn.innerText = "发布文章";
-                publishBtn.disabled = false;
-            }
-        });
+// 渲染文章列表
+function renderArticles() {
+  const articlesList = document.querySelector('.articles-list');
+  if (articlesList) {
+    articlesList.innerHTML = '';
+    if (articles.length === 0) {
+      articlesList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-check-circle"></i>
+          <p>暂无已发布文章</p>
+        </div>
+      `;
+      return;
     }
+    
+    articles.forEach(article => {
+      const articleItem = document.createElement('div');
+      articleItem.className = 'article-item';
+      articleItem.innerHTML = `
+        <div class="article-info">
+          <h3>${article.title}</h3>
+          <p class="article-meta">
+            发布时间: ${new Date(article.publishedAt).toLocaleString()}
+            ${article.categories && article.categories.length > 0 ? ` | 分类: ${article.categories.join(', ')}` : ''}
+            ${article.tags && article.tags.length > 0 ? ` | 标签: ${article.tags.join(', ')}` : ''}
+          </p>
+        </div>
+        <div class="article-actions">
+          <button class="btn btn-small btn-danger" data-id="${article.id}">删除记录</button>
+        </div>
+      `;
+      articlesList.appendChild(articleItem);
+    });
+    
+    const articlesListClickHandler = function(e) {
+      let target = e.target;
+      if (!target.classList.contains('btn-danger')) {
+        target = target.closest('.btn-danger');
+      }
+      if (!target) return;
+      
+      if (target.classList.contains('btn-danger')) {
+        const idStr = target.dataset.id;
+        if (confirm('确定要在本地移除这篇文章的记录吗？(注意: 真正的文件仍保留在 GitHub 仓库中)')) {
+          articles = articles.filter(a => String(a.id) !== idStr);
+          localStorage.setItem('publishedArticles', JSON.stringify(articles));
+          renderArticles();
+          alert('本地记录删除成功！');
+        }
+      }
+    };
+    
+    const oldListener = articlesList._clickListener;
+    if (oldListener) articlesList.removeEventListener('click', oldListener);
+    articlesList._clickListener = articlesListClickHandler;
+    articlesList.addEventListener('click', articlesListClickHandler);
+  }
+}
 
-    // 2. 公告功能
-    const publishAnnouncementBtn = document.getElementById('publish-announcement-btn');
-    if (publishAnnouncementBtn) {
-        publishAnnouncementBtn.addEventListener('click', async () => {
-            const content = document.getElementById('announcement-content').value.trim();
-            if (!content) {
-                alert("公告内容不能为空！");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/announcements`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ content })
-                });
-                
-                const result = await response.json();
-                if (result.success) {
-                    alert(result.msg);
-                    document.getElementById('announcement-content').value = '';
-                    loadAnnouncements();
-                }
-            } catch (err) {
-                console.error("保存公告失败", err);
-                alert("公告发布失败，请重试。");
-            }
-        });
+// 渲染草稿列表
+function renderDrafts() {
+  const draftsList = document.querySelector('.drafts-list');
+  if (draftsList) {
+    const drafts = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith('draft_')) {
+        drafts.push(JSON.parse(localStorage.getItem(key)));
+      }
     }
+    
+    draftsList.innerHTML = '';
+    if (drafts.length === 0) {
+      draftsList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-file-alt"></i>
+          <p>暂无草稿</p>
+        </div>
+      `;
+      return;
+    }
+    
+    drafts.forEach(draft => {
+      const draftItem = document.createElement('div');
+      draftItem.className = 'draft-item';
+      draftItem.innerHTML = `
+        <div class="draft-info">
+          <h3>${draft.title || '无标题'}</h3>
+          <p class="draft-meta">保存时间: ${new Date(draft.timestamp).toLocaleString()}</p>
+        </div>
+        <div class="draft-actions">
+          <button class="btn btn-small btn-danger" data-timestamp="${draft.timestamp}" onclick="localStorage.removeItem('draft_${draft.timestamp}'); renderDrafts();">删除</button>
+        </div>
+      `;
+      draftsList.appendChild(draftItem);
+    });
+  }
+}
 
-    async function loadAnnouncements() {
-        const listEl = document.getElementById('announcement-list');
-        if (!listEl) return;
+// 渲染标签列表
+function renderTags() {
+  const tagsList = document.querySelector('.tags-list');
+  if (tagsList) {
+    tagsList.innerHTML = '';
+    if (tags.length === 0) {
+      tagsList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-tags"></i>
+          <p>暂无标签</p>
+        </div>
+      `;
+      return;
+    }
+    tags.forEach(tag => {
+      const tagItem = document.createElement('div');
+      tagItem.className = 'tag-item';
+      tagItem.innerHTML = `
+        <span class="tag-name">${tag.name}</span>
+        <span class="tag-count">(${tag.length || 0} 篇文章)</span>
+      `;
+      tagsList.appendChild(tagItem);
+    });
+  }
+}
+
+// ========================================================
+// ★ 核心对接功能区：从 Worker 动态获取数据
+// ========================================================
+
+// 动态获取并渲染公告
+async function loadAnnouncements() {
+  const announcementsList = document.querySelector('.announcements-list');
+  if (!announcementsList) return;
+  
+  announcementsList.innerHTML = '<p style="text-align:center; padding:20px;">正在从云端加载公告...</p>';
+  
+  try {
+    const response = await fetch(`${API_BASE}/announcements`);
+    const data = await response.json();
+    
+    announcementsList.innerHTML = '';
+    if (data.length === 0) {
+      announcementsList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-bullhorn"></i>
+          <p>暂无公告</p>
+        </div>
+      `;
+      return;
+    }
+    
+    data.forEach(announcement => {
+      const announcementItem = document.createElement('div');
+      announcementItem.className = 'announcement-item';
+      announcementItem.innerHTML = `
+        <div class="announcement-info">
+          <p class="announcement-meta">发布时间: ${new Date(announcement.date || new Date()).toLocaleString()}</p>
+          <div class="announcement-content">${announcement.content}</div>
+        </div>
+      `;
+      announcementsList.appendChild(announcementItem);
+    });
+  } catch (err) {
+    console.error("加载公告失败", err);
+    announcementsList.innerHTML = '<p style="text-align:center; color:red;">网络请求失败，请检查 Worker 接口</p>';
+  }
+}
+
+// 动态获取并渲染评论
+async function loadComments() {
+  const commentsList = document.querySelector('.comments-list');
+  if (!commentsList) return;
+
+  commentsList.innerHTML = '<p style="text-align:center; padding:20px;">正在从云端加载评论...</p>';
+  
+  try {
+    const response = await fetch(`${API_BASE}/comments`);
+    const data = await response.json();
+    
+    commentsList.innerHTML = '';
+    if (data.length === 0) {
+      commentsList.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-comments"></i>
+          <p>暂无评论</p>
+        </div>
+      `;
+      return;
+    }
+    
+    data.forEach(comment => {
+      const commentItem = document.createElement('div');
+      commentItem.className = 'comment-item';
+      commentItem.innerHTML = `
+        <div class="comment-header">
+          <span class="comment-author"><strong>${comment.author || '访客'}</strong></span>
+          <span class="comment-time">${new Date(comment.date || new Date()).toLocaleString()}</span>
+        </div>
+        <div class="comment-content">${comment.content}</div>
+      `;
+      commentsList.appendChild(commentItem);
+    });
+  } catch (err) {
+    console.error("加载评论失败", err);
+    commentsList.innerHTML = '<p style="text-align:center; color:red;">网络请求失败，请检查 Worker 接口</p>';
+  }
+}
+
+// ========================================================
+// ★ 页面事件初始化绑定区
+// ========================================================
+document.addEventListener('DOMContentLoaded', function() {
+  // 检查登录状态 & 加载基础数据
+  checkLoginStatus();
+  loadData();
+  
+  // 登录/登出按钮事件
+  const loginBtn = document.getElementById('loginBtn');
+  if (loginBtn) { loginBtn.addEventListener('click', handleLogin); }
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) { logoutBtn.addEventListener('click', function(e) { e.preventDefault(); handleLogout(); }); }
+  const passwordInput = document.getElementById('password');
+  if (passwordInput) { passwordInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleLogin(); }); }
+  
+  // 编辑器工具栏功能 (保留原生所有排版功能)
+  const toolbarButtons = document.querySelectorAll('.tool-btn');
+  toolbarButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const command = this.dataset.command;
+      if(command === 'insertImage' || command === 'insertVideo') {
+        const url = prompt(command === 'insertImage' ? '请输入图片URL:' : '请输入视频URL:');
+        if (url) {
+          if(command === 'insertImage') document.execCommand('insertImage', false, url);
+          else {
+            const videoHtml = `<video controls width="100%"><source src="${url}" type="video/mp4"></video>`;
+            document.execCommand('insertHTML', false, videoHtml);
+          }
+        }
+      } else {
+        document.execCommand(command, false, null);
+      }
+      document.getElementById('articleContent').focus();
+    });
+  });
+
+  const fontSizeSelect = document.getElementById('fontSize');
+  if (fontSizeSelect) fontSizeSelect.addEventListener('change', function() { document.execCommand('fontSize', false, this.value); });
+  const fontColorSelect = document.getElementById('fontColor');
+  if (fontColorSelect) fontColorSelect.addEventListener('change', function() { document.execCommand('foreColor', false, this.value); });
+  const fontFamilySelect = document.getElementById('fontFamily');
+  if (fontFamilySelect) fontFamilySelect.addEventListener('change', function() { document.execCommand('fontName', false, this.value); });
+
+  // 菜单切换交互
+  const menuItems = document.querySelectorAll('.menu-item');
+  const sections = document.querySelectorAll('.dashboard-section');
+  
+  menuItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = this.getAttribute('href').substring(1);
+      if (target === '') return; // 跳过退出登录按钮
+      
+      menuItems.forEach(i => i.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      
+      this.classList.add('active');
+      document.getElementById(target).classList.add('active');
+      
+      // 渲染对应内容
+      if (target === 'categories') renderCategories();
+      else if (target === 'tags') renderTags();
+      else if (target === 'published') renderArticles();
+      else if (target === 'drafts') renderDrafts();
+      else if (target === 'editor') updateArticleCategories();
+      else if (target === 'announcements') loadAnnouncements(); // 点击公告时从 Worker 获取
+      else if (target === 'comments') loadComments();         // 点击评论时从 Worker 获取
+    });
+  });
+
+  // 保存草稿
+  const saveDraftBtn = document.getElementById('saveDraft');
+  if (saveDraftBtn) {
+    saveDraftBtn.addEventListener('click', function() {
+      const categoriesSelect = document.getElementById('articleCategories');
+      const articleData = {
+        title: document.getElementById('articleTitle').value,
+        content: document.getElementById('articleContent').innerHTML,
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem('draft_' + Date.now(), JSON.stringify(articleData));
+      alert('草稿保存成功！');
+      renderDrafts();
+    });
+  }
+
+  // 文章封面预览
+  const articleCoverInput = document.getElementById('articleCover');
+  const coverPreview = document.getElementById('coverPreview');
+  if (articleCoverInput && coverPreview) {
+    articleCoverInput.addEventListener('input', function() {
+      const url = this.value.trim();
+      coverPreview.innerHTML = url ? `<img src="${url}" alt="封面预览" onerror="this.parentElement.innerHTML='<p style=color:#e74c3c>图片加载失败</p>'">` : '';
+    });
+  }
+
+  // ★★★ 核心：发布文章 (发送到 Cloudflare Worker 并触发 GitHub Actions)
+  const publishArticleBtn = document.getElementById('publishArticle');
+  if (publishArticleBtn) {
+    publishArticleBtn.addEventListener('click', async function() {
+      const title = document.getElementById('articleTitle').value.trim();
+      const content = document.getElementById('articleContent').innerHTML;
+      const categoriesSelect = document.getElementById('articleCategories');
+      const category = categoriesSelect ? categoriesSelect.value : '';
+      const tag = document.getElementById('articleTags').value.trim();
+
+      if (!title) {
+        alert('请输入文章标题！');
+        return;
+      }
+      if (!content || content === '<p>开始编写您的文章内容...</p>') {
+        alert('文章内容不能为空！');
+        return;
+      }
+
+      publishArticleBtn.innerText = "发布中，请稍候...";
+      publishArticleBtn.disabled = true;
+
+      try {
+        // 通过 Fetch API 将数据提交给 Worker
+        const response = await fetch(`${API_BASE}/posts`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, content, category, tag })
+        });
         
-        listEl.innerHTML = '<p>加载中...</p>';
-        try {
-            const response = await fetch(`${API_BASE}/announcements`);
-            const data = await response.json();
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(result.msg); // 会弹出 GitHub 触发成功的提示
             
-            listEl.innerHTML = '';
-            if (data.length === 0) {
-                listEl.innerHTML = '<p>暂无公告</p>';
-                return;
-            }
+            // 将新发布的文章信息推入本地数组，实现即时预览
+            const newArticle = {
+                id: Date.now(),
+                title: title,
+                publishedAt: new Date().toISOString(),
+                categories: category ? [category] : [],
+                tags: tag ? tag.split(',').map(t => t.trim()) : []
+            };
+            articles.unshift(newArticle);
+            localStorage.setItem('publishedArticles', JSON.stringify(articles));
+            renderArticles();
 
-            data.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'announcement-item';
-                div.innerHTML = `
-                    <div class="time">${new Date(item.date).toLocaleString()}</div>
-                    <div class="content">${item.content}</div>
-                `;
-                listEl.appendChild(div);
-            });
-        } catch (err) {
-            console.error("读取公告失败", err);
-            listEl.innerHTML = '<p>加载失败，请检查网络</p>';
+            // 清空表单
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleContent').innerHTML = '<p>开始编写您的文章内容...</p>';
+            if(categoriesSelect) categoriesSelect.selectedIndex = 0;
+            document.getElementById('articleTags').value = '';
+        } else {
+            alert("发布失败：" + (result.error || "未知错误"));
         }
-    }
-
-    // 3. 评论功能
-    async function loadComments() {
-        const listEl = document.getElementById('comment-list');
-        if (!listEl) return;
-
-        listEl.innerHTML = '<p>加载中...</p>';
+      } catch (err) {
+        console.error(err);
+        alert("网络请求失败，请检查 Cloudflare Worker 接口是否正常。");
+      } finally {
+        publishArticleBtn.innerText = "发布文章";
+        publishArticleBtn.disabled = false;
+      }
+    });
+  }
+  
+  // 添加分类
+  const addCategoryBtn = document.getElementById('addCategory');
+  if (addCategoryBtn) {
+    addCategoryBtn.addEventListener('click', function() {
+      const categoryName = prompt('请输入分类名称:');
+      if (categoryName) {
+        categories.push({ id: Date.now(), name: categoryName });
+        saveCategories();
+        renderCategories();
+        updateArticleCategories();
+        alert('分类添加成功！');
+      }
+    });
+  }
+  
+  // 隐藏原生标签按钮 (因为是由 Hexo 自动读取)
+  const addTagBtn = document.getElementById('addTag');
+  if (addTagBtn) addTagBtn.style.display = 'none';
+  
+  // ★★★ 核心：发布公告 (发送到 Cloudflare Worker 的 KV 数据库)
+  const addAnnouncementBtn = document.getElementById('addAnnouncement');
+  if (addAnnouncementBtn) {
+    addAnnouncementBtn.addEventListener('click', async function() {
+      // 由于原 UI 没有输入框，直接用 prompt 获取内容
+      const content = prompt('请输入要发布的公告内容:');
+      if (content) {
         try {
-            const response = await fetch(`${API_BASE}/comments`);
-            const data = await response.json();
-            
-            listEl.innerHTML = '';
-            if (data.length === 0) {
-                listEl.innerHTML = '<p>暂无评论</p>';
-                return;
-            }
-
-            data.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'comment-item';
-                div.innerHTML = `
-                    <div class="author"><strong>${item.author || '匿名'}</strong> - <span>${new Date(item.date).toLocaleString()}</span></div>
-                    <div class="content">${item.content}</div>
-                `;
-                listEl.appendChild(div);
+            const response = await fetch(`${API_BASE}/announcements`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content })
             });
+            
+            const result = await response.json();
+            if (result.success) {
+                alert('公告发布成功！全网即时生效！');
+                loadAnnouncements(); // 重新拉取渲染
+            } else {
+                alert('发布失败: ' + result.error);
+            }
         } catch (err) {
-            console.error("读取评论失败", err);
-            listEl.innerHTML = '<p>加载失败，请检查网络</p>';
+            console.error(err);
+            alert("网络请求失败，请检查 Worker 接口是否正常。");
         }
-    }
-
-    // 初始化加载
-    const activeSection = document.querySelector('.content-section.active');
-    if (activeSection && activeSection.id === 'announcements') {
-        loadAnnouncements();
-    }
+      }
+    });
+  }
+  
+  // 初始化渲染页面基础数据
+  renderCategories();
+  renderTags();
+  renderArticles();
+  renderDrafts();
+  updateArticleCategories();
+  
+  // 默认加载一次公告 (防空白)
+  const activeSection = document.querySelector('.dashboard-section.active');
+  if (activeSection && activeSection.id === 'announcements') {
+    loadAnnouncements();
+  }
 });
 </script><style>#dashboard {
   min-height: 100vh;
