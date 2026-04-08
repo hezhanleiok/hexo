@@ -1,10 +1,14 @@
-﻿/* 导航栏布局调整 - 左侧菜单靠左，右侧搜索登录靠右 */
+/* 导航栏布局调整 - 左侧菜单靠左，右侧搜索登录靠右 */
 @media (min-width: 992px) {
   #nav {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     padding: 0 36px !important;
+  }
+
+  #toggle-menu {
+    display: none !important;
   }
 
   #nav #menus {
@@ -65,6 +69,17 @@
     background: #2563eb !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+  }
+}
+
+/* 移动端菜单显示控制 */
+@media (max-width: 991px) {
+  #toggle-menu {
+    display: block !important;
+    margin-left: auto;
+  }
+  #nav #menus {
+    display: none !important;
   }
 }
 
