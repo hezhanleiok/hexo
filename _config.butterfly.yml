@@ -2,7 +2,7 @@ nav:
   display_title: false
 
 avatar:
-  img: /hexo/img/avatar.png
+  img: /img/avatar.png
   effect: false
 
 aside:
