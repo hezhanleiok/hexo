@@ -11,7 +11,7 @@
 
 nav:
   # Navigation bar logo image
-  logo: /img/logo.png
+  logo: /hexo/img/logo.png
   display_title: true
   display_post_title: true
   # Whether to fix navigation bar
@@ -62,10 +62,10 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon: /hexo/img/favicon.png
 
 avatar:
-  img: /img/avatar.jpg
+  img: /hexo/img/avatar.png
       # 修改：头像路径改为 avatar.png
   effect: false
 
@@ -115,14 +115,14 @@ cover:
 
 # Replace Broken Images
 error_img:
-  flink: /img/friend_404.gif
-  post_page: /img/404.jpg
+  flink: /hexo/img/friend_404.gif
+  post_page: /hexo/img/404.jpg
 
 # A simple 404 page
 error_404:
   enable: false
   subtitle: 'Page Not Found'
-  background: /img/error-page.png
+  background: /hexo/img/error-page.png
 
 post_meta:
   # Home Page
