@@ -1,12 +1,11 @@
 extends includes/layout.pug
 
 block content
-  // 第一行：左侧（轮播+公告+特别文章）与右侧侧边栏并排
+  // 第一行：左侧内容区（轮播+公告+特别文章）
   .home-first-row
     .left-col
       #home-showcase-container
-    .right-col
-      #aside-content
+        // 轮播图在左，公告和特别文章在右（由 JS 动态生成）
 
   // 第二行：最新文章（最近5篇，带封面、标题、概述）
   .home-latest-posts
@@ -22,3 +21,6 @@ block content
             h3.post-title
               a(href=url_for(post.path))= post.title
             .post-excerpt= post.excerpt || strip_html(post.content).substring(0, 120)
+
+  // 右侧侧边栏（单独一列，不在 home-first-row 内）
+  #aside-content
