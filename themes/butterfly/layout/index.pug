@@ -22,5 +22,3 @@ block content
               a(href=url_for(post.path))= post.title
             .post-excerpt= post.excerpt || strip_html(post.content).substring(0, 120)
 
-  // 右侧侧边栏（单独一列，不在 home-first-row 内）
-  #aside-content
