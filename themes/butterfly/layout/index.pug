@@ -1,9 +1,24 @@
 extends includes/layout.pug
 
 block content
-  // 🔥 添加：首页模块容器 (JS 会自动把内容填充到这里)
-  #home-showcase-container
+  // 第一行：左侧（轮播+公告+特别文章）与右侧侧边栏并排
+  .home-first-row
+    .left-col
+      #home-showcase-container
+    .right-col
+      #aside-content
 
-  // 🔥 原有内容保持不变
-  include ./includes/mixins/indexPostUI.pug
-  +indexPostUI
+  // 第二行：最新文章（最近5篇，带封面、标题、概述）
+  .home-latest-posts
+    h2.section-title 最新文章
+    .latest-posts-list
+      - var latestPosts = page.posts.sort('date', -1).limit(5).toArray()
+      each post in latestPosts
+        .latest-post-item
+          if post.cover
+            .post-cover
+              img(src=url_for(post.cover) alt=post.title)
+          .post-info
+            h3.post-title
+              a(href=url_for(post.path))= post.title
+            .post-excerpt= post.excerpt || strip_html(post.content).substring(0, 120)
