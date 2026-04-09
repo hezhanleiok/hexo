@@ -1,13 +1,12 @@
 extends includes/layout.pug
 
 block content
-  // 第一行：左侧内容区（轮播+公告+特别文章）
+  // 第一行：左侧内容区（轮播 + 公告 + 特别文章）
   .home-first-row
-    .left-col
-      #home-showcase-container
-        // 轮播图在左，公告和特别文章在右（由 JS 动态生成）
+    #home-showcase-container
+      // 轮播图在左，公告和特别文章在右（由 JS 动态生成）
 
-  // 第二行：最新文章（最近5篇，带封面、标题、概述）
+  // 第二行：最新文章（最近 5 篇，带封面、标题、概述）
   .home-latest-posts
     h2.section-title 最新文章
     .latest-posts-list
@@ -21,4 +20,3 @@ block content
             h3.post-title
               a(href=url_for(post.path))= post.title
             .post-excerpt= post.excerpt || strip_html(post.content).substring(0, 120)
-
