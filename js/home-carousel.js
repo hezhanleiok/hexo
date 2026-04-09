@@ -2,12 +2,12 @@
   function textOf(el) {
     return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : '';
   }
-
+  
   function truncate(str, n) {
     if (!str) return '';
     return str.length > n ? str.slice(0, n) + '...' : str;
   }
-
+  
   function pickCover(postEl) {
     var img = postEl.querySelector('.post_cover img.post-bg') || postEl.querySelector('.content img');
     return img ? img.getAttribute('src') : '';
@@ -58,7 +58,6 @@
   }
 
   function buildNoticeHtml(posts) {
-    // 从 localStorage 读取公告数据
     var announcements = [];
     try {
       announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
@@ -66,33 +65,29 @@
       announcements = [];
     }
 
-    // 默认公告内容
     var defaultLines = [
       '博客全新布局已上线：轮播 + 公告 + 推荐区。',
       '右侧网站信息已修复为对齐展示，阅读更清晰。',
       '欢迎查看最新文章，持续更新前端与开发实战。'
     ];
 
-    // 如果有公告，使用公告数据；否则使用默认公告
     var noticeItems = [];
     if (announcements.length > 0) {
-      // 最多显示5个公告
       var maxNotices = Math.min(announcements.length, 5);
       for (var i = 0; i < maxNotices; i++) {
         var ann = announcements[i];
-        var title = (ann.title || '').replace(/"/g, '"');
-        var content = (ann.content || '').replace(/"/g, '"');
+        var title = (ann.title || '').replace(/"/g, '&quot;');
+        var content = (ann.content || '').replace(/"/g, '&quot;');
         var link = ann.link || '#';
         noticeItems.push('<li><a href="' + link + '" title="' + content + '">' + truncate(title, 42) + '</a></li>');
       }
     } else {
-      // 使用默认公告
       noticeItems = defaultLines.map(function (line) {
         return '<li>' + line + '</li>';
       });
     }
 
-    return '<section class="home-card"><h3 class="home-card-title">最新公告</h3><ul class="notice-list">' + noticeItems.join('') + '</ul></section>';
+    return '<section class="home-card card-announcement"><h3 class="home-card-title">最新公告</h3><ul class="notice-list">' + noticeItems.join('') + '</ul></section>';
   }
 
   function buildFeaturedMini(feature) {
@@ -100,7 +95,7 @@
     var styleAttr = feature.cover ? ' style="background-image:url(\'' + feature.cover + '\')"' : '';
 
     return (
-      '<section class="home-card">' +
+      '<section class="home-card card-featured">' +
         '<h3 class="home-card-title">特别文章</h3>' +
         '<a class="featured-mini" href="' + feature.href + '">' +
           '<div class="featured-mini-thumb' + noCoverClass + '"' + styleAttr + '></div>' +
@@ -159,65 +154,10 @@
     startAutoPlay();
   }
 
-      // 🔥 替换 buildNoticeHtml 函数
-  function buildNoticeHtml(posts) {
-    var announcements = [];
-    try {
-      announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
-    } catch (e) {
-      announcements = [];
-    }
-
-    var defaultLines = [
-      '博客全新布局已上线：轮播 + 公告 + 推荐区。',
-      '右侧网站信息已修复为对齐展示，阅读更清晰。',
-      '欢迎查看最新文章，持续更新前端与开发实战。'
-    ];
-
-    var noticeItems = [];
-    if (announcements.length > 0) {
-      var maxNotices = Math.min(announcements.length, 5);
-      for (var i = 0; i < maxNotices; i++) {
-        var ann = announcements[i];
-        var title = (ann.title || '').replace(/"/g, '"');
-        var content = (ann.content || '').replace(/"/g, '"');
-        var link = ann.link || '#';
-        noticeItems.push('<li><a href="' + link + '" title="' + content + '">' + truncate(title, 42) + '</a></li>');
-      }
-    } else {
-      noticeItems = defaultLines.map(function (line) {
-        return '<li>' + line + '</li>';
-      });
-    }
-
-    // 🔥 修改：添加了 .card-announcement 类名
-    return '<section class="home-card card-announcement"><h3 class="home-card-title">最新公告</h3><ul class="notice-list">' + noticeItems.join('') + '</ul></section>';
-  }
-
-  // 🔥 替换 buildFeaturedMini 函数
-  function buildFeaturedMini(feature) {
-    var noCoverClass = feature.cover ? '' : ' no-cover';
-    var styleAttr = feature.cover ? ' style="background-image:url(\'' + feature.cover + '\')"' : '';
-
-    // 🔥 修改：添加了 .card-featured 类名
-    return (
-      '<section class="home-card card-featured">' +
-        '<h3 class="home-card-title">特别文章</h3>' +
-        '<a class="featured-mini" href="' + feature.href + '">' +
-          '<div class="featured-mini-thumb' + noCoverClass + '"' + styleAttr + '></div>' +
-          '<p class="featured-mini-title">' + truncate(feature.title, 48) + '</p>' +
-        '</a>' +
-      '</section>'
-    );
-  }
-
-  // 🔥 替换 buildHomeModules 函数
   function buildHomeModules() {
-    // 🔥 修改 1：获取我们在 pug 中创建的容器
     var showcaseRoot = document.getElementById('home-showcase-container');
     var postWrap = document.querySelector('#recent-posts .recent-post-items');
     
-    // 如果容器不存在或已初始化，跳过
     if (!showcaseRoot || !postWrap || showcaseRoot.querySelector('.home-showcase')) return;
 
     var allPosts = parsePosts(postWrap);
@@ -226,14 +166,12 @@
     var carouselPosts = allPosts.slice(0, 3);
     var featuredPost = allPosts[3] || allPosts[0];
 
-    // 🔥 修改 2：构建结构，不再依赖 nth-child
     var showcase = document.createElement('div');
     showcase.className = 'home-showcase';
     showcase.innerHTML =
       '<div class="home-showcase-left">' + buildCarousel(carouselPosts) + '</div>' +
       '<div class="home-showcase-right">' + buildNoticeHtml(allPosts) + buildFeaturedMini(featuredPost) + '</div>';
 
-    // 🔥 修改 3：直接追加到容器中，不再使用 insertBefore
     showcaseRoot.appendChild(showcase);
 
     var carouselRoot = showcase.querySelector('.home-hero-carousel');

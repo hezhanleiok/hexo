@@ -6,10 +6,6 @@
   margin-bottom: 40px;
 }
 
-.home-first-row .left-col {
-  width: 100%;
-}
-
 /* 左侧容器内部：轮播图在左，公告和特别文章在右 */
 #home-showcase-container {
   display: flex;
