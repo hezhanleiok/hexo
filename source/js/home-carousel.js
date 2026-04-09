@@ -9,18 +9,21 @@
   }
   
   function pickCover(postEl) {
-    var img = postEl.querySelector('.post_cover img.post-bg') || postEl.querySelector('.content img');
+    // 支持两种封面结构：.post-cover img 或 .post_cover img.post-bg
+    var img = postEl.querySelector('.post-cover img') || postEl.querySelector('.post_cover img.post-bg') || postEl.querySelector('.content img');
     return img ? img.getAttribute('src') : '';
   }
 
   function parsePosts(postWrap) {
-    return Array.prototype.slice.call(postWrap.querySelectorAll('.recent-post-item')).map(function (post, index) {
-      var titleEl = post.querySelector('.article-title');
+    // 支持两种文章结构：.latest-post-item 或 .recent-post-item
+    var postItems = postWrap.querySelectorAll('.latest-post-item, .recent-post-item');
+    return Array.prototype.slice.call(postItems).map(function (post, index) {
+      var titleEl = post.querySelector('.post-title a') || post.querySelector('.article-title');
       return {
         id: index,
         title: textOf(titleEl) || 'Latest Post',
         href: titleEl ? titleEl.getAttribute('href') : '/',
-        desc: truncate(textOf(post.querySelector('.content')), 110),
+        desc: truncate(textOf(post.querySelector('.post-excerpt') || post.querySelector('.content'))),
         cover: pickCover(post)
       };
     });
@@ -156,7 +159,8 @@
 
   function buildHomeModules() {
     var showcaseRoot = document.getElementById('home-showcase-container');
-    var postWrap = document.querySelector('#recent-posts .recent-post-items');
+    // 支持两种文章列表结构：.latest-posts-list 或 .recent-post-items
+    var postWrap = document.querySelector('.latest-posts-list') || document.querySelector('#recent-posts .recent-post-items');
     
     if (!showcaseRoot || !postWrap || showcaseRoot.querySelector('.home-showcase')) return;
 
