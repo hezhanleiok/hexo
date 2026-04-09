@@ -159,8 +159,61 @@
     startAutoPlay();
   }
 
-    function buildHomeModules() {
-    // 🔥 修改：使用新的容器 #home-showcase-container
+      // 🔥 替换 buildNoticeHtml 函数
+  function buildNoticeHtml(posts) {
+    var announcements = [];
+    try {
+      announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
+    } catch (e) {
+      announcements = [];
+    }
+
+    var defaultLines = [
+      '博客全新布局已上线：轮播 + 公告 + 推荐区。',
+      '右侧网站信息已修复为对齐展示，阅读更清晰。',
+      '欢迎查看最新文章，持续更新前端与开发实战。'
+    ];
+
+    var noticeItems = [];
+    if (announcements.length > 0) {
+      var maxNotices = Math.min(announcements.length, 5);
+      for (var i = 0; i < maxNotices; i++) {
+        var ann = announcements[i];
+        var title = (ann.title || '').replace(/"/g, '"');
+        var content = (ann.content || '').replace(/"/g, '"');
+        var link = ann.link || '#';
+        noticeItems.push('<li><a href="' + link + '" title="' + content + '">' + truncate(title, 42) + '</a></li>');
+      }
+    } else {
+      noticeItems = defaultLines.map(function (line) {
+        return '<li>' + line + '</li>';
+      });
+    }
+
+    // 🔥 修改：添加了 .card-announcement 类名
+    return '<section class="home-card card-announcement"><h3 class="home-card-title">最新公告</h3><ul class="notice-list">' + noticeItems.join('') + '</ul></section>';
+  }
+
+  // 🔥 替换 buildFeaturedMini 函数
+  function buildFeaturedMini(feature) {
+    var noCoverClass = feature.cover ? '' : ' no-cover';
+    var styleAttr = feature.cover ? ' style="background-image:url(\'' + feature.cover + '\')"' : '';
+
+    // 🔥 修改：添加了 .card-featured 类名
+    return (
+      '<section class="home-card card-featured">' +
+        '<h3 class="home-card-title">特别文章</h3>' +
+        '<a class="featured-mini" href="' + feature.href + '">' +
+          '<div class="featured-mini-thumb' + noCoverClass + '"' + styleAttr + '></div>' +
+          '<p class="featured-mini-title">' + truncate(feature.title, 48) + '</p>' +
+        '</a>' +
+      '</section>'
+    );
+  }
+
+  // 🔥 替换 buildHomeModules 函数
+  function buildHomeModules() {
+    // 🔥 修改 1：获取我们在 pug 中创建的容器
     var showcaseRoot = document.getElementById('home-showcase-container');
     var postWrap = document.querySelector('#recent-posts .recent-post-items');
     
@@ -173,13 +226,14 @@
     var carouselPosts = allPosts.slice(0, 3);
     var featuredPost = allPosts[3] || allPosts[0];
 
-    // 🔥 修改：构建 3 列布局结构
+    // 🔥 修改 2：构建结构，不再依赖 nth-child
     var showcase = document.createElement('div');
     showcase.className = 'home-showcase';
     showcase.innerHTML =
       '<div class="home-showcase-left">' + buildCarousel(carouselPosts) + '</div>' +
       '<div class="home-showcase-right">' + buildNoticeHtml(allPosts) + buildFeaturedMini(featuredPost) + '</div>';
 
+    // 🔥 修改 3：直接追加到容器中，不再使用 insertBefore
     showcaseRoot.appendChild(showcase);
 
     var carouselRoot = showcase.querySelector('.home-hero-carousel');
