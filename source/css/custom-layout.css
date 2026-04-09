@@ -18,21 +18,21 @@
     margin-left: 30px !important;
   }
 
-  #nav #menus .menus-container {
+  #nav #menus .nav-container {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     width: 100% !important;
   }
 
-  #nav #menus .menus-left {
+  #nav #menus .nav-left {
     display: flex !important;
     align-items: center !important;
     flex: 1 !important;
     justify-content: flex-start !important;
   }
 
-  #nav #menus .menus-right {
+  #nav #menus .nav-right {
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
@@ -46,18 +46,23 @@
     margin: 0 15px !important;
   }
 
-  /* 搜索按钮样式 */
-  #nav #menus #search-button {
-    margin-left: 20px !important;
-    margin-right: 20px !important;
+  /* 搜索按钮样式 - 放在右侧 */
+  #nav #menus .nav-right #search-button {
+    display: inline-block !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
   }
 
-  #nav #menus #search-button .site-page {
+  #nav #menus .nav-right #search-button .site-page {
     font-size: 1rem !important;
   }
 
-  /* 登录按钮样式 */
-  #nav #menus .menus_items .site-page[href*="dashboard"] {
+  /* 登录按钮样式 - 放在右侧 */
+  #nav #menus .nav-right .menus_item {
+    display: inline-block !important;
+  }
+
+  #nav #menus .nav-right .menus_item .site-page[href*="dashboard"] {
     background: #3b82f6 !important;
     color: white !important;
     padding: 8px 16px !important;
@@ -65,7 +70,7 @@
     font-weight: 600 !important;
   }
 
-  #nav #menus .menus_items .site-page[href*="dashboard"]:hover {
+  #nav #menus .nav-right .menus_item .site-page[href*="dashboard"]:hover {
     background: #2563eb !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
