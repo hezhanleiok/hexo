@@ -169,70 +169,7 @@
   if (lengthNum) {
     lengthNum.textContent = categories.length || 2;
   }
-});</script>2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.png" alt="Logo"></a></span><div id="menus"><div class="nav-container"><div class="nav-left"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div></div></div><div class="nav-right"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></nav><h1 class="title-seo">xhblog</h1></header><main class="layout" id="content-inner"><!-- 🔥 添加：首页模块容器 (JS 会自动把内容填充到这里)--><div id="home-showcase-container"></div><!-- 🔥 原有内容保持不变--><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/04/02/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" title="第二篇测试文章">第二篇测试文章</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-04-02T21:22:25.000Z" title="发表于 2026-04-03 05:22:25">2026-04-03</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B5%8B%E8%AF%95/">测试</a></span></div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/04/02/hello-world/" title="现代前端博客快速搭建实战">现代前端博客快速搭建实战</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-04-02T08:00:00.000Z" title="发表于 2026-04-02 16:00:00">2026-04-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></span></div><div class="content">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div><script>document.addEventListener('DOMContentLoaded', function() {
-  const recentPostItems = document.querySelector('.recent-post-items');
-  if (recentPostItems) {
-    // 从localStorage读取文章
-    const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
-    
-    if (articles.length > 0) {
-      // 清空现有文章
-      recentPostItems.innerHTML = '';
-      
-      // 按发布时间排序（最新的在前）
-      articles.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-      
-      // 渲染文章
-      articles.forEach((article, index) => {
-        const leftOrRight = 1 === 3 ? (index % 2 === 0 ? 'left' : 'right') : (1 === 2 ? 'right' : '');
-        const noCover = 'no-cover'; // 简化处理，没有封面
-        
-        const articleItem = document.createElement('div');
-        articleItem.className = 'recent-post-item';
-        articleItem.innerHTML = `
-          <div class="recent-post-info ${noCover}">
-            <a class="article-title" href="/${article.path || 'post/' + article.id}" title="${article.title}">
-              ${article.title}
-            </a>
-            <div class="article-meta-wrap">
-              <span class="post-meta-date">
-                <i class="far fa-calendar-alt"></i>
-                <span class="article-meta-label">发布</span>
-                <time datetime="${new Date(article.publishedAt).toISOString()}">
-                  ${new Date(article.publishedAt).toLocaleDateString()}
-                </time>
-              </span>
-              ${article.categories.length > 0 ? `
-                <span class="article-meta">
-                  <span class="article-meta-separator">|</span>
-                  ${article.categories.map((category, catIndex) => `
-                    <i class="fas fa-inbox"></i>
-                    <a href="/categories/${category.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__categories"> ${category}</a>
-                    ${catIndex < article.categories.length - 1 ? '<i class="fas fa-angle-right article-meta-link"></i>' : ''}
-                  `).join('')}
-                </span>
-              ` : ''}
-              ${article.tags.length > 0 ? `
-                <span class="article-meta tags">
-                  <span class="article-meta-separator">|</span>
-                  ${article.tags.map((tag, tagIndex) => `
-                    <i class="fas fa-tag"></i>
-                    <a href="/tags/${tag.toLowerCase().replace(/\s+/g, '-')}" class="article-meta__tags"> ${tag}</a>
-                    ${tagIndex < article.tags.length - 1 ? '<span class="article-meta-link">•</span>' : ''}
-                  `).join('')}
-                </span>
-              ` : ''}
-            </div>
-            ${article.excerpt ? `<div class="content">${article.excerpt}</div>` : ''}
-          </div>
-        `;
-        
-        recentPostItems.appendChild(articleItem);
-      });
-    }
-  }
-});
-</script></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/hexo/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Xiao He</div><div class="author-info-description">热爱技术，热爱生活。分享前端开发、设计与日常。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://x.com/xiaoheyiyi" target="_blank" title="X"><i class="fab fa-twitter" style="color: #1DA1F2;"></i></a><a class="social-icon" href="https://www.youtube.com/@xiaoheai" target="_blank" title="YouTube"><i class="fab fa-youtube" style="color: #FF0000;"></i></a><a class="social-icon" href="https://github.com/hezhanleiok/hezhanleiok.github.io" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://t.me/xiaoheok" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #26A5E4;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/02/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" title="第二篇测试文章">第二篇测试文章</a><time datetime="2026-04-02T21:22:25.000Z" title="发表于 2026-04-03 05:22:25">2026-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/02/hello-world/" title="现代前端博客快速搭建实战">现代前端博客快速搭建实战</a><time datetime="2026-04-02T08:00:00.000Z" title="发表于 2026-04-02 16:00:00">2026-04-02</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+});</script>2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.png" alt="Logo"></a></span><div id="menus"><div class="nav-container"><div class="nav-left"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div></div></div><div class="nav-right"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></nav><h1 class="title-seo">xhblog</h1></header><main class="layout" id="content-inner"><!-- 第一行：左侧（轮播+公告+特别文章）与右侧侧边栏并排--><div class="home-first-row"><div class="left-col"><div id="home-showcase-container"></div></div><div class="right-col"><div id="aside-content"></div></div></div><!-- 第二行：最新文章（最近5篇，带封面、标题、概述）--><div class="home-latest-posts"><h2 class="section-title">最新文章</h2><div class="latest-posts-list"><div class="latest-post-item"><div class="post-info"><h3 class="post-title"><a href="/2026/04/02/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">第二篇测试文章</a></h3><div class="post-excerpt"></div></div></div><div class="latest-post-item"><div class="post-info"><h3 class="post-title"><a href="/2026/04/02/hello-world/">现代前端博客快速搭建实战</a></h3><div class="post-excerpt">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex</div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/hexo/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Xiao He</div><div class="author-info-description">热爱技术，热爱生活。分享前端开发、设计与日常。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://x.com/xiaoheyiyi" target="_blank" title="X"><i class="fab fa-twitter" style="color: #1DA1F2;"></i></a><a class="social-icon" href="https://www.youtube.com/@xiaoheai" target="_blank" title="YouTube"><i class="fab fa-youtube" style="color: #FF0000;"></i></a><a class="social-icon" href="https://github.com/hezhanleiok/hezhanleiok.github.io" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://t.me/xiaoheok" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #26A5E4;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-categories"><div class="item-headline">
             <i class="fas fa-folder-open"></i>
             <span>分类</span>
             

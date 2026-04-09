@@ -1,29 +1,47 @@
-/* 🔥 3列布局容器 (轮播 | 信息卡片 | 侧边栏) */
+/* ===== 首页自定义布局 ===== */
+
+/* 第一行：左侧（轮播+公告+特别文章）与右侧侧边栏并排 */
+.home-first-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.home-first-row .left-col {
+  flex: 2.5; /* 左侧占更宽 */
+  min-width: 0; /* 防止溢出 */
+}
+
+.home-first-row .right-col {
+  flex: 1.2; /* 右侧侧边栏宽度 */
+  min-width: 260px;
+}
+
+/* 左侧容器：轮播+公告+特别文章 */
 #home-showcase-container {
-  display: grid;
-  /* 桌面端：2列网格 (左侧轮播 + 中间信息栏)。右侧侧边栏由主题独立控制，视觉上形成3列 */
-  grid-template-columns: 2.2fr 1.3fr; 
-  gap: 20px;
-  min-height: 440px; /* 固定容器最小高度，防止塌陷 */
-  margin-bottom: 30px;
+  /* 移除原有的 grid 布局，因为不再需要内部两列 */
+  display: block;
+  min-height: auto;
+  margin-bottom: 0;
 }
 
 /* 响应式：平板及以下变为单列 */
-@media (max-width: 1200px) {
-  #home-showcase-container {
-    grid-template-columns: 1fr;
-    min-height: auto;
+@media (max-width: 992px) {
+  .home-first-row {
+    flex-direction: column;
   }
 }
 
-/* === 左列：轮播图 === */
+/* === 左列内部：轮播图区域 === */
 .home-showcase-left {
-  height: 100%; /* 撑满容器高度 */
+  height: 100%;
   min-height: 440px;
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 20px; /* 与下方公告卡片间距 */
 }
 
 .home-hero-carousel {
@@ -39,7 +57,7 @@
   height: 100%;
 }
 
-/* 幻灯片：绝对定位重叠，通过 opacity 切换 */
+/* 幻灯片 */
 .hero-slide {
   position: absolute;
   inset: 0;
@@ -47,7 +65,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-color: #667eea; /* 无封面时的底色 */
+  background-color: #667eea;
   display: flex;
   align-items: flex-end;
   opacity: 0;
@@ -129,7 +147,7 @@
   transform: scale(1.3);
 }
 
-/* === 右列：公告 + 特别文章 === */
+/* === 右侧：公告 + 特别文章 === */
 .home-showcase-right {
   display: flex;
   flex-direction: column;
@@ -170,9 +188,9 @@
   border-radius: 2px;
 }
 
-/* 公告卡片特定样式 */
+/* 公告卡片 */
 .card-announcement {
-  flex: 0 0 auto; /* 不拉伸，自适应高度，最多占45% */
+  flex: 0 0 auto;
   max-height: 45%;
   min-height: 150px;
   overflow: hidden;
@@ -210,9 +228,9 @@
   color: #49b1f5;
 }
 
-/* 特别文章卡片特定样式 */
+/* 特别文章卡片 */
 .card-featured {
-  flex: 1; /* 填充剩余空间 */
+  flex: 1;
   min-height: 200px;
 }
 
@@ -252,8 +270,92 @@
   .home-showcase-left {
     min-height: 300px;
   }
-  
   .home-card {
     padding: 12px 15px;
+  }
+}
+
+/* ===== 第二行：最新文章区域（稍后添加） ===== */
+.home-latest-posts {
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-left: 12px;
+  border-left: 4px solid #49b1f5;
+}
+
+.latest-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.latest-post-item {
+  display: flex;
+  gap: 20px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.latest-post-item:hover {
+  transform: translateY(-3px);
+}
+
+.post-cover {
+  flex-shrink: 0;
+  width: 180px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-info {
+  flex: 1;
+}
+
+.post-title {
+  font-size: 18px;
+  margin: 0 0 8px 0;
+}
+
+.post-title a {
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.post-title a:hover {
+  color: #49b1f5;
+}
+
+.post-excerpt {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .latest-post-item {
+    flex-direction: column;
+  }
+  .post-cover {
+    width: 100%;
+    height: 160px;
   }
 }
