@@ -26,6 +26,6 @@ aside:
 
 inject:
   head:
-    - <link rel="stylesheet" href="/hexo/css/home-grid.css">
+    - <link rel="stylesheet" href="/css/home-grid.css">
   bottom:
-    - <script defer src="/hexo/js/home-carousel.js"></script>
+    - <script defer src="/js/home-carousel.js"></script>
