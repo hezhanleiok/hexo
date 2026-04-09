@@ -14,8 +14,8 @@
 }
 
 .home-first-row .right-col {
-  flex: 1.2; /* 右侧侧边栏宽度 */
-  min-width: 260px;
+  flex: 1; /* 右侧侧边栏宽度恢复正常 */
+  min-width: 300px;
 }
 
 /* 左侧容器：轮播+公告+特别文章 */
