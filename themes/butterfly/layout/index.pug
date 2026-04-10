@@ -1,76 +1,73 @@
 extends includes/layout.pug
 
 block content
-  //- 引入主题 mixin (用于生成标准的文章卡片结构，防止样式丢失)
-  include ./includes/mixins/post-ui.pug
-
-  #- 【核心修复】外层必须包裹 #recent-posts，这是 Butterfly 主题识别首页的关键
+  //- 已移除导致报错的 include ./includes/mixins/post-ui.pug
+  
   #recent-posts.recent-posts
-    
-    //- 自定义布局容器：使用内联样式，确保即使 CSS 文件加载失败也能显示布局
-    div(style="width: 100%; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px;")
-      
-      //- === 第一部分：顶部复杂布局 (轮播 + 公告 + 推荐) ===
-      div.home-first-row(style="display: flex; gap: 20px; min-height: 400px; width: 100%;")
+    if page.type == 'index' && page._page
+      // 首页自定义布局容器
+      #hlog-home-layout(style="width: 100%; display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;")
         
-        //- 左侧：轮播图容器 (JS 将在此处注入内容)
-        //- 【关键】必须保留 id="home-showcase-container"，否则 JS 找不到位置
-        #home-showcase-container(style="flex: 1; background: #f0f2f5; border-radius: 12px; position: relative; overflow: hidden; min-width: 0;")
-          //- 默认占位内容 (防止 JS 执行前空白)
-          div(style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#999;") 加载中...
-
-        //- 右侧：公告 + 特别推荐
-        div.home-showcase-right(style="flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0;")
+        // 第一部分：上半部分（左右分栏）
+        .hlog-top-section(style="display: grid; grid-template-columns: 65% calc(35% - 20px); gap: 20px; width: 100%; min-height: 380px;")
           
-          //- 公告卡片
-          div#announcement-box.home-card(style="flex: 1; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow: hidden;")
-            h3(style="margin: 0 0 15px 0; font-size: 16px; font-weight: 700; color: #333; border-left: 4px solid #49b1f5; padding-left: 10px;") 最新公告
-            ul.notice-list(style="list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto;")
-              li(style="padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; color: #666;") 暂无公告信息
-
-          //- 特别推荐卡片
-          div#featured-post-box.home-card(style="flex: 1; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer;")
-            div.featured-mini(style="display: flex; gap: 15px; align-items: center; width: 100%;")
-              div.featured-mini-thumb(style="width: 80px; height: 80px; background: #eee; border-radius: 8px; flex-shrink: 0;")
-              h4.featured-mini-title(style="margin: 0; font-size: 15px; color: #333; flex: 1;") 暂无特别推荐
-
-      //- === 第二部分：最新文章列表 ===
-      div.home-latest-posts(style="width: 100%;")
-        h2.section-title(style="font-size: 20px; font-weight: 700; margin-bottom: 20px; border-left: 5px solid #49b1f5; padding-left: 15px; color: #333;") 最新发布
-        
-        div.latest-posts-list(style="display: flex; flex-direction: column; gap: 20px;")
+          // 左侧：轮播图
+          .hlog-carousel-block(style="width: 100%; height: 100%; background: #f4f6f8; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);")
+            #home-showcase-container(style="width: 100%; height: 100%;")
           
-          //- 【核心逻辑】安全获取文章列表
-          //- 兼容 Hexo 不同版本的 page.posts 结构
-          - var postList = []
-          - if (page.posts) {
-          -   if (page.posts.data) postList = page.posts.data;
-          -   else if (page.posts.toArray) postList = page.posts.toArray();
-          - }
-          
-          if postList.length > 0
-            //- 循环输出文章 (最多显示 5 篇用于 JS 抓取，实际可更多)
-            each post in postList
-              a.latest-post-item(href=url_for(post.path), style="display: flex; gap: 20px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-decoration: none; color: inherit; transition: transform 0.2s;")
-                //- 封面图
-                div.post-cover(style="width: 200px; height: 140px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #eee;")
-                  if post.cover
-                    img(src=url_for(post.cover), alt=post.title, style="width: 100%; height: 100%; object-fit: cover;")
-                  else
-                    img(src="https://via.placeholder.com/200x140?text=No+Cover", alt="No Cover", style="width: 100%; height: 100%; object-fit: cover;")
-                
-                //- 文章信息
-                div.post-info(style="flex: 1; display: flex; flex-direction: column; justify-content: center;")
-                  h3.post-title(style="margin: 0 0 10px 0; font-size: 18px; font-weight: 700; color: #333;")
-                    = post.title || '无标题'
-                  p.post-excerpt(style="margin: 0; font-size: 14px; color: #666; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;")
-                    - var excerpt = post.description || post.excerpt || post.content
-                    != strip_html(excerpt).substring(0, 120) + '...'
-          else
-            //- 无文章时的提示
-            div(style="text-align: center; padding: 40px; color: #999; background: #fff; border-radius: 12px;")
-              p 暂无文章，请在后台发布文章后刷新查看。
+          // 右侧：公告与推荐
+          .hlog-right-block(style="display: flex; flex-direction: column; gap: 20px; height: 100%;")
+            // 公告
+            .hlog-card.announcement-card(style="flex: 1; background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;")
+              .card-header(style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;")
+                span.header-icon 📢
+                span 最新公告
+              .card-body
+                ul.notice-list(style="padding-left: 15px; margin: 0; font-size: 14px; line-height: 1.8;")
+                  li: a(href="/", style="color: #4b5563; text-decoration: none;") 欢迎访问 Hlog 博客
+                  li: a(href="/", style="color: #4b5563; text-decoration: none;") 更多新功能正在路上...
+            
+            // 特别推荐海报
+            .hlog-card.featured-poster-card(style="flex: 1; position: relative; padding: 0; overflow: hidden; border-radius: 12px; display: flex; background: #111;")
+              .poster-background(style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;")
+                img#featured-poster-img(src="", alt="推荐", style="width: 100%; height: 100%; object-fit: cover; opacity: 0.65;")
+              .poster-overlay(style="position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 80%); box-sizing: border-box;")
+                span.poster-tag(style="display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin-bottom: 8px; width: fit-content;") ⭐ 特别推荐
+                h4#featured-poster-title(style="color: #fff; margin: 0; font-size: 15px; line-height: 1.5; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;") 加载中...
 
-    //- 引入分页组件 (保持主题完整性)
-    if theme.pagination && theme.pagination.enable
-      include includes/pagination.pug
+        // 第二部分：下半部分（最新发布）
+        .hlog-bottom-section(style="width: 100%;")
+          .section-heading(style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;")
+            span.heading-icon 📝
+            h2(style="margin: 0; font-size: 18px; font-weight: 700; border-left: 4px solid #3b82f6; padding-left: 12px;") 最新发布
+          
+          .post-list-container(style="display: flex; flex-direction: column; gap: 20px;")
+            - var postArray = page.posts ? (page.posts.data || (page.posts.toArray ? page.posts.toArray() : [])) : []
+            if postArray.length > 0
+              each post, index in postArray
+                if index < 5
+                  .post-list-item(style="display: flex; background: #fff; border-radius: 12px; padding: 20px; gap: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);")
+                    if post.cover
+                      .post-cover-wrapper(style="width: 260px; height: 160px; border-radius: 8px; overflow: hidden; flex-shrink: 0;")
+                        img(src=url_for(post.cover), alt=post.title || '封面', style="width: 100%; height: 100%; object-fit: cover;")
+                    .post-item-info(style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 5px 0;")
+                      h3.post-item-title(style="margin: 0; font-size: 1.25rem; font-weight: 700;")
+                        a(href=url_for(post.path), style="color: #111827; text-decoration: none;")= post.title || '无标题文章'
+                      .post-item-excerpt(style="color: #6b7280; font-size: 14px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;")
+                        - var text = post.description || post.excerpt || post.content || '暂无内容...'
+                        != truncate(strip_html(text), {length: 120, omission: '...'})
+                      .post-item-meta(style="font-size: 13px; color: #9ca3af;")
+                        if post.date
+                          span= date(post.date, 'YYYY/MM/DD')
+                          span  · 
+                        span 阅读全文
+            else
+              div(style="text-align:center; padding:50px; color:#999; font-size:16px;") 暂无文章发布
+
+    else
+      // 非首页正常渲染文章列表
+      each post in page.posts
+        include includes/mixins/post-ui.pug
+        +postItem(post)
+
+    include includes/pagination.pug
