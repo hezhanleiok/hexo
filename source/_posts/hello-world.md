@@ -1,6 +1,3 @@
-明白了，你需要一个完整的 Markdown 格式文章代码，包含 front-matter 和全部正文内容，一键复制后可直接用于 Hexo 博客。以下是修改后的完整代码（图片地址使用你提供的链接）：
-
-```markdown
 ---
 title: 现代前端博客快速搭建实战
 slug: modern-frontend-blog-setup
@@ -21,14 +18,6 @@ Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [docume
 
 ``` bash
 $ hexo new "My New Post"
-```
-
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
 ```
 
 More info: [Server](https://hexo.io/docs/server.html)
