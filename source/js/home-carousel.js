@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var posts = document.querySelectorAll('.post-list-item');
     
-    // 如果没有任何文章，优雅降级，不报错
+    // 如果没有文章，安全提示并退出
     if (posts.length === 0) {
-      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:16px;">暂无发布文章</div>';
+      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:16px;">暂无文章数据</div>';
       var fallbackTitle = document.getElementById('featured-poster-title');
-      if (fallbackTitle) fallbackTitle.textContent = "暂无推荐文章";
+      if (fallbackTitle) fallbackTitle.textContent = "暂无推荐";
       return;
     }
 
@@ -27,52 +27,60 @@ document.addEventListener('DOMContentLoaded', function() {
       var titleEl = post.querySelector('.post-item-title a') || post.querySelector('a');
       var excerptEl = post.querySelector('.post-item-excerpt');
       
-      if (imgEl && titleEl) {
-        var slide = document.createElement('div');
-        slide.className = 'hero-slide' + (i === 0 ? ' is-active' : '');
-        slide.style.backgroundImage = 'url(' + imgEl.src + ')';
-        slide.innerHTML = 
-          '<div class="hero-overlay">' +
-            '<div class="hero-content">' +
-              '<span class="hero-tag">推荐</span>' +
-              '<h2 class="hero-title">' + titleEl.textContent + '</h2>' +
-              '<p class="hero-desc">' + (excerptEl ? excerptEl.textContent : '') + '</p>' +
-            '</div>' +
-          '</div>';
-        
-        slide.onclick = (function(href) {
-          return function() { window.location.href = href; };
-        })(titleEl.href);
-        
-        track.appendChild(slide);
-        slides.push(slide); 
+      var imgSrc = imgEl ? imgEl.src : '';
+      var titleText = titleEl ? titleEl.textContent : '无标题';
+      var linkHref = titleEl ? titleEl.href : '#';
+      var excerptText = excerptEl ? excerptEl.textContent : '';
 
-        var dot = document.createElement('button');
-        dot.className = 'hero-dot' + (i === 0 ? ' is-active' : '');
-        dot.onclick = (function(index) {
-          return function() {
-            slides.forEach(function(s) { s.classList.remove('is-active'); });
-            dots.forEach(function(d) { d.classList.remove('is-active'); });
-            if(slides[index]) slides[index].classList.add('is-active');
-            if(dots[index]) dots[index].classList.add('is-active');
-          };
-        })(i);
-        controls.appendChild(dot);
-        dots.push(dot); 
+      var slide = document.createElement('div');
+      slide.className = 'hero-slide' + (i === 0 ? ' is-active' : '');
+      if (imgSrc) {
+        slide.style.backgroundImage = 'url(' + imgSrc + ')';
+      } else {
+        slide.style.backgroundColor = '#3b82f6'; // 无图片时的备用背景色
       }
+      
+      slide.innerHTML = 
+        '<div class="hero-overlay">' +
+          '<div class="hero-content">' +
+            '<span class="hero-tag">推荐</span>' +
+            '<h2 class="hero-title">' + titleText + '</h2>' +
+            '<p class="hero-desc">' + excerptText + '</p>' +
+          '</div>' +
+        '</div>';
+      
+      slide.onclick = (function(href) {
+        return function() { window.location.href = href; };
+      })(linkHref);
+      
+      track.appendChild(slide);
+      slides.push(slide); 
+
+      var dot = document.createElement('button');
+      dot.className = 'hero-dot' + (i === 0 ? ' is-active' : '');
+      dot.onclick = (function(index) {
+        return function() {
+          slides.forEach(function(s) { s.classList.remove('is-active'); });
+          dots.forEach(function(d) { d.classList.remove('is-active'); });
+          if(slides[index]) slides[index].classList.add('is-active');
+          if(dots[index]) dots[index].classList.add('is-active');
+        };
+      })(i);
+      controls.appendChild(dot);
+      dots.push(dot); 
     }
 
     // 动态填充特别推荐海报 (永远抓取最新发布的第一篇文章)
-    if (posts[0]) {
-      var featuredImgEl = document.getElementById('featured-poster-img');
-      var featuredTitleEl = document.getElementById('featured-poster-title');
-      var featuredCard = document.querySelector('.featured-poster-card');
+    var featuredImgEl = document.getElementById('featured-poster-img');
+    var featuredTitleEl = document.getElementById('featured-poster-title');
+    var featuredCard = document.querySelector('.featured-poster-card');
 
+    if (posts[0] && featuredImgEl && featuredTitleEl && featuredCard) {
       var sourceImg = posts[0].querySelector('.post-cover-wrapper img') || posts[0].querySelector('img');
       var sourceTitle = posts[0].querySelector('.post-item-title a') || posts[0].querySelector('a');
 
-      if (sourceImg && sourceTitle && featuredImgEl && featuredTitleEl && featuredCard) {
-        featuredImgEl.src = sourceImg.src;
+      if (sourceImg) featuredImgEl.src = sourceImg.src;
+      if (sourceTitle) {
         featuredTitleEl.textContent = sourceTitle.textContent;
         featuredCard.onclick = function() { window.location.href = sourceTitle.href; };
         featuredCard.style.cursor = 'pointer';

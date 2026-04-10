@@ -1,15 +1,12 @@
 /* ===== HLOG 首页专属 CSS ===== */
 
 #hlog-home-layout {
-  width: calc(100% - 315px); /* 完美预留右侧侧边栏宽度，防止挤压 */
+  /* 【致命修复】因为外层有了 recent-posts，这里改为 100% 即可，主题会自动计算侧边栏空间 */
+  width: 100%; 
   display: flex;
   flex-direction: column;
   gap: 25px;
   margin-bottom: 40px;
-}
-
-@media screen and (max-width: 900px) {
-  #hlog-home-layout { width: 100%; }
 }
 
 /* --- 上半部分：左右分栏 --- */
