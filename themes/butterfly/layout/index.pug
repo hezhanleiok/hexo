@@ -3,10 +3,10 @@ extends includes/layout.pug
 block content
   include ./includes/mixins/post-ui.pug
   
-  //- 【核心修复】必须使用主题标准的 #recent-posts 容器，否则核心样式和脚本会失效
+  //- 【核心修复】使用主题标准的 #recent-posts 容器
   #recent-posts.recent-posts
     
-    //- 自定义首页布局容器 (使用内联样式，杜绝 CSS 404)
+    //- 自定义首页布局容器
     #hlog-home-layout(style="width: 100%; display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;")
       
       //- 第一部分：上半部分（左右分栏）
@@ -15,22 +15,22 @@ block content
         //- 左侧：轮播图容器 (JS 将在此处注入内容)
         .hlog-carousel-block(style="width: 100%; height: 100%; background: #f4f6f8; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);")
           #home-showcase-container(style="width: 100%; height: 100%; position: relative;")
-            //- 默认占位符 (JS 加载前显示)
+            //- 默认占位内容，防止 JS 加载前空白
             div(style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;") 加载中...
           
-        //- 右侧：公告与推荐 (JS 将在此处注入内容)
+        //- 右侧：公告与推荐
         .hlog-right-block(style="display: flex; flex-direction: column; gap: 20px; height: 100%;")
-          //- 公告卡片
+          //- 公告
           .hlog-card.announcement-card(style="flex: 1; background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;")
             .card-header(style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;")
-              span.header-icon 📢
+              span  📢
               span 最新公告
             .card-body
               ul.notice-list(style="padding-left: 15px; margin: 0; font-size: 14px; line-height: 1.8;")
                 li: a(href="/", style="color: #4b5563; text-decoration: none;") 欢迎访问博客
-                li: a(href="/", style="color: #4b5563; text-decoration: none;") 更多文章加载中...
+                li: a(href="/", style="color: #4b5563; text-decoration: none;") 更多文章正在发布...
           
-          //- 特别推荐卡片
+          //- 特别推荐
           .hlog-card.featured-poster-card(style="flex: 1; position: relative; padding: 0; overflow: hidden; border-radius: 12px; display: flex; background: #111;")
             .poster-background(style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;")
               img#featured-poster-img(src="", alt="推荐", style="width: 100%; height: 100%; object-fit: cover; opacity: 0.65;")
@@ -41,43 +41,185 @@ block content
       //- 第二部分：下半部分（最新发布列表）
       .hlog-bottom-section(style="width: 100%;")
         .section-heading(style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;")
-          span.heading-icon 📝
+          span  📝
           h2(style="margin: 0; font-size: 18px; font-weight: 700; border-left: 4px solid #3b82f6; padding-left: 12px;") 最新发布
         
         .post-list-container(style="display: flex; flex-direction: column; gap: 20px;")
-          //- Hexo 安全读取文章列表
+          //- Hexo 文章循环逻辑
           - var postArray = page.posts ? (page.posts.data || (page.posts.toArray ? page.posts.toArray() : [])) : []
           
           if postArray.length > 0
             each post, index in postArray
               if index < 5
-                a.post-list-item(href=url_for(post.path), style="display: flex; background: #fff; border-radius: 12px; padding: 20px; gap: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); text-decoration: none; color: inherit; transition: transform 0.2s;")
-                  style.
-                    .post-list-item:hover { transform: translateY(-3px); }
-                  
+                .post-list-item(style="display: flex; background: #fff; border-radius: 12px; padding: 20px; gap: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); text-decoration: none; color: inherit;")
                   if post.cover
                     .post-cover-wrapper(style="width: 260px; height: 160px; border-radius: 8px; overflow: hidden; flex-shrink: 0;")
-                      img(src=url_for(post.cover), alt=post.title || '封面', style="width: 100%; height: 100%; object-fit: cover;")
+                      img(src=url_for(post.cover), alt=post.title, style="width: 100%; height: 100%; object-fit: cover;")
                   else
                     .post-cover-wrapper(style="width: 260px; height: 160px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #eee; display:flex;align-items:center;justify-content:center;color:#999;") 无封面
                   
                   .post-item-info(style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 5px 0;")
-                    h3.post-item-title(style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #111827;")= post.title || '无标题文章'
-                    
+                    h3.post-item-title(style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #111827;")= post.title || '无标题'
                     .post-item-excerpt(style="color: #6b7280; font-size: 14px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;")
-                      - var text = post.description || post.excerpt || post.content || '暂无内容...'
+                      - var text = post.description || post.excerpt || post.content || '暂无内容'
                       != truncate(strip_html(text), {length: 120, omission: '...'})
-                    
                     .post-item-meta(style="font-size: 13px; color: #9ca3af;")
                       if post.date
                         span= date(post.date, 'YYYY/MM/DD')
-                        span  · 
-                      span 阅读全文
           else
-            div(style="text-align:center; padding:50px; color:#999; font-size:16px;") 暂无文章发布
+            div(style="text-align:center; padding:50px; color:#999; font-size:16px;") 暂无文章，请在后台发布带封面的文章
 
-    //- 【核心修复】引入主题分页组件，确保底层脚本正常初始化
+    //- 【关键】引入分页组件，防止主题脚本报错
     include includes/pagination.pug
 
-block sidebar
-  include includes/sidebar.pug
+  //- 【关键】引入自定义 JS，放在最后确保 DOM 已加载
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      var container = document.getElementById('home-showcase-container');
+      if (!container) return;
+      
+      var posts = document.querySelectorAll('.post-list-item');
+      var totalPosts = posts.length;
+
+      if (totalPosts === 0) {
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;">暂无文章</div>';
+        return;
+      }
+
+      // 构建左侧轮播
+      var leftDiv = document.createElement('div');
+      leftDiv.className = 'home-showcase-left';
+      leftDiv.style.width = '100%';
+      leftDiv.style.height = '100%';
+      leftDiv.style.position = 'relative';
+      leftDiv.innerHTML = '<div class="home-hero-carousel" style="width:100%;height:100%;position:relative;background:#f8f9fa;border-radius:12px;overflow:hidden;"><div class="hero-track" style="position:relative;width:100%;height:100%;"></div><div class="hero-controls" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:2;"></div></div>';
+      
+      // 构建右侧区域
+      var rightDiv = document.createElement('div');
+      rightDiv.className = 'home-showcase-right';
+      rightDiv.style.width = '100%';
+      rightDiv.style.height = '100%';
+      rightDiv.style.display = 'flex';
+      rightDiv.style.flexDirection = 'column';
+      rightDiv.style.gap = '20px';
+      rightDiv.innerHTML = 
+        '<div id="announcement-box" class="home-card" style="flex:1;background:#fff;border-radius:12px;padding:15px;box-shadow:0 4px 20px rgba(0,0,0,0.08);display:flex;flex-direction:column;overflow:hidden;">' +
+          '<h3 style="font-size:15px;font-weight:600;margin:0 0 12px 0;color:#2c3e50;display:flex;align-items:center;gap:8px;"><span style="width:4px;height:16px;background:#49b1f5;border-radius:2px;"></span>最新公告</h3>' +
+          '<ul class="notice-list" style="flex:1;list-style:none;padding:0;margin:0;overflow-y:auto;"></ul>' +
+        '</div>' +
+        '<div id="featured-post-box" class="home-card" style="flex:1;background:#fff;border-radius:12px;padding:15px;box-shadow:0 4px 20px rgba(0,0,0,0.08);display:flex;flex-direction:column;overflow:hidden;cursor:pointer;">' +
+          '<h3 style="font-size:15px;font-weight:600;margin:0 0 12px 0;color:#2c3e50;display:flex;align-items:center;gap:8px;"><span style="width:4px;height:16px;background:#49b1f5;border-radius:2px;"></span>特别推荐</h3>' +
+          '<div class="featured-mini" style="display:flex;gap:12px;align-items:center;height:100%;"></div>' +
+        '</div>';
+
+      container.innerHTML = ''; 
+      container.appendChild(leftDiv);
+      container.appendChild(rightDiv);
+
+      // 填充轮播 (最多3篇)
+      var track = leftDiv.querySelector('.hero-track');
+      var controls = leftDiv.querySelector('.hero-controls');
+      var slideCount = Math.min(3, totalPosts);
+
+      for (var i = 0; i < slideCount; i++) {
+        var post = posts[i];
+        var imgEl = post.querySelector('.post-cover-wrapper img');
+        var titleEl = post.querySelector('.post-item-title');
+        var excerptEl = post.querySelector('.post-item-excerpt');
+        
+        var imgUrl = imgEl ? imgEl.src : '#667eea';
+        var titleText = titleEl ? titleEl.textContent : '无标题';
+        var excerptText = excerptEl ? excerptEl.textContent : '';
+        var linkHref = post.getAttribute('href') || post.querySelector('a')?.getAttribute('href') || '#';
+
+        var slide = document.createElement('div');
+        slide.className = 'hero-slide' + (i === 0 ? ' is-active' : '');
+        slide.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;background-size:cover;background-position:center;background-color:#667eea;display:flex;align-items:flex-end;opacity:0;transition:opacity 0.6s ease;z-index:0;cursor:pointer;';
+        if(i===0) slide.style.opacity = '1';
+        slide.style.backgroundImage = 'url(' + imgUrl + ')';
+        
+        slide.innerHTML = 
+          '<div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);padding:25px;display:flex;align-items:flex-end;">' +
+            '<div style="max-width:90%;">' +
+              '<span style="display:inline-block;padding:4px 12px;background:rgba(255,255,255,0.25);border-radius:20px;font-size:12px;margin-bottom:10px;color:white;">推荐</span>' +
+              '<h2 style="font-size:24px;font-weight:700;margin:0 0 10px 0;line-height:1.3;color:white;">' + titleText + '</h2>' +
+              '<p style="font-size:14px;color:rgba(255,255,255,0.9);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + excerptText + '</p>' +
+            '</div>' +
+          '</div>';
+        
+        slide.onclick = function(href) { return function() { window.location.href = href; }; }(linkHref);
+        track.appendChild(slide);
+
+        var dot = document.createElement('button');
+        dot.className = 'hero-dot' + (i === 0 ? ' is-active' : '');
+        dot.style.cssText = 'width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,0.5);cursor:pointer;padding:0;transition:all 0.3s;';
+        if(i===0) dot.style.background = '#49b1f5';
+        dot.onclick = function(index) {
+          return function() {
+            var slides = track.querySelectorAll('.hero-slide');
+            var dots = controls.querySelectorAll('.hero-dot');
+            slides.forEach((s, idx) => { s.style.opacity = idx === index ? '1' : '0'; });
+            dots.forEach((d, idx) => { d.style.background = idx === index ? '#49b1f5' : 'rgba(255,255,255,0.5)'; });
+          };
+        }(i);
+        controls.appendChild(dot);
+      }
+
+      if (slideCount <= 1) controls.style.display = 'none';
+
+      // 填充公告 (第4篇)
+      var noticeList = rightDiv.querySelector('.notice-list');
+      if (totalPosts >= 4) {
+        var post4 = posts[3];
+        var titleEl4 = post4.querySelector('.post-item-title');
+        var linkHref4 = post4.getAttribute('href') || post4.querySelector('a')?.getAttribute('href') || '#';
+        if (titleEl4) {
+          var li = document.createElement('li');
+          li.style.cssText = 'padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:14px;line-height:1.5;';
+          li.innerHTML = '<a href="' + linkHref4 + '" style="color:#333;text-decoration:none;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + titleEl4.textContent + '</a>';
+          noticeList.appendChild(li);
+        }
+      } else {
+        noticeList.innerHTML = '<li style="color:#999;text-align:center;padding:10px;">暂无更多公告</li>';
+      }
+
+      // 填充推荐 (第5篇)
+      var featuredBox = rightDiv.querySelector('#featured-post-box');
+      var featuredDiv = featuredBox.querySelector('.featured-mini');
+      if (totalPosts >= 5) {
+        var post5 = posts[4];
+        var imgEl5 = post5.querySelector('.post-cover-wrapper img');
+        var titleEl5 = post5.querySelector('.post-item-title');
+        var linkHref5 = post5.getAttribute('href') || post5.querySelector('a')?.getAttribute('href') || '#';
+        
+        if (titleEl5) {
+          var imgUrl5 = imgEl5 ? imgEl5.src : '#e9ecef';
+          featuredDiv.innerHTML = 
+            '<div style="width:80px;height:80px;border-radius:8px;background-size:cover;background-position:center;background-color:#e9ecef;flex-shrink:0;" style="background-image:url(' + imgUrl5 + ')"></div>' +
+            '<h4 style="flex:1;font-size:16px;font-weight:600;line-height:1.4;margin:0;color:#333;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">' + titleEl5.textContent + '</h4>';
+          featuredBox.onclick = function(href) { return function() { window.location.href = href; }; }(linkHref5);
+        }
+      } else {
+        featuredDiv.innerHTML = '<span style="color:#999;font-size:14px;margin:auto;">暂无特别推荐</span>';
+        featuredDiv.style.justifyContent = 'center';
+        featuredDiv.style.display = 'flex';
+        featuredDiv.style.height = '100%';
+        featuredDiv.style.alignItems = 'center';
+      }
+      
+      // 自动轮播
+      if (slideCount > 1) {
+         var currentSlide = 0;
+         setInterval(function() {
+           var slides = track.querySelectorAll('.hero-slide');
+           var dots = controls.querySelectorAll('.hero-dot');
+           if(slides[currentSlide]) slides[currentSlide].style.opacity = '0';
+           if(dots[currentSlide]) dots[currentSlide].style.background = 'rgba(255,255,255,0.5)';
+           
+           currentSlide = (currentSlide + 1) % slideCount;
+           
+           if(slides[currentSlide]) slides[currentSlide].style.opacity = '1';
+           if(dots[currentSlide]) dots[currentSlide].style.background = '#49b1f5';
+         }, 5000);
+      }
+    });
