@@ -11,7 +11,7 @@
       !=partial('includes/widget/card_announcement', {}, {cache: true})
       !=partial('includes/widget/card_top_self', {}, {cache: true})
       
-      //- 【关键修复】在此处强制将文章页也挂载分类、标签、归档板块
+      //- 将文章页也挂载分类、标签、归档板块
       if theme.aside.card_categories.enable
         !=partial('includes/widget/card_categories', {}, {cache: true})
       if theme.aside.card_tags.enable
@@ -29,7 +29,8 @@
     !=partial('includes/widget/card_author', {}, {cache: true})
     !=partial('includes/widget/card_announcement', {}, {cache: true})
     !=partial('includes/widget/card_top_self', {}, {cache: true})
-    !=partial('includes/widget/card_social', {}, {cache: true})
+    
+    //- 【修复2】已移除会报错的 card_social 引用
     
     if theme.aside.card_categories.enable
       !=partial('includes/widget/card_categories', {}, {cache: true})
