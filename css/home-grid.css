@@ -1,23 +1,30 @@
-/* ===== HLOG 首页排版专属 CSS (不影响顶部导航和右侧栏) ===== */
+/* ===== HLOG 首页排版专属 CSS ===== */
 
 #hlog-home-layout {
-  width: 100%;
+  /* 【关键修复】预留出右侧侧边栏标准的 315px，防止其挤压变形！ */
+  width: calc(100% - 315px); 
   display: flex;
   flex-direction: column;
-  gap: 25px; /* 上半部分和下半部分的间距 */
+  gap: 25px;
   margin-bottom: 40px;
 }
 
-/* --- 上半部分：左右分栏 (核心实现) --- */
-.hlog-top-section {
-  display: grid;
-  grid-template-columns: 65% calc(35% - 20px); /* 左侧 65%，右侧 35% 减去 gap */
-  gap: 20px;
-  width: 100%;
-  min-height: 380px; /* 锁定一个好看的高度，和参考图一致 */
+/* 移动端/平板端让主内容区占满 */
+@media screen and (max-width: 900px) {
+  #hlog-home-layout {
+    width: 100%;
+  }
 }
 
-/* 左侧轮播容器 */
+/* --- 上半部分：左右分栏 --- */
+.hlog-top-section {
+  display: grid;
+  grid-template-columns: 65% calc(35% - 20px);
+  gap: 20px;
+  width: 100%;
+  min-height: 380px;
+}
+
 .hlog-carousel-block {
   width: 100%;
   height: 100%;
@@ -33,7 +40,6 @@
   height: 100%;
 }
 
-/* 右侧上下容器 */
 .hlog-right-block {
   display: flex;
   flex-direction: column;
@@ -41,9 +47,8 @@
   height: 100%;
 }
 
-/* 右侧通用卡片样式 */
 .hlog-card {
-  flex: 1; /* 上下均分高度 */
+  flex: 1;
   background: #fff;
   border-radius: 12px;
   padding: 18px;
@@ -68,11 +73,10 @@
   display: inline-block;
   width: 4px;
   height: 16px;
-  background: #3b82f6; /* 蓝色强调条 */
+  background: #3b82f6;
   border-radius: 2px;
 }
 
-/* 公告列表样式 */
 .notice-list {
   padding-left: 15px;
   margin: 0;
@@ -87,34 +91,76 @@
   color: #3b82f6;
 }
 
-/* 特别推荐样式 */
-.featured-item {
+/* --- 特别推荐海报卡片 (全新海报模式) --- */
+.featured-poster-card {
+  position: relative !important;
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 12px;
+  flex: 1;
   display: flex;
-  gap: 15px;
-  text-decoration: none;
-  color: inherit;
+  background: #111;
+  transition: transform 0.3s;
+}
+.featured-poster-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.poster-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
 }
-.featured-img {
-  width: 100px;
-  border-radius: 8px;
-  background-size: cover;
-  background-position: center;
-  flex-shrink: 0;
+.poster-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65; /* 降低图片明亮度，让白色文字更显眼 */
+  transition: transform 0.4s ease;
 }
-.featured-text h4 {
-  margin: 0;
-  font-size: 14px;
+.featured-poster-card:hover .poster-background img {
+  transform: scale(1.05);
+}
+.poster-overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 80%);
+  box-sizing: border-box;
+}
+.poster-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 12px;
   font-weight: 600;
-  color: #1f2937;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  width: fit-content;
+}
+.poster-overlay h4 {
+  color: #fff !important;
+  margin: 0;
+  font-size: 15px;
   line-height: 1.5;
+  font-weight: 700;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-/* --- 下半部分：最新文章列表 (底部通栏) --- */
+/* --- 下半部分：最新文章列表 --- */
 .hlog-bottom-section {
   width: 100%;
 }
@@ -199,7 +245,7 @@
   color: #9ca3af;
 }
 
-/* 响应式：手机屏幕下自动变成单列 */
+/* 响应式 */
 @media (max-width: 992px) {
   .hlog-top-section {
     grid-template-columns: 1fr;
