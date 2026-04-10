@@ -11,12 +11,12 @@
       !=partial('includes/widget/card_announcement', {}, {cache: true})
       !=partial('includes/widget/card_top_self', {}, {cache: true})
       
-      //- 将文章页也挂载分类、标签、归档板块
-      if theme.aside.card_categories.enable
+      //- 【防御性修复】增加变量存在性判断，防止因为缺少配置项导致白屏崩溃
+      if theme.aside && theme.aside.card_categories && theme.aside.card_categories.enable
         !=partial('includes/widget/card_categories', {}, {cache: true})
-      if theme.aside.card_tags.enable
+      if theme.aside && theme.aside.card_tags && theme.aside.card_tags.enable
         !=partial('includes/widget/card_tags', {}, {cache: true})
-      if theme.aside.card_archives.enable
+      if theme.aside && theme.aside.card_archives && theme.aside.card_archives.enable
         !=partial('includes/widget/card_archives', {}, {cache: true})
         
       .sticky_layout
@@ -30,15 +30,14 @@
     !=partial('includes/widget/card_announcement', {}, {cache: true})
     !=partial('includes/widget/card_top_self', {}, {cache: true})
     
-    //- 【修复2】已移除会报错的 card_social 引用
-    
-    if theme.aside.card_categories.enable
+    //- 【防御性修复】
+    if theme.aside && theme.aside.card_categories && theme.aside.card_categories.enable
       !=partial('includes/widget/card_categories', {}, {cache: true})
-    if theme.aside.card_tags.enable
+    if theme.aside && theme.aside.card_tags && theme.aside.card_tags.enable
       !=partial('includes/widget/card_tags', {}, {cache: true})
-    if theme.aside.card_archives.enable
+    if theme.aside && theme.aside.card_archives && theme.aside.card_archives.enable
       !=partial('includes/widget/card_archives', {}, {cache: true})
-    if theme.aside.card_webinfo.enable
+    if theme.aside && theme.aside.card_webinfo && theme.aside.card_webinfo.enable
       !=partial('includes/widget/card_webinfo', {}, {cache: true})
     !=partial('includes/widget/card_bottom_self', {}, {cache: true})
     
@@ -47,5 +46,7 @@
         include ./card_post_toc.pug
       !=partial('includes/widget/card_recent_post', {}, {cache: true})
       !=partial('includes/widget/card_ad', {}, {cache: true})
-      if theme.newest_comments.enable
+      
+      //- 【引发白屏的核心修复位置】必须先判断 theme.newest_comments 是否存在！
+      if theme.newest_comments && theme.newest_comments.enable
         !=partial('includes/widget/card_newest_comment', {}, {cache: true})
