@@ -1,7 +1,7 @@
 /* ===== HLOG 首页专属 CSS ===== */
 
 #hlog-home-layout {
-  width: calc(100% - 315px); /* 预留右侧侧边栏宽度 */
+  width: calc(100% - 315px); /* 完美预留右侧侧边栏宽度，防止挤压 */
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -81,7 +81,7 @@
 .notice-list a { color: #4b5563; text-decoration: none; }
 .notice-list a:hover { color: #3b82f6; }
 
-/* --- 特别推荐海报 --- */
+/* --- 特别推荐海报效果 --- */
 .featured-poster-card {
   position: relative !important;
   padding: 0 !important;
@@ -223,7 +223,7 @@
 }
 .post-item-meta { font-size: 13px; color: #9ca3af; }
 
-/* 响应式 */
+/* 手机端响应式 */
 @media (max-width: 992px) {
   .hlog-top-section { grid-template-columns: 1fr; min-height: auto; }
   .post-list-item { flex-direction: column; }

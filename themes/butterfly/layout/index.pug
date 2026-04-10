@@ -2,62 +2,49 @@ extends includes/layout.pug
 
 block content
   #hlog-home-layout
-    
-    //- 第一大部分：上半部分（左右分栏）
     .hlog-top-section
-      
-      //- 左侧：轮播板块
       .hlog-carousel-block
         #home-showcase-container
-        
-      //- 右侧：上下堆叠
       .hlog-right-block
-        
-        //- 右上：公告板块
         .hlog-card.announcement-card
           .card-header
             span.header-icon 📢
             span 最新公告
           .card-body
             ul.notice-list
-              li: a(href="#") 欢迎访问 Hlog，这是一个完全开源免费的博客系统
-              li: a(href="#") 更多新功能正在路上...
-        
-        //- 右下：特点推荐板块 (全新海报模式)
+              li: a(href="/") 欢迎访问 Hlog 博客
+              li: a(href="/") 更多新功能正在路上...
         .hlog-card.featured-poster-card
           .poster-background
-            img#featured-poster-img(src="", alt="Featured Post")
+            img#featured-poster-img(src="", alt="推荐")
           .poster-overlay
             span.poster-tag ⭐ 特别推荐
             h4#featured-poster-title 正在加载...
 
-    //- 第二大部分：下半部分（最新文章列表，底部通栏）
     .hlog-bottom-section
       .section-heading
         span.heading-icon 📝
         h2 最新发布
       .post-list-container
-        //- 【终极防御机制】极其安全的循环方式，绝不引发 GitHub Actions 打包崩溃
+        //- 【绝对安全渲染】有多少就循环多少，绝不强行越界
         if page.posts && page.posts.data
-          - var postCount = 0
-          each post in page.posts.data
-            if postCount < 5
-              - postCount++
+          each post, index in page.posts.data
+            if index < 5
               .post-list-item
                 if post.cover
                   .post-cover-wrapper
-                    img(src=url_for(post.cover) alt=(post.title || '无标题'))
+                    img(src=url_for(post.cover) alt=post.title || '封面')
                 .post-item-info
                   h3.post-item-title
-                    a(href=url_for(post.path))= post.title || '无标题文章'
+                    a(href=url_for(post.path))= post.title || '无标题'
                   .post-item-excerpt
-                    - var rawContent = post.excerpt || post.content || '暂无内容...'
-                    - var cleanText = strip_html(rawContent).trim().substring(0, 120)
-                    = cleanText + '...'
+                    //- 【绝对安全截取】使用 Hexo 原生 truncate，就算文章没有任何内容也不会导致打包崩溃白屏
+                    - var text = post.description || post.excerpt || post.content || '暂无简介'
+                    != truncate(strip_html(text), {length: 120, omission: '...'})
                   .post-item-meta
-                    span= date(post.date, 'YYYY/MM/DD')
-                    span  · 
-                    span 阅读更多内容...
-      
-      //- 翻页组件
+                    if post.date
+                      span= date(post.date, 'YYYY/MM/DD')
+                      span  · 
+                    span 阅读更多
+
       include includes/pagination.pug
