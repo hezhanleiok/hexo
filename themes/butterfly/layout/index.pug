@@ -1,18 +1,16 @@
 extends includes/layout.pug
 
 block content
-  //- 这是一个全新的主内容区包裹，严格控制这四个板块
   #hlog-home-layout
     
     //- 第一大部分：上半部分（左右分栏）
     .hlog-top-section
       
-      //- 左侧：轮播板块 (约占 65%)
+      //- 左侧：轮播板块
       .hlog-carousel-block
-        //- 请让你的 JS 仅仅把轮播图的图片生成到这个 div 里，不要生成公告了！
         #home-showcase-container
         
-      //- 右侧：上下堆叠 (约占 35%)
+      //- 右侧：上下堆叠
       .hlog-right-block
         
         //- 右上：公告板块
@@ -25,17 +23,13 @@ block content
               li: a(href="#") 欢迎访问 Hlog，这是一个完全开源免费的博客系统
               li: a(href="#") 更多新功能正在路上...
         
-        //- 右下：特点推荐板块
-        .hlog-card.featured-card
-          .card-header
-            span.header-icon ⭐
-            span 特点推荐
-          .card-body
-            a.featured-item(href="#")
-              //- 这里填入推荐文章的封面图
-              .featured-img(style="background-image: url('/img/default.png');")
-              .featured-text
-                h4 探索 HLOG: 极速、无框架负担的现代化博客系统
+        //- 右下：特点推荐板块 (全新海报模式)
+        .hlog-card.featured-poster-card
+          .poster-background
+            img#featured-poster-img(src="", alt="Featured Post")
+          .poster-overlay
+            span.poster-tag ⭐ 特别推荐
+            h4#featured-poster-title 正在加载...
 
     //- 第二大部分：下半部分（最新文章列表，底部通栏）
     .hlog-bottom-section
