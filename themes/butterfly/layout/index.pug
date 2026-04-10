@@ -37,21 +37,25 @@ block content
         span.heading-icon 📝
         h2 最新发布
       .post-list-container
-        //- 【修复致命报错 1】换用全局 site.posts 获取最新5篇文章，绝对不会再报 limit 错误
-        - var latestPosts = site.posts.sort('date', -1).limit(5).toArray()
+        //- 【终极安全机制】使用 page.posts.data 获取当前页面的文章数组，有多少渲染多少，绝不报错白屏！
+        - var latestPosts = page.posts.data || []
         each post in latestPosts
           .post-list-item
             if post.cover
               .post-cover-wrapper
-                img(src=url_for(post.cover) alt=post.title)
+                img(src=url_for(post.cover) alt=(post.title || '无标题'))
             .post-item-info
               h3.post-item-title
-                a(href=url_for(post.path))= post.title
+                a(href=url_for(post.path))= post.title || '无标题文章'
               .post-item-excerpt
-                //- 【修复致命报错 2】增加安全判断，防止个别文章没有内容导致 strip_html 崩溃
-                - var postText = post.excerpt || (post.content ? strip_html(post.content).substring(0, 120) + '...' : '暂无摘要...')
-                = postText
+                //- 【安全截取文本】确保即便文章没有任何内容，也不会导致打包编译崩溃
+                - var rawContent = post.excerpt || post.content || '暂无内容...'
+                - var cleanText = strip_html(rawContent).trim().substring(0, 120)
+                = cleanText + '...'
               .post-item-meta
                 span= date(post.date, 'YYYY/MM/DD')
                 span  · 
                 span 阅读更多内容...
+      
+      //- 追加引入 Hexo 的默认分页组件，文章多了以后可以在底部翻页
+      include includes/pagination.pug
