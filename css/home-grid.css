@@ -1,9 +1,25 @@
 /* ===== 首页自定义布局 ===== */
 
-/* 第一行：左侧内容区（轮播 + 公告 + 特别文章） */
+/* 第一行：左侧内容区（轮播 + 公告 + 特别文章）- Flex 布局实现左右并排等高 */
 .home-first-row {
-  display: block;
+  display: flex !important;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 20px;
   margin-bottom: 40px;
+}
+
+/* 轮播区域（左侧）：占据父容器一半宽度 */
+.home-showcase-left {
+  flex: 1;
+}
+
+/* 右侧"公告 + 特别文章"区域：内部垂直排列 */
+.home-showcase-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* 左侧容器内部：轮播图在左，公告和特别文章在右 */
