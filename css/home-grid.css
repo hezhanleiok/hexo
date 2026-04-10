@@ -1,39 +1,41 @@
-/* ===== 首页自定义布局 - 最终修复版 ===== */
+/* ===== 首页自定义布局 - 完整修复版 ===== */
+/* 保留原有所有功能，仅修复布局错乱问题 */
 
-/* --- 1. 第一行核心布局：强制 Flex 左右并排等高 --- */
+/* --- 1. 核心布局修复：第一行强制左右分栏 --- */
 .home-first-row {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: stretch !important; /* 关键：子元素高度拉伸一致 */
-  gap: 20px !important;
+  display: flex !important;       /* 关键：启用 Flex 布局 */
+  flex-direction: row !important; /* 关键：子元素左右排列 */
+  align-items: stretch !important;/* 关键：左右两侧高度自动拉齐 */
+  gap: 20px !important;           /* 间距 */
   width: 100% !important;
   margin-bottom: 40px !important;
   box-sizing: border-box !important;
 }
 
-/* 左侧轮播区域 */
+/* 左侧：轮播图区域 */
 .home-showcase-left {
-  flex: 1 !important; /* 占据剩余空间 */
-  min-width: 0 !important; /* 防止内容溢出 */
+  flex: 1 !important;             /* 占据剩余空间 */
+  min-width: 0 !important;        /* 防止内容溢出 */
   position: relative !important;
-  height: 100% !important; /* 继承父级高度 */
+  height: 100% !important;        /* 撑满父容器高度 */
 }
 
-/* 右侧公告+特别文章区域 */
+/* 右侧：公告 + 特别文章区域 */
 .home-showcase-right {
-  flex: 1 !important; /* 与左侧平分 */
+  flex: 1 !important;             /* 占据剩余空间 */
   display: flex !important;
-  flex-direction: column !important; /* 内部垂直排列 */
+  flex-direction: column !important; /* 关键：内部上下排列 */
   gap: 20px !important;
   min-width: 0 !important;
   height: 100% !important;
 }
 
-/* --- 2. 轮播图内部样式 --- */
+/* --- 2. 轮播图组件样式 (保留原有动画功能) --- */
 #home-showcase-container {
-  /* 移除之前的 flex 设置，避免嵌套冲突，由 .home-first-row 控制 */
-  display: block !important; 
-  min-height: 400px !important; /* 基础高度 */
+  display: block !important;
+  width: 100%;
+  height: 100%;
+  min-height: 400px; /* 最小高度防止塌陷 */
 }
 
 .home-hero-carousel {
@@ -67,6 +69,7 @@
   z-index: 0 !important;
   text-decoration: none !important;
   color: white !important;
+  cursor: pointer !important;
 }
 
 .hero-slide.is-active {
@@ -149,8 +152,8 @@
   display: flex !important;
   flex-direction: column !important;
   transition: transform 0.2s !important;
-  flex: 1 !important; /* 关键：让两个卡片平分右侧高度 */
-  min-height: 0 !important; /* 允许收缩 */
+  flex: 1 !important;             /* 关键：平分右侧高度 */
+  min-height: 0 !important;       /* 防止内容溢出 */
   overflow: hidden !important;
 }
 
@@ -218,6 +221,7 @@
   text-decoration: none !important;
   color: inherit !important;
   height: 100% !important;
+  cursor: pointer !important;
 }
 
 .featured-mini-thumb {
@@ -242,10 +246,12 @@
   overflow: hidden !important;
 }
 
-/* --- 4. 第二行：最新文章列表 --- */
+/* --- 4. 第二行：最新文章列表 (独立成行) --- */
 .home-latest-posts {
   margin-top: 20px !important;
   width: 100% !important;
+  clear: both !important;         /* 关键：清除浮动，确保在下一行 */
+  display: block !important;      /* 关键：块级显示，不挤入 Flex */
 }
 
 .section-title {
@@ -270,6 +276,8 @@
   padding: 15px !important;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
   transition: transform 0.2s !important;
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .latest-post-item:hover {
@@ -319,14 +327,12 @@
 }
 
 /* --- 5. 导航栏与侧边栏修复 --- */
-/* 强制显示电脑端三条杠菜单 */
 #toggle-menu {
   display: inline-block !important;
   visibility: visible !important;
   opacity: 1 !important;
 }
 
-/* 修复侧边栏宽度，防止压缩 */
 #aside-content {
   width: 300px !important;
   min-width: 300px !important;
