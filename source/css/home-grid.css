@@ -1,19 +1,15 @@
-/* ===== HLOG 首页排版专属 CSS ===== */
+/* ===== HLOG 首页专属 CSS ===== */
 
 #hlog-home-layout {
-  /* 【关键修复】预留出右侧侧边栏标准的 315px，防止其挤压变形！ */
-  width: calc(100% - 315px); 
+  width: calc(100% - 315px); /* 预留右侧侧边栏宽度 */
   display: flex;
   flex-direction: column;
   gap: 25px;
   margin-bottom: 40px;
 }
 
-/* 移动端/平板端让主内容区占满 */
 @media screen and (max-width: 900px) {
-  #hlog-home-layout {
-    width: 100%;
-  }
+  #hlog-home-layout { width: 100%; }
 }
 
 /* --- 上半部分：左右分栏 --- */
@@ -32,7 +28,6 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  position: relative;
 }
 
 #home-showcase-container {
@@ -83,15 +78,10 @@
   font-size: 14px;
   line-height: 1.8;
 }
-.notice-list a {
-  color: #4b5563;
-  text-decoration: none;
-}
-.notice-list a:hover {
-  color: #3b82f6;
-}
+.notice-list a { color: #4b5563; text-decoration: none; }
+.notice-list a:hover { color: #3b82f6; }
 
-/* --- 特别推荐海报卡片 (全新海报模式) --- */
+/* --- 特别推荐海报 --- */
 .featured-poster-card {
   position: relative !important;
   padding: 0 !important;
@@ -117,12 +107,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.65; /* 降低图片明亮度，让白色文字更显眼 */
+  opacity: 0.65;
   transition: transform 0.4s ease;
 }
-.featured-poster-card:hover .poster-background img {
-  transform: scale(1.05);
-}
+.featured-poster-card:hover .poster-background img { transform: scale(1.05); }
 .poster-overlay {
   position: relative;
   z-index: 1;
@@ -161,9 +149,7 @@
 }
 
 /* --- 下半部分：最新文章列表 --- */
-.hlog-bottom-section {
-  width: 100%;
-}
+.hlog-bottom-section { width: 100%; }
 
 .section-heading {
   display: flex;
@@ -225,11 +211,7 @@
   font-size: 1.25rem;
   font-weight: 700;
 }
-.post-item-title a {
-  color: #111827;
-  text-decoration: none;
-}
-
+.post-item-title a { color: #111827; text-decoration: none; }
 .post-item-excerpt {
   color: #6b7280;
   font-size: 14px;
@@ -239,23 +221,11 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-.post-item-meta {
-  font-size: 13px;
-  color: #9ca3af;
-}
+.post-item-meta { font-size: 13px; color: #9ca3af; }
 
 /* 响应式 */
 @media (max-width: 992px) {
-  .hlog-top-section {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .post-list-item {
-    flex-direction: column;
-  }
-  .post-cover-wrapper {
-    width: 100%;
-    height: 200px;
-  }
+  .hlog-top-section { grid-template-columns: 1fr; min-height: auto; }
+  .post-list-item { flex-direction: column; }
+  .post-cover-wrapper { width: 100%; height: 200px; }
 }
