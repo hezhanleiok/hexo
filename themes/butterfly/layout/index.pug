@@ -37,25 +37,27 @@ block content
         span.heading-icon 📝
         h2 最新发布
       .post-list-container
-        //- 【终极安全机制】使用 page.posts.data 获取当前页面的文章数组，有多少渲染多少，绝不报错白屏！
-        - var latestPosts = page.posts.data || []
-        each post in latestPosts
-          .post-list-item
-            if post.cover
-              .post-cover-wrapper
-                img(src=url_for(post.cover) alt=(post.title || '无标题'))
-            .post-item-info
-              h3.post-item-title
-                a(href=url_for(post.path))= post.title || '无标题文章'
-              .post-item-excerpt
-                //- 【安全截取文本】确保即便文章没有任何内容，也不会导致打包编译崩溃
-                - var rawContent = post.excerpt || post.content || '暂无内容...'
-                - var cleanText = strip_html(rawContent).trim().substring(0, 120)
-                = cleanText + '...'
-              .post-item-meta
-                span= date(post.date, 'YYYY/MM/DD')
-                span  · 
-                span 阅读更多内容...
+        //- 【终极防御机制】极其安全的循环方式，绝不引发 GitHub Actions 打包崩溃
+        if page.posts && page.posts.data
+          - var postCount = 0
+          each post in page.posts.data
+            if postCount < 5
+              - postCount++
+              .post-list-item
+                if post.cover
+                  .post-cover-wrapper
+                    img(src=url_for(post.cover) alt=(post.title || '无标题'))
+                .post-item-info
+                  h3.post-item-title
+                    a(href=url_for(post.path))= post.title || '无标题文章'
+                  .post-item-excerpt
+                    - var rawContent = post.excerpt || post.content || '暂无内容...'
+                    - var cleanText = strip_html(rawContent).trim().substring(0, 120)
+                    = cleanText + '...'
+                  .post-item-meta
+                    span= date(post.date, 'YYYY/MM/DD')
+                    span  · 
+                    span 阅读更多内容...
       
-      //- 追加引入 Hexo 的默认分页组件，文章多了以后可以在底部翻页
+      //- 翻页组件
       include includes/pagination.pug
