@@ -1,213 +1,136 @@
-(function () {
-  function textOf(el) {
-    return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : '';
-  }
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. 获取容器
+  var container = document.getElementById('home-showcase-container');
+  if (!container) return;
+
+  // 2. 获取最新文章列表数据
+  var posts = document.querySelectorAll('.latest-post-item');
+  if (posts.length === 0) return;
+
+  // 3. 构建左侧轮播区域 HTML
+  var leftDiv = document.createElement('div');
+  leftDiv.className = 'home-showcase-left';
+  leftDiv.innerHTML = '<div class="home-hero-carousel"><div class="hero-track"></div><div class="hero-controls"></div></div>';
   
-  function truncate(str, n) {
-    if (!str) return '';
-    return str.length > n ? str.slice(0, n) + '...' : str;
-  }
-  
-  function pickCover(postEl) {
-    // 支持两种封面结构：.post-cover img 或 .post_cover img.post-bg
-    var img = postEl.querySelector('.post-cover img') || postEl.querySelector('.post_cover img.post-bg') || postEl.querySelector('.content img');
-    return img ? img.getAttribute('src') : '';
-  }
+  // 4. 构建右侧公告 + 特别文章区域 HTML
+  var rightDiv = document.createElement('div');
+  rightDiv.className = 'home-showcase-right';
+  rightDiv.innerHTML = 
+    '<div id="announcement-box" class="home-card">' +
+      '<h3 class="home-card-title">最新公告</h3>' +
+      '<ul class="notice-list"></ul>' +
+    '</div>' +
+    '<div id="featured-post-box" class="home-card">' +
+      '<h3 class="home-card-title">特别推荐</h3>' +
+      '<div class="featured-mini"></div>' +
+    '</div>';
 
-  function parsePosts(postWrap) {
-    // 支持两种文章结构：.latest-post-item 或 .recent-post-item
-    var postItems = postWrap.querySelectorAll('.latest-post-item, .recent-post-item');
-    return Array.prototype.slice.call(postItems).map(function (post, index) {
-      var titleEl = post.querySelector('.post-title a') || post.querySelector('.article-title');
-      return {
-        id: index,
-        title: textOf(titleEl) || 'Latest Post',
-        href: titleEl ? titleEl.getAttribute('href') : '/',
-        desc: truncate(textOf(post.querySelector('.post-excerpt') || post.querySelector('.content'))),
-        cover: pickCover(post)
-      };
-    });
-  }
+  // 5. 清空容器并重新插入 (顺序：左 -> 右)
+  container.innerHTML = ''; 
+  container.appendChild(leftDiv);
+  container.appendChild(rightDiv);
 
-  function buildCarousel(slides) {
-    var dots = slides
-      .map(function (slide, i) {
-        return '<button class="hero-dot' + (i === 0 ? ' is-active' : '') + '" type="button" data-slide="' + i + '" aria-label="slide ' + (i + 1) + '"></button>';
-      })
-      .join('');
+  // 6. 填充轮播图 (取前 3 篇)
+  var track = leftDiv.querySelector('.hero-track');
+  var controls = leftDiv.querySelector('.hero-controls');
+  var slideCount = Math.min(3, posts.length);
 
-    var slideHtml = slides
-      .map(function (slide, i) {
-        var activeClass = i === 0 ? ' is-active' : '';
-        var noCoverClass = slide.cover ? '' : ' no-cover';
-        var styleAttr = slide.cover ? ' style="background-image:url(\'' + slide.cover + '\')"' : '';
-        var descHtml = slide.desc ? '<p class="hero-desc">' + slide.desc + '</p>' : '';
-
-        return (
-          '<a class="hero-slide' + activeClass + noCoverClass + '" href="' + slide.href + '"' + styleAttr + '>' +
-            '<div class="hero-overlay">' +
-              '<div class="hero-content">' +
-                '<span class="hero-tag">轮播推荐</span>' +
-                '<h2 class="hero-title">' + slide.title + '</h2>' +
-                descHtml +
-              '</div>' +
-            '</div>' +
-          '</a>'
-        );
-      })
-      .join('');
-
-    return '<section class="home-hero-carousel"><div class="hero-track">' + slideHtml + '</div><div class="hero-controls">' + dots + '</div></section>';
-  }
-
-  function buildNoticeHtml(posts) {
-    var announcements = [];
-    try {
-      announcements = JSON.parse(localStorage.getItem('announcements') || '[]');
-    } catch (e) {
-      announcements = [];
-    }
-
-    var defaultLines = [
-      '博客全新布局已上线：轮播 + 公告 + 推荐区。',
-      '右侧网站信息已修复为对齐展示，阅读更清晰。',
-      '欢迎查看最新文章，持续更新前端与开发实战。'
-    ];
-
-    var noticeItems = [];
-    if (announcements.length > 0) {
-      var maxNotices = Math.min(announcements.length, 5);
-      for (var i = 0; i < maxNotices; i++) {
-        var ann = announcements[i];
-        var title = (ann.title || '').replace(/"/g, '&quot;');
-        var content = (ann.content || '').replace(/"/g, '&quot;');
-        var link = ann.link || '#';
-        noticeItems.push('<li><a href="' + link + '" title="' + content + '">' + truncate(title, 42) + '</a></li>');
-      }
-    } else {
-      noticeItems = defaultLines.map(function (line) {
-        return '<li>' + line + '</li>';
-      });
-    }
-
-    return '<section class="home-card card-announcement"><h3 class="home-card-title">最新公告</h3><ul class="notice-list">' + noticeItems.join('') + '</ul></section>';
-  }
-
-  function buildFeaturedMini(feature) {
-    var noCoverClass = feature.cover ? '' : ' no-cover';
-    var styleAttr = feature.cover ? ' style="background-image:url(\'' + feature.cover + '\')"' : '';
-
-    return (
-      '<section class="home-card card-featured">' +
-        '<h3 class="home-card-title">特别文章</h3>' +
-        '<a class="featured-mini" href="' + feature.href + '">' +
-          '<div class="featured-mini-thumb' + noCoverClass + '"' + styleAttr + '></div>' +
-          '<p class="featured-mini-title">' + truncate(feature.title, 48) + '</p>' +
-        '</a>' +
-      '</section>'
-    );
-  }
-
-  function initCarouselAutoPlay(root) {
-    var slideEls = root.querySelectorAll('.hero-slide');
-    var dotEls = root.querySelectorAll('.hero-dot');
-    if (!slideEls.length || !dotEls.length) return;
-
-    var activeIndex = 0;
-    var timer = null;
-
-    function setActive(index) {
-      activeIndex = index;
-      slideEls.forEach(function (item, idx) {
-        item.classList.toggle('is-active', idx === index);
-      });
-      dotEls.forEach(function (item, idx) {
-        item.classList.toggle('is-active', idx === index);
-      });
-    }
-
-    function next() {
-      setActive((activeIndex + 1) % slideEls.length);
-    }
-
-    function startAutoPlay() {
-      stopAutoPlay();
-      timer = setInterval(next, 5000);
-    }
-
-    function stopAutoPlay() {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
-    }
-
-    dotEls.forEach(function (dot) {
-      dot.addEventListener('click', function () {
-        var index = Number(dot.getAttribute('data-slide'));
-        if (!Number.isNaN(index)) {
-          setActive(index);
-          startAutoPlay();
-        }
-      });
-    });
-
-    root.addEventListener('mouseenter', stopAutoPlay);
-    root.addEventListener('mouseleave', startAutoPlay);
-    startAutoPlay();
-  }
-
-  function buildHomeModules() {
-    var showcaseRoot = document.getElementById('home-showcase-container');
-    // 支持两种文章列表结构：.latest-posts-list 或 .recent-post-items
-    var postWrap = document.querySelector('.latest-posts-list') || document.querySelector('#recent-posts .recent-post-items');
+  for (var i = 0; i < slideCount; i++) {
+    var post = posts[i];
+    var imgEl = post.querySelector('.post-cover img');
+    var titleEl = post.querySelector('.post-title a');
+    var excerptEl = post.querySelector('.post-excerpt');
     
-    if (!showcaseRoot || !postWrap || showcaseRoot.querySelector('.home-showcase')) return;
+    if (imgEl && titleEl) {
+      // 创建幻灯片
+      var slide = document.createElement('div');
+      slide.className = 'hero-slide' + (i === 0 ? ' is-active' : '');
+      slide.style.backgroundImage = 'url(' + imgEl.src + ')';
+      slide.innerHTML = 
+        '<div class="hero-overlay">' +
+          '<div class="hero-content">' +
+            '<span class="hero-tag">推荐</span>' +
+            '<h2 class="hero-title">' + titleEl.textContent + '</h2>' +
+            '<p class="hero-desc">' + (excerptEl ? excerptEl.textContent : '') + '</p>' +
+          '</div>' +
+        '</div>';
+      
+      // 点击跳转
+      slide.onclick = function(href) {
+        return function() { window.location.href = href; };
+      }(titleEl.href);
+      
+      track.appendChild(slide);
 
-    var allPosts = parsePosts(postWrap);
-    if (!allPosts.length) return;
-
-    var carouselPosts = allPosts.slice(0, 3);
-    var featuredPost = allPosts[3] || allPosts[0];
-
-    var showcase = document.createElement('div');
-    showcase.className = 'home-showcase';
-    showcase.innerHTML =
-      '<div class="home-showcase-left">' + buildCarousel(carouselPosts) + '</div>' +
-      '<div class="home-showcase-right">' + buildNoticeHtml(allPosts) + buildFeaturedMini(featuredPost) + '</div>';
-
-    showcaseRoot.appendChild(showcase);
-
-    var carouselRoot = showcase.querySelector('.home-hero-carousel');
-    if (carouselRoot) initCarouselAutoPlay(carouselRoot);
+      // 创建控制点
+      var dot = document.createElement('button');
+      dot.className = 'hero-dot' + (i === 0 ? ' is-active' : '');
+      dot.onclick = function(index) {
+        return function() {
+          var slides = track.querySelectorAll('.hero-slide');
+          var dots = controls.querySelectorAll('.hero-dot');
+          slides.forEach(s => s.classList.remove('is-active'));
+          dots.forEach(d => d.classList.remove('is-active'));
+          slides[index].classList.add('is-active');
+          dots[index].classList.add('is-active');
+        };
+      }(i);
+      controls.appendChild(dot);
+    }
   }
 
-  function initNavSplit() {
-    var menuWrap = document.querySelector('#menus .menus_items');
-    if (!menuWrap) return;
-
-    var links = menuWrap.querySelectorAll('.menus_item > a.site-page');
-    links.forEach(function (link) {
-      var href = (link.getAttribute('href') || '').replace(/\/$/, '');
-      if (href.endsWith('/login') || href.endsWith('/register')) {
-        link.parentElement.classList.add('menu-right-item');
-      }
-    });
-
-    var rightStart = menuWrap.querySelector('.menu-right-item');
-    if (rightStart) rightStart.classList.add('menu-right-start');
-  }
-
-  function boot() {
-    initNavSplit();
-    buildHomeModules();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
+  // 7. 填充公告 (取第 4 篇)
+  if (posts[3]) {
+    var noticeList = rightDiv.querySelector('.notice-list');
+    var titleEl = posts[3].querySelector('.post-title a');
+    if (titleEl) {
+      var li = document.createElement('li');
+      li.innerHTML = '<a href="' + titleEl.href + '">' + titleEl.textContent + '</a>';
+      noticeList.appendChild(li);
+    }
   } else {
-    boot();
+    // 如果没有第 4 篇，显示提示
+    var noticeList = rightDiv.querySelector('.notice-list');
+    noticeList.innerHTML = '<li style="color:#999;text-align:center;">暂无更多公告</li>';
   }
 
-  document.addEventListener('pjax:complete', boot);
-})();
+  // 8. 填充特别推荐 (取第 5 篇)
+  if (posts[4]) {
+    var featuredBox = rightDiv.querySelector('#featured-post-box');
+    var featuredDiv = featuredBox.querySelector('.featured-mini');
+    var imgEl = posts[4].querySelector('.post-cover img');
+    var titleEl = posts[4].querySelector('.post-title a');
+    
+    if (imgEl && titleEl) {
+      featuredDiv.innerHTML = 
+        '<div class="featured-mini-thumb" style="background-image:url(' + imgEl.src + ')"></div>' +
+        '<h4 class="featured-mini-title">' + titleEl.textContent + '</h4>';
+      
+      featuredBox.onclick = function(href) {
+        return function() { window.location.href = href; };
+      }(titleEl.href);
+      featuredBox.style.cursor = 'pointer';
+    }
+  } else {
+    // 如果没有第 5 篇，隐藏特别推荐或显示提示
+    var featuredBox = rightDiv.querySelector('#featured-post-box');
+    featuredBox.querySelector('.featured-mini').innerHTML = '<span style="color:#999;font-size:14px;">暂无特别推荐</span>';
+  }
+  
+  // 9. 启动自动轮播 (5 秒切换)
+  if (slideCount > 1) {
+     var currentSlide = 0;
+     var slides = track.querySelectorAll('.hero-slide');
+     var dots = controls.querySelectorAll('.hero-dot');
+     
+     setInterval(function() {
+       slides[currentSlide].classList.remove('is-active');
+       dots[currentSlide].classList.remove('is-active');
+       
+       currentSlide = (currentSlide + 1) % slideCount;
+       
+       slides[currentSlide].classList.add('is-active');
+       dots[currentSlide].classList.add('is-active');
+     }, 5000);
+  }
+});
