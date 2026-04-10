@@ -1,22 +1,60 @@
 extends includes/layout.pug
 
 block content
-  // 第一行：左侧内容区（轮播 + 公告 + 特别文章）
-  .home-first-row
-    #home-showcase-container
-      // 轮播图在左，公告和特别文章在右（由 JS 动态生成）
+  //- 这是一个全新的主内容区包裹，严格控制这四个板块
+  #hlog-home-layout
+    
+    //- 第一大部分：上半部分（左右分栏）
+    .hlog-top-section
+      
+      //- 左侧：轮播板块 (约占 65%)
+      .hlog-carousel-block
+        //- 请让你的 JS 仅仅把轮播图的图片生成到这个 div 里，不要生成公告了！
+        #home-showcase-container
+        
+      //- 右侧：上下堆叠 (约占 35%)
+      .hlog-right-block
+        
+        //- 右上：公告板块
+        .hlog-card.announcement-card
+          .card-header
+            span.header-icon 📢
+            span 最新公告
+          .card-body
+            ul.notice-list
+              li: a(href="#") 欢迎访问 Hlog，这是一个完全开源免费的博客系统
+              li: a(href="#") 更多新功能正在路上...
+        
+        //- 右下：特点推荐板块
+        .hlog-card.featured-card
+          .card-header
+            span.header-icon ⭐
+            span 特点推荐
+          .card-body
+            a.featured-item(href="#")
+              //- 这里填入推荐文章的封面图
+              .featured-img(style="background-image: url('/img/default.png');")
+              .featured-text
+                h4 探索 HLOG: 极速、无框架负担的现代化博客系统
 
-  // 第二行：最新文章（最近 5 篇，带封面、标题、概述）
-  .home-latest-posts
-    h2.section-title 最新文章
-    .latest-posts-list
-      - var latestPosts = page.posts.sort('date', -1).limit(5).toArray()
-      each post in latestPosts
-        .latest-post-item
-          if post.cover
-            .post-cover
-              img(src=url_for(post.cover) alt=post.title)
-          .post-info
-            h3.post-title
-              a(href=url_for(post.path))= post.title
-            .post-excerpt= post.excerpt || strip_html(post.content).substring(0, 120)
+    //- 第二大部分：下半部分（最新文章列表，底部通栏）
+    .hlog-bottom-section
+      .section-heading
+        span.heading-icon 📝
+        h2 最新发布
+      .post-list-container
+        - var latestPosts = page.posts.sort('date', -1).limit(5).toArray()
+        each post in latestPosts
+          .post-list-item
+            if post.cover
+              .post-cover-wrapper
+                img(src=url_for(post.cover) alt=post.title)
+            .post-item-info
+              h3.post-item-title
+                a(href=url_for(post.path))= post.title
+              .post-item-excerpt
+                = post.excerpt || strip_html(post.content).substring(0, 120) + '...'
+              .post-item-meta
+                span= date(post.date, 'YYYY/MM/DD')
+                span  · 
+                span 阅读更多内容...
