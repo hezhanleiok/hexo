@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>xhblog - 现代化个人博客</title><meta name="author" content="Xiao He"><meta name="copyright" content="Xiao He"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="分享技术、设计与生活">
+<meta property="og:type" content="website">
+<meta property="og:title" content="xhblog">
+<meta property="og:url" content="https://vlog.rr.kg/index.html">
+<meta property="og:site_name" content="xhblog">
+<meta property="og:description" content="分享技术、设计与生活">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://vlog.rr.kg/img/avatar.png">
+<meta property="article:author" content="Xiao He">
+<meta property="article:tag" content="前端, 设计, 技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://vlog.rr.kg/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "xhblog",
+  "alternateName": [
+    "现代化个人博客",
+    "vlog.rr.kg"
+  ],
+  "url": "https://vlog.rr.kg/"
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://vlog.rr.kg/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":true,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'xhblog',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><link rel="stylesheet" href="/css/home-grid.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/hexo/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num"><script>document.addEventListener('DOMContentLoaded', function() {
+  const articles = JSON.parse(localStorage.getItem('publishedArticles') || '[]');
+  const lengthNum = document.querySelector('.site-data .length-num');
+  if (lengthNum) {
+    lengthNum.textContent = articles.length || 2;
+  }
+});</script>2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num"><script>document.addEventListener('DOMContentLoaded', function() {
+  const tags = JSON.parse(localStorage.getItem('tags') || '[]');
+  const lengthNum = document.querySelectorAll('.site-data .length-num')[1];
+  if (lengthNum) {
+    lengthNum.textContent = tags.length || 4;
+  }
+});</script>4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num"><script>document.addEventListener('DOMContentLoaded', function() {
+  const categories = JSON.parse(localStorage.getItem('categories') || '[]');
+  const lengthNum = document.querySelectorAll('.site-data .length-num')[2];
+  if (lengthNum) {
+    lengthNum.textContent = categories.length || 2;
+  }
+});</script>2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.png" alt="Logo"></a></span><div id="menus"><div class="nav-container"><div class="nav-left"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-archive"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span> 技术教程</span></a></li><li><a class="site-page child" href="/categories/%E6%B5%8B%E8%AF%95/"><span> 测试</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/privacy/"><i class="fa-fw fas fa-lock"></i><span> 隐私</span></a></div></div></div><div class="nav-right"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_item"><a class="site-page" href="/dashboard"><i class="fa-fw fas fa-sign-in-alt"></i><span> 登录</span></a></div></div></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></nav><h1 class="title-seo">xhblog</h1></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div id="hlog-home-layout" style="width: 100%; display: flex; flex-direction: column; gap: 25px; margin-bottom: 40px;"><div class="hlog-top-section" style="display: grid; grid-template-columns: 65% calc(35% - 20px); gap: 20px; width: 100%; min-height: 380px;"><div class="hlog-carousel-block" style="width: 100%; height: 100%; background: #f4f6f8; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);"><div id="home-showcase-container" style="width: 100%; height: 100%; position: relative;"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;">加载中...</div></div></div><div class="hlog-right-block" style="display: flex; flex-direction: column; gap: 20px; height: 100%;"><div class="hlog-card announcement-card" style="flex: 1; background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;"><div class="card-header" style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;"><span class="header-icon">📢</span><span>最新公告</span></div><div class="card-body"><ul class="notice-list" style="padding-left: 15px; margin: 0; font-size: 14px; line-height: 1.8;"><li><a href="/" style="color: #4b5563; text-decoration: none;">欢迎访问 Hlog 博客</a></li><li><a href="/" style="color: #4b5563; text-decoration: none;">更多文章和功能持续更新中...</a></li></ul></div></div><div class="hlog-card featured-poster-card" style="flex: 1; position: relative; padding: 0; overflow: hidden; border-radius: 12px; display: flex; background: #111;"><div class="poster-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"><img id="featured-poster-img" src="" alt="推荐" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.65;"></div><div class="poster-overlay" style="position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 80%); box-sizing: border-box;"><span class="poster-tag" style="display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin-bottom: 8px; width: fit-content;">⭐ 特别推荐</span><h4 id="featured-poster-title" style="color: #fff; margin: 0; font-size: 15px; line-height: 1.5; font-weight: 700; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">加载中...</h4></div></div></div></div><div class="hlog-bottom-section" style="width: 100%;"><div class="section-heading" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;"><span class="heading-icon">📝</span><h2 style="margin: 0; font-size: 18px; font-weight: 700; border-left: 4px solid #3b82f6; padding-left: 12px;">最新发布</h2></div><div class="post-list-container" style="display: flex; flex-direction: column; gap: 20px;"><a class="post-list-item" href="/2026/04/02/%E7%AC%AC%E4%BA%8C%E7%AF%87%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/" style="display: flex; background: #fff; border-radius: 12px; padding: 20px; gap: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); text-decoration: none; color: inherit; transition: transform 0.2s;"><style>.post-list-item:hover { transform: translateY(-3px); }
+</style><div class="post-cover-wrapper" style="width: 260px; height: 160px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #f0f0f0; display:flex; align-items:center; justify-content:center; color:#999; font-size: 14px;">暂无封面图</div><div class="post-item-info" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 5px 0;"><h3 class="post-item-title" style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #111827;">第二篇测试文章</h3><div class="post-item-excerpt" style="color: #6b7280; font-size: 14px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">...</div><div class="post-item-meta" style="font-size: 13px; color: #9ca3af;"><span>2026/04/03</span><span> · </span><span>阅读全文</span></div></div></a><a class="post-list-item" href="/2026/04/02/hello-world/" style="display: flex; background: #fff; border-radius: 12px; padding: 20px; gap: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); text-decoration: none; color: inherit; transition: transform 0.2s;"><style>.post-list-item:hover { transform: translateY(-3px); }
+</style><div class="post-cover-wrapper" style="width: 260px; height: 160px; border-radius: 8px; overflow: hidden; flex-shrink: 0;"><img src="https://pic.rmbd.bdstatic.com/bjh/250312/dump/62a1211a32aeaf52154a29966728ce5.jpeg" alt="现代前端博客快速搭建实战" style="width: 100%; height: 100%; object-fit: cover;"></div><div class="post-item-info" style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 5px 0;"><h3 class="post-item-title" style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #111827;">现代前端博客快速搭建实战</h3><div class="post-item-excerpt" style="color: #6b7280; font-size: 14px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">...</div><div class="post-item-meta" style="font-size: 13px; color: #9ca3af;"><span>2026/04/02</span><span> · </span><span>阅读全文</span></div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/hexo/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Xiao He</div><div class="author-info-description">热爱技术，热爱生活。分享前端开发、设计与日常。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://x.com/xiaoheyiyi" target="_blank" title="X"><i class="fab fa-twitter" style="color: #1DA1F2;"></i></a><a class="social-icon" href="https://www.youtube.com/@xiaoheai" target="_blank" title="YouTube"><i class="fab fa-youtube" style="color: #FF0000;"></i></a><a class="social-icon" href="https://github.com/hezhanleiok/hezhanleiok.github.io" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="https://t.me/xiaoheok" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #26A5E4;"></i></a></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span class="card-category-list-name">技术教程</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B5%8B%E8%AF%95/"><span class="card-category-list-name">测试</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 10px;">前端开发</a> <a href="/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE1/" style="font-size: 10px;">测试标签1</a> <a href="/tags/%E6%B5%8B%E8%AF%95%E6%A0%87%E7%AD%BE2/" style="font-size: 10px;">测试标签2</a> <a href="/tags/%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">静态博客</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/04/">
+            <span class="card-archive-list-date">
+              四月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">2</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div><div class="sticky_layout"></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Xiao He</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script defer src="/js/home-carousel.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
