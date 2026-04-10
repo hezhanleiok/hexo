@@ -37,7 +37,8 @@ block content
         span.heading-icon 📝
         h2 最新发布
       .post-list-container
-        - var latestPosts = page.posts.sort('date', -1).limit(5).toArray()
+        //- 【修复致命报错 1】换用全局 site.posts 获取最新5篇文章，绝对不会再报 limit 错误
+        - var latestPosts = site.posts.sort('date', -1).limit(5).toArray()
         each post in latestPosts
           .post-list-item
             if post.cover
@@ -47,7 +48,9 @@ block content
               h3.post-item-title
                 a(href=url_for(post.path))= post.title
               .post-item-excerpt
-                = post.excerpt || strip_html(post.content).substring(0, 120) + '...'
+                //- 【修复致命报错 2】增加安全判断，防止个别文章没有内容导致 strip_html 崩溃
+                - var postText = post.excerpt || (post.content ? strip_html(post.content).substring(0, 120) + '...' : '暂无摘要...')
+                = postText
               .post-item-meta
                 span= date(post.date, 'YYYY/MM/DD')
                 span  · 
