@@ -1,22 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. 获取轮播容器
   var container = document.getElementById('home-showcase-container');
   if (!container) return;
 
-  // 2. 获取最新文章列表数据 (抓取下半部分已经生成的文章)
+  // 抓取下方的文章列表数据
   var posts = document.querySelectorAll('.post-list-item');
-  if (posts.length === 0) return; // 如果一篇文章都没有，静默退出，不报错
+  
+  // 【防御机制】如果没有文章，安全提示并退出
+  if (posts.length === 0) {
+     container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:16px;">暂无发布文章</div>';
+     var fallbackTitle = document.getElementById('featured-poster-title');
+     if (fallbackTitle) fallbackTitle.textContent = "暂无推荐文章";
+     return;
+  }
 
-  // 3. 构建纯净的轮播区域 HTML
+  // 构建纯净的轮播 HTML (绝对不要再去生成 rightDiv 了！)
   container.innerHTML = '<div class="home-hero-carousel"><div class="hero-track"></div><div class="hero-controls"></div></div>';
 
-  // 4. 动态填充轮播图 (自动适应：最多取 3 篇，不够有几篇取几篇)
   var track = container.querySelector('.hero-track');
   var controls = container.querySelector('.hero-controls');
   var slideCount = Math.min(3, posts.length);
   var slides = []; 
   var dots = [];   
 
+  // 填充轮播图
   for (var i = 0; i < slideCount; i++) {
     var post = posts[i];
     var imgEl = post.querySelector('.post-cover-wrapper img') || post.querySelector('img');
@@ -58,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // 5. 动态填充特别推荐海报 (按要求：读取最新的一篇文章，即第一篇 posts[0])
+  // 动态填充特别推荐海报 (永远取第 1 篇文章)
   if (posts[0]) {
     var featuredImgEl = document.getElementById('featured-poster-img');
     var featuredTitleEl = document.getElementById('featured-poster-title');
@@ -76,21 +82,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }(sourceTitle.href);
       featuredCard.style.cursor = 'pointer';
     }
-  } else {
-     // 极端情况防御：有可能会进入这里，但保证不报错
-     var featuredTitleFallback = document.getElementById('featured-poster-title');
-     if (featuredTitleFallback) featuredTitleFallback.textContent = "暂无推荐文章";
   }
 
-  // 6. 启动自动轮播 (极其关键：只有文章数 > 1 篇时才开启轮播动画)
-  if (slides.length > 1) {
+  // 启动自动轮播 (仅当文章数 > 1 篇时才启动，否则隐藏圆点)
+  if (slides.length <= 1) {
+     controls.style.display = 'none';
+  } else {
      var currentSlide = 0;
      setInterval(function() {
        if(slides[currentSlide]) slides[currentSlide].classList.remove('is-active');
        if(dots[currentSlide]) dots[currentSlide].classList.remove('is-active');
-       
        currentSlide = (currentSlide + 1) % slides.length;
-       
        if(slides[currentSlide]) slides[currentSlide].classList.add('is-active');
        if(dots[currentSlide]) dots[currentSlide].classList.add('is-active');
      }, 5000);
