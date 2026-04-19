@@ -1,136 +1,54 @@
-/* 导航栏布局调整 - 菜单靠左，右侧搜索/登录/菜单按钮 统一靠最右对齐 */
-@media (min-width: 992px) {
-  #nav {
+/* 1. 导航栏对齐：将搜索、登录、汉堡菜单全部推向右侧 */
+#nav {
     display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 0 36px !important;
-  }
-
-  /* 【修复】彻底开放显示三条杠图标 */
-  #toggle-menu {
-    display: inline-block !important;
-  }
-
-  #nav #menus {
-    display: flex !important;
-    align-items: center !important;
-    flex: 1 !important;
-    margin-left: 30px !important;
-  }
-
-  #nav #menus .nav-container {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-  }
-
-  #nav #menus .nav-left {
-    display: flex !important;
-    align-items: center !important;
-    flex: 1 !important;
-    justify-content: flex-start !important;
-  }
-
-  /* 【修复】右侧组件群：强制横排靠最右，带统一间距 */
-  #nav .right,
-  #nav #menus .nav-right {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    margin-left: auto !important;
-    gap: 15px !important; 
-  }
-
-  #nav #menus .menus_items .site-page {
-    font-size: 1.1rem !important;
-    font-weight: 500 !important;
-    margin: 0 15px !important;
-  }
-
-  /* 搜索图标调整 */
-  #nav #search-button {
-    display: inline-flex !important;
+    justify-content: space-between;
     align-items: center;
-  }
-
-  #nav #search-button .site-page {
-    font-size: 1rem !important;
-  }
-
-  /* 登录按钮样式调整 */
-  #nav .menus_item .site-page[href*="dashboard"] {
-    background: #3b82f6 !important;
-    color: white !important;
-    padding: 8px 16px !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-  }
-
-  #nav .menus_item .site-page[href*="dashboard"]:hover {
-    background: #2563eb !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-  }
 }
 
-@media (max-width: 991px) {
-  #toggle-menu {
-    display: block !important;
-    margin-left: auto;
-  }
-  #nav #menus {
+#nav #site-name {
+    margin-right: auto; /* 确保标题在左侧 */
+}
+
+#nav #menus {
+    display: flex !important;
+    align-items: center;
+    margin-left: auto; /* 将整个菜单组推向右侧 */
+}
+
+/* 强制搜索图标、登录按钮和菜单按钮右对齐并保持间距 */
+#nav .nav-button,
+#nav #search-button,
+#nav #toggle-menu,
+#nav .site-page[href*="/login/"] {
+    order: 10;
+    margin-left: 12px !important;
+    display: inline-block !important;
+}
+
+/* 2. 修复特别推荐（top_group）背景：去掉黑色，保持浅色一致 */
+#top-gtoup, 
+.top_group_item,
+#aside-list .aside-list-item {
+    background: #ffffff !important; /* 整体保持一致的浅色背景 */
+    background-color: #ffffff !important;
+    color: var(--font-color) !important;
+    border-radius: 8px;
+}
+
+/* 去除特别推荐位顶部的黑色遮罩/阴影 */
+#aside-list .aside-list-item:before,
+.top_group_item:after {
+    background: transparent !important;
     display: none !important;
-  }
 }
 
-/* Sidebar webinfo alignment fix */
-#aside-content .card-webinfo .webinfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-#aside-content .card-webinfo .webinfo-item {
-  width: 100% !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-#aside-content .card-webinfo .item-name {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  white-space: nowrap;
-}
-#aside-content .card-webinfo .item-count {
-  min-width: 4.6rem;
-  margin: 0;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+/* 3. 页面条结成（页脚或分隔条）浅色背景修复 */
+#footer-bar {
+    background: #f6f8fa !important;
+    border-top: 1px solid #eee;
 }
 
-/* Hot tags visual polish */
-#aside-content .card-tag-cloud a {
-  display: inline-flex;
-  align-items: center;
-  margin: 0.22rem;
-  padding: 0.22rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  line-height: 1.3;
-  background: #eef2ff;
-  color: #334155;
-  border: 1px solid #dbe4ff;
-}
-
-/* Carousel fixes */
-.carousel-item {
-  background: #f5f5f5 !important;
-  color: #333 !important;
-}
-.carousel-item .carousel-info h2,
-.carousel-item .carousel-info p {
-  color: #333 !important;
+/* 防止自定义 JS 报错导致的布局塌陷 */
+.carousel-container {
+    min-height: 10px;
 }
