@@ -1,3 +1,6 @@
+# ==========================================
+# 核心显示配置
+# ==========================================
 nav:
   display_title: false
 
@@ -5,6 +8,31 @@ avatar:
   img: /img/avatar.png
   effect: false
 
+index_post_content:
+  method: 3 # 显示文章描述
+
+# 封面设置：确保首页显示图片
+cover:
+  index_enable: true
+  aside_enable: true
+  archives_enable: true
+  position: both
+
+# 首页轮播图
+index_slider:
+  enable: true
+  priority: 8
+  source: posts
+  layout: 1
+
+# 特别推荐位
+top_group:
+  enable: true
+  all_site: true
+
+# ==========================================
+# 侧边栏配置
+# ==========================================
 aside:
   display:
     archive: true
@@ -24,8 +52,12 @@ aside:
     enable: true
     post_count: true
 
+# ==========================================
+# 样式与脚本注入
+# ==========================================
 inject:
   head:
     - <link rel="stylesheet" href="/css/home-grid.css">
+    - <link rel="stylesheet" href="/css/custom-layout.css">
   bottom:
     - <script defer src="/js/home-carousel.js"></script>

@@ -6,7 +6,7 @@ categories: 技术教程
 tags:
   - API
 status: published
-cover: (https://img.wemd.app/1776584881024_kdvtpf.png)
+cover: https://img.wemd.app/1776584881024_kdvtpf.png
 description: 免费获取最新Claude 4.6免费API教程和配置说明。
 ---
 ## 📌 平台简介
