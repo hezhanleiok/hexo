@@ -1,26 +1,28 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // 增加容错检查：尝试获取默认轮播图 ID 或你自定义的容器 ID
-    const sliderEl = document.getElementById('index_slider') || document.getElementById('home-showcase-container');
+document.addEventListener('DOMContentLoaded', function () {
+    const sliderContainer = document.getElementById('index_slider');
     
-    // 核心修复：如果当前页面没渲染轮播图 DOM（比如在文章内容页），则直接退出，不执行后续初始化，防止报错
-    if (!sliderEl) {
-        return; 
+    // 如果不在首页或找不到容器，直接退出，防止 F12 报错
+    if (!sliderContainer) return;
+
+    // 检查是否有带封面的文章
+    const hasCovers = document.querySelectorAll('.recent-post-item .post_cover').length > 0;
+
+    if (!hasCovers) {
+        // 如果没有封面文章，隐藏加载状态，避免一直显示加载中
+        sliderContainer.innerHTML = '<div style="padding:20px; text-align:center;">暂无封面文章</div>';
+        return;
     }
 
     try {
-        // --- 轮播图具体初始化逻辑 ---
+        // 这里是你的轮播初始化代码（例如 Swiper）
+        // 如果你使用的是 Butterfly 自带的 slider，它通常会自动寻找 data-source
+        console.log('Carousel content detected, starting initialization...');
         
-        // 抓取页面上渲染出来的文章 (兼容你原有的逻辑)
-        const posts = document.querySelectorAll('.post-list-item');
-        
-        if (posts.length > 0) {
-            // 这里可以继续写你具体的轮播图控制代码
-            // 例如初始化 Swiper： 
-            // new Swiper('#index_slider', { ... });
-        }
-        
-        console.log('轮播图初始化成功');
-    } catch (e) {
-        console.error('轮播图初始化失败:', e);
+        // 强制移除“加载中”样式的容错处理（如果你有手动添加的 loading 标签）
+        const loadingEl = sliderContainer.querySelector('.loading-text');
+        if (loadingEl) loadingEl.style.display = 'none';
+
+    } catch (err) {
+        console.warn('Carousel script error:', err);
     }
 });

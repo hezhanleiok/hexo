@@ -1,54 +1,59 @@
-/* 1. 导航栏对齐：将搜索、登录、汉堡菜单全部推向右侧 */
+/* 1. 导航栏布局：首页/文章/关于/隐私靠左，其余靠右 */
 #nav {
     display: flex !important;
-    justify-content: space-between;
     align-items: center;
-}
-
-#nav #site-name {
-    margin-right: auto; /* 确保标题在左侧 */
+    justify-content: flex-start !important; /* 整体容器左对齐 */
 }
 
 #nav #menus {
     display: flex !important;
-    align-items: center;
-    margin-left: auto; /* 将整个菜单组推向右侧 */
+    flex: 1; /* 占据剩余空间 */
+    justify-content: flex-start !important;
 }
 
-/* 强制搜索图标、登录按钮和菜单按钮右对齐并保持间距 */
-#nav .nav-button,
+/* 强制搜索、登录、汉堡菜单按钮组向右对齐 */
 #nav #search-button,
-#nav #toggle-menu,
-#nav .site-page[href*="/login/"] {
-    order: 10;
-    margin-left: 12px !important;
-    display: inline-block !important;
+#nav .site-page[href*="/login/"],
+#nav #toggle-menu {
+    margin-left: auto !important; /* 核心：将第一个右侧元素推向最右 */
+    order: 99;
 }
 
-/* 2. 修复特别推荐（top_group）背景：去掉黑色，保持浅色一致 */
-#top-gtoup, 
-.top_group_item,
-#aside-list .aside-list-item {
-    background: #ffffff !important; /* 整体保持一致的浅色背景 */
-    background-color: #ffffff !important;
-    color: var(--font-color) !important;
-    border-radius: 8px;
+#nav #search-button {
+    margin-left: auto !important; /* 确保搜索是第一个被推向右边的 */
 }
 
-/* 去除特别推荐位顶部的黑色遮罩/阴影 */
-#aside-list .aside-list-item:before,
+#nav .site-page[href*="/login/"], 
+#nav #toggle-menu {
+    margin-left: 15px !important; /* 右侧元素之间的间距 */
+    order: 100;
+}
+
+/* 2. 特别推荐位背景修复：去除黑色，改为浅色 */
+#top-group,
+.top_group_item {
+    background: #f8f9fa !important; /* 浅灰色背景 */
+    color: #4c4948 !important; /* 暗色字体 */
+    border-radius: 12px;
+}
+
+/* 彻底移除黑色半透明遮罩 */
 .top_group_item:after {
     background: transparent !important;
     display: none !important;
 }
 
-/* 3. 页面条结成（页脚或分隔条）浅色背景修复 */
-#footer-bar {
-    background: #f6f8fa !important;
-    border-top: 1px solid #eee;
+.top_group_item .item-content .title {
+    color: #333 !important; /* 标题颜色 */
 }
 
-/* 防止自定义 JS 报错导致的布局塌陷 */
-.carousel-container {
-    min-height: 10px;
+/* 3. 首页文章列表卡片：确保描述文字（概述）样式一致 */
+.recent-post-item .post_cover {
+    border-radius: 8px 0 0 8px;
+}
+
+.recent-post-item .post-description {
+    color: #666;
+    font-size: 14px;
+    margin-top: 8px;
 }
