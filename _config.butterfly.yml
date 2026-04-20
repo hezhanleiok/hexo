@@ -49,7 +49,7 @@ aside:
     enable: true
   card_tags:
     enable: true
-  # 关键修复：开启最新评论板块
+  # 开启最新评论板块
   card_newest_comments:
     enable: true
     limit: 6
@@ -59,11 +59,28 @@ aside:
     post_count: true
 
 # ==========================================
-# 资源注入
+# 评论配置 (新增：解决最新评论模块不显示的问题)
+# ==========================================
+comments:
+  use: Twikoo
+  text: true
+  lazyload: false
+  count: true
+
+twikoo:
+  # 请在此处替换为你自己的 Twikoo envId (通过云开发或 Vercel 获取)
+  envId: 'https://你的twikoo环境地址' 
+  region: 
+  visitor: true
+
+# ==========================================
+# 资源注入 (新增了 Swiper 依赖)
 # ==========================================
 inject:
   head:
     - <link rel="stylesheet" href="/css/home-grid.css">
     - <link rel="stylesheet" href="/css/custom-layout.css">
+    - <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
   bottom:
+    - <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     - <script defer src="/js/home-carousel.js"></script>
