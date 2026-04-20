@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const sliderContainer = document.getElementById('index_slider');
+    // 修复1：使用真实的容器 ID
+    const sliderContainer = document.getElementById('home-showcase-container');
     
-    // 如果不在首页或找不到容器，直接退出
     if (!sliderContainer) return;
 
-    // 适配你自己写的 CSS，获取所有首页文章列表项目
+    // 获取所有带有封面的文章卡片
     const posts = Array.from(document.querySelectorAll('.post-list-item')).filter(post => {
-        return post.querySelector('.post-cover-wrapper img'); // 只筛选带有封面的文章
+        return post.querySelector('.post-cover-wrapper img'); 
     });
 
     if (posts.length === 0) {
@@ -15,17 +15,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     try {
-        // 清除原来的 loading
         sliderContainer.innerHTML = '';
-        
-        // 动态构建 Swiper 的 DOM 结构
-        let swiperHTML = '<div class="swiper-container" style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:12px;"><div class="swiper-wrapper">';
+        let swiperHTML = '<div class="swiper-container" style="width:100%; height:100%; position:absolute; top:0; left:0; overflow:hidden; border-radius:12px;"><div class="swiper-wrapper">';
         
         posts.forEach(post => {
             const coverImgUrl = post.querySelector('.post-cover-wrapper img').src;
-            const titleEl = post.querySelector('.post-item-title a');
-            const title = titleEl.innerText;
-            const link = titleEl.href;
+            // 修复2：直接获取外层 a 标签的 href，以及内部标题的文字
+            const title = post.querySelector('.post-item-title').innerText;
+            const link = post.getAttribute('href');
             
             swiperHTML += `
                 <div class="swiper-slide">
@@ -45,23 +42,15 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="swiper-button-prev" style="color:#fff; transform:scale(0.7);"></div>
         </div>`;
         
-        // 将构建好的 HTML 插入容器
         sliderContainer.innerHTML = swiperHTML;
 
-        // 初始化 Swiper 组件
         if (typeof Swiper !== 'undefined') {
             new Swiper(sliderContainer.querySelector('.swiper-container'), {
-                loop: posts.length > 1, // 大于1篇才开启循环
+                loop: posts.length > 1,
                 autoplay: { delay: 4000, disableOnInteraction: false },
-                effect: 'fade', // 如果喜欢渐变加上这个，不需要可以删掉
-                pagination: { 
-                    el: '.swiper-pagination', 
-                    clickable: true 
-                },
-                navigation: { 
-                    nextEl: '.swiper-button-next', 
-                    prevEl: '.swiper-button-prev' 
-                }
+                effect: 'fade',
+                pagination: { el: '.swiper-pagination', clickable: true },
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
             });
         }
     } catch (err) {
