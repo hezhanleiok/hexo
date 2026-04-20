@@ -1,82 +1,3 @@
-/* ===== HLOG 首页专属 CSS ===== */
-
-#hlog-home-layout {
-  width: 100%; 
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  margin-bottom: 40px;
-}
-
-/* --- 上半部分：左右分栏 --- */
-.hlog-top-section {
-  display: grid;
-  grid-template-columns: 65% calc(35% - 20px);
-  gap: 20px;
-  width: 100%;
-  min-height: 380px;
-}
-
-.hlog-carousel-block {
-  width: 100%;
-  height: 100%;
-  background: #f4f6f8;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-#home-showcase-container {
-  width: 100%;
-  height: 100%;
-}
-
-.hlog-right-block {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  height: 100%;
-}
-
-.hlog-card {
-  flex: 1;
-  background: #fff;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.hlog-card .card-header {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hlog-card .card-header::before {
-  content: "";
-  display: inline-block;
-  width: 4px;
-  height: 16px;
-  background: #3b82f6;
-  border-radius: 2px;
-}
-
-.notice-list {
-  padding-left: 15px;
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.8;
-}
-.notice-list a { color: #4b5563; text-decoration: none; }
-.notice-list a:hover { color: #3b82f6; }
-
 /* --- 特别推荐海报效果 (修复背景黑的问题) --- */
 .featured-poster-card {
   position: relative !important;
@@ -85,7 +6,7 @@
   border-radius: 12px;
   flex: 1;
   display: flex;
-  background: transparent; /* 关键修改：取消黑背景 */
+  background: transparent !important; /* 强制覆盖 HTML 内联的黑底 */
   transition: transform 0.3s;
 }
 .featured-poster-card:hover {
@@ -103,7 +24,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 1; /* 关键修改：图片不再半透明发黑 */
+  opacity: 1 !important; /* 强制覆盖 HTML 内联的半透明发黑效果 */
   transition: transform 0.4s ease;
 }
 .featured-poster-card:hover .poster-background img { transform: scale(1.05); }
@@ -116,7 +37,6 @@
   padding: 20px;
   width: 100%;
   height: 100%;
-  /* 调整黑色渐变让文字清晰，但不影响上半部分原图 */
   background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%);
   box-sizing: border-box;
 }
@@ -143,111 +63,4 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-/* --- 下半部分：最新文章列表 --- */
-.hlog-bottom-section { width: 100%; }
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.section-heading h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  border-left: 4px solid #3b82f6;
-  padding-left: 12px;
-}
-
-.post-list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.post-list-item {
-  display: flex;
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  gap: 25px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-  transition: transform 0.2s ease;
-}
-.post-list-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
-.post-cover-wrapper {
-  width: 260px;
-  height: 160px;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.post-cover-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.post-item-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 5px 0;
-}
-
-.post-item-title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-.post-item-title a { color: #111827; text-decoration: none; }
-.post-item-excerpt {
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.post-item-meta { font-size: 13px; color: #9ca3af; }
-
-/* --- 侧边栏最新评论气泡样式 (新增) --- */
-.card-newest-comments .aside-list-item {
-    background: #f4f6f8;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    position: relative;
-    border: 1px solid #edf2f7;
-}
-/* 气泡小尾巴 */
-.card-newest-comments .aside-list-item::after {
-    content: '';
-    position: absolute;
-    left: 28px; /* 头像下对齐位置 */
-    bottom: -10px;
-    border-width: 10px 10px 0;
-    border-style: solid;
-    border-color: #f4f6f8 transparent transparent transparent;
-}
-/* 微调气泡里的头像对齐 */
-.card-newest-comments .aside-list-item .thumbnail {
-    border-radius: 50% !important;
-    border: 2px solid #fff;
-}
-
-/* 手机端响应式 */
-@media (max-width: 992px) {
-  .hlog-top-section { grid-template-columns: 1fr; min-height: auto; }
-  .post-list-item { flex-direction: column; }
-  .post-cover-wrapper { width: 100%; height: 200px; }
 }

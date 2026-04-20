@@ -1,4 +1,10 @@
 # ==========================================
+# 个人资料覆盖 (修复简介文字)
+# ==========================================
+author:
+  description: '热爱技术热爱生活。'
+
+# ==========================================
 # 导航栏配置
 # ==========================================
 nav:
@@ -8,7 +14,7 @@ nav:
 # 文章显示配置
 # ==========================================
 index_post_content:
-  method: 3 # 关键：自动获取文章 description 作为概述显示在标题下
+  method: 3
 
 cover:
   index_enable: true
@@ -16,24 +22,10 @@ cover:
   archives_enable: true
   position: both
 
-# 阅读数量统计 (使用不蒜子)
 busuanzi:
   site_uv: true
   site_pv: true
-  page_pv: true # 关键：开启文章页阅读数
-
-# ==========================================
-# 首页轮播与推荐
-# ==========================================
-index_slider:
-  enable: true
-  priority: 8
-  source: posts # 抓取所有带 cover 的文章
-  layout: 1
-
-top_group:
-  enable: true
-  all_site: true
+  page_pv: true
 
 # ==========================================
 # 侧边栏配置
@@ -49,18 +41,18 @@ aside:
     enable: true
   card_tags:
     enable: true
-  # 开启最新评论板块
-  card_newest_comments:
-    enable: true
-    limit: 6
-    avatar: true
   card_webinfo:
     enable: true
     post_count: true
 
 # ==========================================
-# 评论配置 (新增：解决最新评论模块不显示的问题)
+# 最新评论配置 (关键修复：必须放在顶层)
 # ==========================================
+newest_comments:
+  enable: true
+  limit: 6
+  avatar: true
+
 comments:
   use: Twikoo
   text: true
@@ -74,7 +66,7 @@ twikoo:
   visitor: true
 
 # ==========================================
-# 资源注入 (新增了 Swiper 依赖)
+# 资源注入
 # ==========================================
 inject:
   head:
