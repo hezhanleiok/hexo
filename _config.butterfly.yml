@@ -1,14 +1,20 @@
 # ==========================================
-# 个人资料设置 (这里修改简介)
+# 导航栏设置 (修复：删除 logo 旁边的文字)
+# ==========================================
+nav:
+  display_title: false # 必须为 false，这样就只显示你的 logo 图片
+
+# ==========================================
+# 个人资料设置
 # ==========================================
 author:
   name: Xiao He
-  description: '热爱技术热爱生活。' # 确保这里是这一句
+  description: '热爱技术热爱生活。'
   avatar: /img/avatar.png
   link: /
 
 # ==========================================
-# 侧边栏卡片设置
+# 侧边栏设置 (修复：删除公告，开启最新评论)
 # ==========================================
 aside:
   display:
@@ -18,14 +24,11 @@ aside:
   card_author:
     enable: true
   card_announcement:
-    enable: true
-    content: "欢迎来到我的个人博客"
-  # 关键修复：确保这部分在 aside 下面，且缩进正确
+    enable: false # 彻底关闭公告板块
   card_newest_comments:
-    enable: true
+    enable: true # 开启最新评论板块
     limit: 6
     avatar: true
-    avatar_size: 40
   card_categories:
     enable: true
   card_tags:
@@ -37,29 +40,15 @@ aside:
     post_count: true
 
 # ==========================================
-# 评论系统配置
+# 评论系统 (确保 Twikoo 开启)
 # ==========================================
 comments:
   use: 
-    - Twikoo # 必须确保这里开启了 Twikoo
+    - Twikoo
   text: true
   lazyload: false
-  count: true
 
 twikoo:
-  # 💡 重要：请务必将下方改为你真实的 Twikoo 环境地址，否则评论板块会因为报错而隐藏
-  envId: https://twikoo.vlog.rr.kg 
+  envId: https://twikoo.vlog.rr.kg # 请确保这是你真实的地址
   region: 
   visitor: true
-
-# ==========================================
-# 资源注入
-# ==========================================
-inject:
-  head:
-    - <link rel="stylesheet" href="/css/home-grid.css">
-    - <link rel="stylesheet" href="/css/custom-layout.css">
-    - <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-  bottom:
-    - <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    - <script defer src="/js/home-carousel.js"></script>
