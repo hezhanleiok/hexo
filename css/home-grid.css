@@ -1,47 +1,68 @@
-/* ... 保留之前的代码 ... */
-
-/* --- 侧边栏最新评论美化 (气泡风格) --- */
-#aside-content .card-newest-comments .aside-list-item {
-    background: #f8fafc !important;
-    border-radius: 12px !important;
-    padding: 12px !important;
-    margin-bottom: 15px !important;
+/* --- 特别推荐板块 (修复：换成浅色背景) --- */
+.featured-poster-card {
     position: relative !important;
-    border: 1px solid #e2e8f0 !important;
-    display: flex !important;
-    flex-direction: column !important;
+    padding: 0 !important;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #ffffff !important; /* 改为白色背景 */
+    transition: transform 0.3s;
+    border: 1px solid #f0f0f0;
 }
 
-/* 气泡小尖角 */
+.poster-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1 !important; /* 彻底移除黑色遮罩感，图片保持原色 */
+}
+
+/* 渐变遮罩改为浅色透明到深色的过渡，仅为了看清文字 */
+.poster-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%) !important;
+}
+
+/* --- 右侧最新评论美化 (气泡/旗袍风格) --- */
+#aside-content .card-newest-comments .aside-list-item {
+    background: #f1f5f9 !important; /* 气泡底色 */
+    border-radius: 12px !important;
+    padding: 12px !important;
+    margin-bottom: 18px !important;
+    position: relative !important;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* 气泡尖角 */
 #aside-content .card-newest-comments .aside-list-item::after {
     content: '';
     position: absolute;
-    left: 20px;
-    bottom: -8px;
-    border-width: 8px 8px 0;
+    left: 15px;
+    bottom: -10px;
+    border-width: 10px 10px 0;
     border-style: solid;
-    border-color: #f8fafc transparent transparent transparent;
+    border-color: #f1f5f9 transparent transparent transparent;
 }
 
-/* 头像圆角化 (旗袍/圆形效果) */
+/* 头像圆形（旗袍头像感） */
 #aside-content .card-newest-comments .aside-list-item .thumbnail {
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 50% !important; /* 强制圆形 */
-    margin-right: 10px !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important; /* 绝对圆角 */
     border: 2px solid #fff !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: absolute;
+    bottom: -45px; /* 头像放在气泡下方 */
+    left: 0;
 }
 
-/* 调整评论文字颜色 */
+/* 评论文字微调 */
 #aside-content .card-newest-comments .aside-list-item .content {
-    color: #4a5568 !important;
-    font-size: 13px !important;
-    line-height: 1.5 !important;
+    color: #334155 !important;
+    font-size: 13.5px !important;
+    padding-bottom: 2px;
 }
 
 #aside-content .card-newest-comments .aside-list-item .name {
-    font-weight: bold !important;
-    color: #2d3748 !important;
-    margin-bottom: 4px;
+    color: #64748b !important;
+    font-size: 12px;
+    font-weight: bold;
 }
