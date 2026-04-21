@@ -1,67 +1,54 @@
 # ==========================================
-# 个人资料覆盖 (修复简介文字)
+# 个人资料设置 (这里修改简介)
 # ==========================================
 author:
-  description: '热爱技术热爱生活。'
+  name: Xiao He
+  description: '热爱技术热爱生活。' # 确保这里是这一句
+  avatar: /img/avatar.png
+  link: /
 
 # ==========================================
-# 导航栏配置
-# ==========================================
-nav:
-  display_title: false
-
-# ==========================================
-# 文章显示配置
-# ==========================================
-index_post_content:
-  method: 3
-
-cover:
-  index_enable: true
-  aside_enable: true
-  archives_enable: true
-  position: both
-
-busuanzi:
-  site_uv: true
-  site_pv: true
-  page_pv: true
-
-# ==========================================
-# 侧边栏配置
+# 侧边栏卡片设置
 # ==========================================
 aside:
   display:
     archive: true
     category: true
     tag: true
+  card_author:
+    enable: true
+  card_announcement:
+    enable: true
+    content: "欢迎来到我的个人博客"
+  # 关键修复：确保这部分在 aside 下面，且缩进正确
+  card_newest_comments:
+    enable: true
+    limit: 6
+    avatar: true
+    avatar_size: 40
   card_categories:
     enable: true
-  card_archives:
-    enable: true
   card_tags:
+    enable: true
+  card_archives:
     enable: true
   card_webinfo:
     enable: true
     post_count: true
 
 # ==========================================
-# 最新评论配置 (关键修复：必须放在顶层)
+# 评论系统配置
 # ==========================================
-newest_comments:
-  enable: true
-  limit: 6
-  avatar: true
-
 comments:
-  use: Twikoo
+  use: 
+    - Twikoo # 必须确保这里开启了 Twikoo
   text: true
   lazyload: false
   count: true
 
 twikoo:
-  # 请在此处替换为你自己的 Twikoo envId (通过云开发或 Vercel 获取)
-  envId: 'https://你的twikoo环境地址' 
+  # 💡 重要：请务必将下方改为你真实的 Twikoo 环境地址，否则评论板块会因为报错而隐藏
+  envId: https://twikoo.vlog.rr.kg 
   region: 
   visitor: true
 
